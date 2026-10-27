@@ -1,0 +1,4 @@
+# DIRA Foundation website
+# The Sitemap line is added by tools/set_site_url.py once the production domain is known.
+User-agent: *
+Allow: /

@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About DIRA Foundation | Mission, Objectives and Governance</title>
+    <meta name="description" content="About DIRA Foundation, a non-profit association in Northwest Cameroon: its mission, objectives, scope, governance and relationship with DIRA Group.">
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <meta name="theme-color" content="#6a0dad">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="DIRA Foundation">
+    <meta property="og:locale" content="en">
+    <meta property="og:title" content="About DIRA Foundation | Mission, Objectives and Governance">
+    <meta property="og:description" content="About DIRA Foundation, a non-profit association in Northwest Cameroon: its mission, objectives, scope, governance and relationship with DIRA Group.">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="About DIRA Foundation | Mission, Objectives and Governance">
+    <meta name="twitter:description" content="About DIRA Foundation, a non-profit association in Northwest Cameroon: its mission, objectives, scope, governance and relationship with DIRA Group.">
+    <!-- seo-domain:start --><!-- seo-domain:end -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
+    <style>
+        /* Base Styles */
+        :root {
+            --primary-purple: #6a0dad;
+            --light-purple: #8a2be2;
+            --dark-purple: #4b0082;
+            --accent-purple: #9370db;
+            --white: #ffffff;
+            --light-gray: #f8f9fa;
+            --medium-gray: #e9ecef;
+            --dark-gray: #333333;
+            --text-gray: #6c757d;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--white);
+            color: var(--dark-gray);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 20px;
+            color: var(--dark-gray);
+            position: relative;
+        }
+
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--primary-purple);
+            border-radius: 2px;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            color: var(--text-gray);
+            max-width: 700px;
+            margin: 0 auto 50px;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--white);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            font-size: 28px;
+            color: var(--primary-purple);
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-purple);
+        }
+
+        .logo-text span {
+            color: var(--dark-gray);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 30px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: var(--dark-gray);
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        nav ul li a:after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-purple);
+            transition: width 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: var(--primary-purple);
+        }
+
+        nav ul li a.active:not(.nav-cta) {
+            color: var(--primary-purple);
+            font-weight: 700;
+        }
+
+        nav ul li a.active:not(.nav-cta):after {
+            width: 100%;
+        }
+
+        nav ul li a.nav-cta.active {
+            background: var(--dark-purple);
+            box-shadow: 0 0 0 2px rgba(106, 13, 173, 0.2);
+        }
+
+        nav ul li a:hover:after {
+            width: 100%;
+        }
+
+        .nav-cta {
+            background: var(--primary-purple);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 30px;
+            transition: all 0.3s;
+        }
+
+        .nav-cta:hover {
+            background: var(--dark-purple);
+            transform: translateY(-2px);
+        }
+
+        .nav-cta:hover:after {
+            width: 0;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--primary-purple);
+            background: none;
+            border: none;
+        }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 80%;
+            max-width: 300px;
+            height: 100vh;
+            background: var(--white);
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+            z-index: 1001;
+            transition: right 0.4s ease;
+            padding: 80px 30px 30px;
+            overflow-y: auto;
+        }
+
+        .mobile-menu.active {
+            right: 0;
+        }
+
+        .mobile-menu ul {
+            list-style: none;
+        }
+
+        .mobile-menu ul li {
+            margin-bottom: 20px;
+        }
+
+        .mobile-menu ul li a {
+            text-decoration: none;
+            color: var(--dark-gray);
+            font-size: 1.1rem;
+            font-weight: 500;
+            display: block;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--medium-gray);
+            transition: color 0.3s;
+        }
+
+        .mobile-menu ul li a:hover {
+            color: var(--primary-purple);
+        }
+
+        .mobile-menu ul li a.active {
+            color: var(--primary-purple);
+            font-weight: 700;
+            border-bottom-color: var(--primary-purple);
+        }
+
+        .mobile-menu-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 24px;
+            background: none;
+            border: none;
+            color: var(--dark-gray);
+            cursor: pointer;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Page Header */
+        .page-header {
+            padding: 180px 0 80px;
+            background: linear-gradient(135deg, var(--primary-purple) 0%, var(--dark-purple) 100%);
+            color: white;
+            text-align: center;
+        }
+
+        .page-title {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .page-subtitle {
+            font-size: 1.3rem;
+            max-width: 700px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+
+        /* Our Story Section */
+        .our-story {
+            padding: 100px 0;
+            background-color: var(--white);
+        }
+
+        .story-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .story-content h2 {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            color: var(--dark-gray);
+            position: relative;
+        }
+
+        .story-content h2:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 80px;
+            height: 4px;
+            background: var(--primary-purple);
+            border-radius: 2px;
+        }
+
+        .story-content p {
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+            color: var(--text-gray);
+        }
+
+        .story-image {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .story-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Mission Vision Section */
+        .mission-vision {
+            padding: 100px 0;
+            background-color: var(--light-gray);
+        }
+
+        .mv-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+        }
+
+        .mv-card {
+            background: var(--white);
+            padding: 50px 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .mv-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .mv-icon {
+            font-size: 3.5rem;
+            color: var(--primary-purple);
+            margin-bottom: 25px;
+        }
+
+        .mv-title {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: var(--dark-gray);
+        }
+
+        .mv-text {
+            font-size: 1.1rem;
+            color: var(--text-gray);
+            line-height: 1.7;
+        }
+
+        /* Values Section */
+        .values {
+            padding: 100px 0;
+            background-color: var(--white);
+        }
+
+        .values-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .value-card {
+            background: var(--white);
+            padding: 40px 30px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .value-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .value-icon {
+            font-size: 3rem;
+            color: var(--primary-purple);
+            margin-bottom: 20px;
+        }
+
+        .value-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--dark-gray);
+        }
+
+        .value-desc {
+            color: var(--text-gray);
+            line-height: 1.7;
+        }
+
+        /* Leadership Section */
+        .leadership {
+            padding: 100px 0;
+            background-color: var(--light-gray);
+        }
+
+        .leadership-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+
+        .leader-card {
+            background: var(--white);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+        }
+
+        .leader-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .leader-image {
+            height: 250px;
+            background: linear-gradient(135deg, var(--primary-purple), var(--light-purple));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 5rem;
+        }
+
+        .leader-content {
+            padding: 30px;
+        }
+
+        .leader-name {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+            color: var(--dark-gray);
+        }
+
+        .leader-role {
+            font-size: 1.1rem;
+            color: var(--primary-purple);
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .leader-passion {
+            font-style: italic;
+            color: var(--text-gray);
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--medium-gray);
+        }
+
+        .leader-bio {
+            color: var(--text-gray);
+            line-height: 1.7;
+        }
+
+        /* Gallery Grid */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .gallery-item {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+            position: relative;
+            height: 250px;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .gallery-image {
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-white);
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /*Video*/
+        .demo-video {
+            position: relative;
+            width: 100%;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+        }
+
+        .video-placeholder {
+            width: 100%;
+            height: 450px;
+            background-color: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: var(--text-light);
+        }
+
+        .video-placeholder i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 100px 0;
+            background: linear-gradient(135deg, var(--primary-purple), var(--dark-purple));
+            color: white;
+            text-align: center;
+        }
+
+        .cta-title {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .cta-desc {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 40px;
+            opacity: 0.9;
+        }
+
+        .cta-buttons-centered {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .btn {
+            padding: 14px 32px;
+            border-radius: 30px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-light {
+            background: white;
+            color: var(--primary-purple);
+        }
+
+        .btn-light:hover {
+            background: var(--light-gray);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-outline-light {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn-outline-light:hover {
+            background: white;
+            color: var(--primary-purple);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 255, 255, 0.2);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark-gray);
+            color: var(--white);
+            padding: 70px 0 30px;
+        }
+
+        .footer-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+
+        .footer-col h3 {
+            font-size: 1.3rem;
+            margin-bottom: 25px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-col h3:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background: var(--primary-purple);
+        }
+
+        .footer-col p {
+            margin-bottom: 20px;
+            opacity: 0.8;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: var(--white);
+            text-decoration: none;
+            opacity: 0.8;
+            transition: opacity 0.3s, padding-left 0.3s;
+        }
+
+        .footer-links a:hover {
+            opacity: 1;
+            padding-left: 5px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .social-links a:hover {
+            background: var(--primary-purple);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+
+            .story-container,
+            .mv-container {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .story-content {
+                order: 2;
+            }
+
+            .story-image {
+                order: 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .page-title {
+                font-size: 2.5rem;
+            }
+
+            .page-subtitle {
+                font-size: 1.1rem;
+            }
+
+            nav ul {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .cta-buttons-centered {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 220px;
+                text-align: center;
+                justify-content: center;
+            }
+
+            .values-container,
+            .leadership-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .page-title {
+                font-size: 2rem;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+
+            .cta-title {
+                font-size: 2rem;
+            }
+
+            .mv-card {
+                padding: 30px 20px;
+            }
+        }
+    
+        /* ---- Foundation repositioning additions ---- */
+        .skip-link { position: absolute; left: -999px; top: 0; background: #fff; color: var(--primary-purple); padding: 10px 16px; z-index: 3000; font-weight: 600; }
+        .skip-link:focus { left: 10px; top: 10px; }
+        .fd-section { padding: 90px 0; background: var(--white); }
+        .fd-section.alt { background: var(--light-gray); }
+        .fd-lead { max-width: 820px; margin: 0 auto 36px; text-align: center; color: var(--text-gray); font-size: 1.08rem; line-height: 1.7; }
+        .fd-prose { max-width: 860px; margin: 0 auto; color: var(--text-gray); line-height: 1.75; }
+        .fd-prose p { margin-bottom: 16px; }
+        .fd-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr)); gap: 28px; }
+        .fd-card { background: var(--white); border: 1px solid var(--medium-gray); border-radius: 10px; padding: 28px; box-shadow: 0 5px 15px rgba(0,0,0,.05); }
+        .fd-card h3 { color: var(--dark-gray); font-size: 1.25rem; margin: 14px 0 10px; }
+        .fd-card p { color: var(--text-gray); line-height: 1.65; }
+        .fd-icon { width: 54px; height: 54px; border-radius: 12px; background: linear-gradient(135deg, var(--primary-purple), var(--light-purple)); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; }
+        .fd-tag { display: inline-block; font-size: .75rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--primary-purple); background: #f1e8fa; border-radius: 20px; padding: 4px 12px; }
+        .fd-activity { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); background: var(--white); border: 1px solid var(--medium-gray); border-radius: 10px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,.05); margin-bottom: 30px; }
+        .fd-activity > img { width: 100%; height: 100%; min-height: 260px; max-height: 460px; object-fit: cover; display: block; }
+        .fd-activity > img.contain { object-fit: contain; background: #f3f0f8; }
+        .fd-activity-body { padding: 32px; }
+        .fd-activity-body h3 { color: var(--dark-gray); font-size: 1.45rem; margin: 12px 0; }
+        .fd-activity-body p { color: var(--text-gray); line-height: 1.7; margin-bottom: 12px; }
+        .fd-meta { list-style: none; margin: 14px 0 0; color: var(--text-gray); font-size: .95rem; }
+        .fd-meta li { margin-bottom: 6px; }
+        .fd-meta strong { color: var(--dark-gray); }
+        .fd-partner { display: flex; gap: 28px; align-items: center; background: var(--white); border: 1px solid var(--medium-gray); border-radius: 10px; padding: 28px; box-shadow: 0 5px 15px rgba(0,0,0,.05); }
+        .fd-partner > img { width: 120px; height: 120px; object-fit: contain; flex: 0 0 120px; }
+        .fd-partner h3 { color: var(--dark-gray); font-size: 1.3rem; margin: 10px 0; }
+        .fd-partner p { color: var(--text-gray); line-height: 1.65; }
+        .fd-partner.small > img { width: 84px; height: 84px; flex-basis: 84px; }
+        .fd-logos { display: flex; flex-wrap: wrap; gap: 28px; justify-content: center; align-items: flex-start; }
+        .fd-logos figure { text-align: center; width: 150px; }
+        .fd-logos img { width: 100px; height: 100px; object-fit: contain; }
+        .fd-logos figcaption { font-size: .88rem; color: var(--text-gray); margin-top: 8px; line-height: 1.35; }
+        .fd-list { margin: 12px 0 0 22px; color: var(--text-gray); line-height: 1.65; }
+        .fd-list li { margin-bottom: 10px; }
+        .fd-two { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: 40px; align-items: start; }
+        .fd-btn { display: inline-block; padding: 12px 26px; border-radius: 30px; background: var(--primary-purple); color: #fff; text-decoration: none; font-weight: 600; margin: 6px 6px 0 0; }
+        .fd-btn:hover { background: var(--dark-purple); }
+        .fd-btn.outline { background: transparent; color: var(--primary-purple); border: 2px solid var(--primary-purple); padding: 10px 24px; }
+        .fd-photo { width: 100%; height: 400px; object-fit: cover; border-radius: 10px; display: block; }
+        .gallery-photo { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .fd-center { text-align: center; margin-top: 30px; }
+        .mobile-menu-btn, .mobile-menu-close { min-width: 44px; min-height: 44px; }
+        @media (max-width: 768px) {
+            .fd-section { padding: 60px 0; }
+            .fd-activity { grid-template-columns: 1fr; }
+            .fd-partner { flex-direction: column; text-align: center; }
+            .fd-photo { height: 280px; }
+        }
+    </style>
+</head>
+
+<body>
+    <a class="skip-link" href="#main">Skip to main content</a>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <img src="logo.png" style="width:3em; height:3em;" alt="DIRA Foundation logo" width="48" height="48">
+                <div class="logo-text" style="line-height: 20px;">
+                    DIRA<br><span>Foundation</span>
+                </div>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html" class="active" aria-current="page">About Us</a></li>
+                    <li><a href="work.html">Our Work</a></li>
+                    <li><a href="partner.html">Partners</a></li>
+                    <li><a href="involve.html">Get Involved</a></li>
+                    <li><a href="contact.html" class="nav-cta">Contact</a></li>
+                </ul>
+            </nav>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <button class="mobile-menu-close" id="mobileMenuClose">
+            <i class="fas fa-times"></i>
+        </button>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html" class="active" aria-current="page">About Us</a></li>
+            <li><a href="work.html">Our Work</a></li>
+            <li><a href="partner.html">Partners</a></li>
+            <li><a href="involve.html">Get Involved</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+
+        <main id="main">
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1 class="page-title">About DIRA Foundation</h1>
+            <p class="page-subtitle">A non-profit association working for education, opportunity, research and community development in Cameroon.</p>
+        </div>
+    </section>
+
+        <!-- Who We Are -->
+    <section class="our-story">
+        <div class="container">
+            <div class="story-container">
+                <div class="story-content">
+                    <h2>Who We Are</h2>
+                    <p>DIRA Foundation is a non-profit association registered under Law No. 90/053 of 19 December 1990 on freedom of association in the Republic of Cameroon. It is apolitical and non-religious, and it was established for an unlimited duration. Its constitution was adopted at Bamenda in 2026.</p>
+                    <p>Our mission is to advance digital innovation, education, entrepreneurship, research and community development in Cameroon, so that individuals, institutions and communities can build, access and benefit from the digital and knowledge economy.</p>
+                    <p>The registered seat is at GNS Street, Mbengwi, Momo Division, Northwest Region. Our activities are based in the Northwest Region and extend nationally and, as capacity and legal status permit, internationally.</p>
+                </div>
+                <div class="story-image">
+                    <img class="fd-photo" src="images/team-at-north-west-regional-assembly.jpg" width="810" height="1080" loading="lazy" alt="Members of the DIRA team in front of the North West Regional Assembly signboard">
+                </div>
+            </div>
+        </div>
+    </section>
+
+        <!-- Mission and Objectives -->
+    <section class="fd-section alt" id="objectives">
+        <div class="container">
+            <h2 class="section-title">Our Mission and Objectives</h2>
+            <p class="fd-lead">To pursue its mission, the foundation's constitution sets out the following objectives. They describe our mandate; our Our Work page shows the activities documented so far.</p>
+            <div class="fd-prose">
+                <ol class="fd-list">
+                    <li>Promote digital literacy, technology education and skills training among young people, women and underserved communities.</li>
+                    <li>Organise DIRA Tech Fest and other conferences, exhibitions, hackathons, bootcamps and knowledge-sharing events.</li>
+                    <li>Support youth-owned and women-owned enterprises through incubation, mentorship, capacity building, seed grants and access to markets and networks.</li>
+                    <li>Promote and support applied research and innovation in information technology and AI, agriculture, health and biomedical science, environmental science, and construction and materials science, and share the findings for public benefit.</li>
+                    <li>Promote awareness and good practice in the housing, real estate, and transport and logistics sectors.</li>
+                    <li>Promote data sovereignty, records digitisation and information systems security awareness.</li>
+                    <li>Establish and administer scholarships, bursaries, seed grants and endowment funds for education, research and youth and community development.</li>
+                    <li>Partner with government ministries and agencies, traditional authorities, academic and research institutions, development finance institutions, civil society and the private sector.</li>
+                    <li>Receive and manage donations, membership contributions, grants, sponsorships and endowments for these objectives.</li>
+                    <li>Carry out health-related projects, including healthcare campaigns, awareness raising and WASH.</li>
+                </ol>
+            </div>
+        </div>
+    </section>
+
+    <!-- Non-profit character and status -->
+    <section class="fd-section" id="status">
+        <div class="container">
+            <h2 class="section-title">Non-Profit Character and Legal Status</h2>
+            <div class="fd-grid">
+                <div class="fd-card">
+                    <div class="fd-icon"><i class="fas fa-balance-scale" aria-hidden="true"></i></div>
+                    <h3>Exclusively non-profit</h3>
+                    <p>Our assets and income are dedicated to our objectives. No part of our net income or assets goes to any founder, member, officer or Executive Committee member, other than reasonable pay for services actually rendered or reimbursement of proper expenses.</p>
+                </div>
+                <div class="fd-card">
+                    <div class="fd-icon"><i class="fas fa-file-signature" aria-hidden="true"></i></div>
+                    <h3>Association status</h3>
+                    <p>DIRA Foundation is a non-profit association under Law No. 90/053. Recognition as a non-governmental organisation (Law No. 99/014) and recognition of public utility are possible future steps described in the constitution. They are separate from each other, and we do not claim either.</p>
+                </div>
+                <div class="fd-card">
+                    <div class="fd-icon"><i class="fas fa-sitemap" aria-hidden="true"></i></div>
+                    <h3>Relationship with DIRA Group</h3>
+                    <p>DIRA Foundation is the philanthropic arm of DIRA Group. Our founder also founded DIRA Group and its commercial entities. The foundation is a separate non-profit association, and the commercial activities of DIRA Group are not foundation programmes.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+        <!-- How We Work -->
+    <section class="fd-section alt" id="approach">
+        <div class="container">
+            <h2 class="section-title">How We Work</h2>
+            <p class="fd-lead">Our approach follows the principles written into our constitution.</p>
+            <div class="fd-grid">
+                <div class="fd-card"><div class="fd-icon"><i class="fas fa-handshake" aria-hidden="true"></i></div><h3>Collaboration</h3><p>We work with ministries and agencies, traditional authorities, academic and research institutions, civil society and the private sector.</p></div>
+                <div class="fd-card"><div class="fd-icon"><i class="fas fa-users" aria-hidden="true"></i></div><h3>Inclusion</h3><p>Young people, women and underserved communities are central to our objectives, and at least one member of our Executive Committee must be a woman.</p></div>
+                <div class="fd-card"><div class="fd-icon"><i class="fas fa-book-open" aria-hidden="true"></i></div><h3>Public benefit</h3><p>We share the findings of the research we support so that the wider community can benefit from it.</p></div>
+                <div class="fd-card"><div class="fd-icon"><i class="fas fa-clipboard-check" aria-hidden="true"></i></div><h3>Accountability</h3><p>Our Treasurer keeps financial records and reports to the Executive Committee and the General Assembly, which approves the annual budget and financial reports.</p></div>
+            </div>
+        </div>
+    </section>
+
+        <!-- Governance -->
+    <section class="leadership" id="governance">
+        <div class="container">
+            <h2 class="section-title">Governance</h2>
+            <p class="section-subtitle">The foundation is governed by the General Assembly and an Executive Committee of four members: President, Secretary, Treasurer and Logistics Planner.</p>
+
+            <div class="leadership-container">
+                <div class="leader-card">
+                    <div class="leader-image">
+                        <i class="fas fa-user" aria-hidden="true"></i>
+                    </div>
+                    <div class="leader-content">
+                        <h3 class="leader-name">Fru Allen-Brian Njimbong</h3>
+                        <p class="leader-role">Founder and President</p>
+                        <p class="leader-bio">Founder of DIRA Foundation and of DIRA Group and its affiliated commercial entities. As President, he presides over the General Assembly and the Executive Committee and represents the foundation in its dealings with institutions.</p>
+                    </div>
+                </div>
+
+                <div class="leader-card">
+                    <div class="leader-image">
+                        <i class="fas fa-user" aria-hidden="true"></i>
+                    </div>
+                    <div class="leader-content">
+                        <h3 class="leader-name">Miki Lideroy Che</h3>
+                        <p class="leader-role">Secretary</p>
+                        <p class="leader-bio">Secretary of the Executive Committee of DIRA Foundation.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="fd-section" id="gallery">
+        <div class="container">
+            <h2 class="section-title">Engagements and Meetings</h2>
+            <p class="section-subtitle">Photographs of DIRA team members meeting with institutions and organisations</p>
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <img class="gallery-photo" src="images/team-at-north-west-regional-assembly.jpg" width="810" height="1080" loading="lazy" alt="DIRA team members standing in front of the North West Regional Assembly signboard">
+                </div>
+                <div class="gallery-item">
+                    <img class="gallery-photo" src="images/team-members-outside-building.jpg" width="1400" height="1050" loading="lazy" alt="DIRA team members standing together outside a building">
+                </div>
+                <div class="gallery-item">
+                    <img class="gallery-photo" src="images/handshake-at-meeting-table.jpg" width="810" height="1080" loading="lazy" alt="Two men shaking hands across a meeting table">
+                </div>
+                <div class="gallery-item">
+                    <img class="gallery-photo" src="images/meeting-with-representatives.jpg" width="1050" height="1400" loading="lazy" alt="A meeting between DIRA team members and representatives around an office table">
+                </div>
+                <div class="gallery-item">
+                    <img class="gallery-photo" src="images/team-meeting-at-office-table.jpg" width="787" height="1400" loading="lazy" alt="DIRA team members meeting with representatives at an office table">
+                </div>
+                <div class="gallery-item">
+                    <img class="gallery-photo" src="images/working-session-in-meeting-room.jpg" width="787" height="1400" loading="lazy" alt="A working session in a meeting room">
+                </div>
+                <div class="gallery-item">
+                    <img class="gallery-photo" src="images/team-members-at-meeting-table.jpg" width="1050" height="1400" loading="lazy" alt="DIRA team members standing at a meeting table">
+                </div>
+            </div>
+        </div>
+    </section>
+
+        <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <h2 class="cta-title">Take Part in the Foundation's Work</h2>
+            <p class="cta-desc">Individuals, communities and institutions are welcome to volunteer, collaborate or support our programmes.</p>
+            <div class="cta-buttons-centered">
+                <a href="involve.html" class="btn btn-light"><i class="fas fa-hands-helping" aria-hidden="true"></i> Get Involved</a>
+                <a href="partner.html" class="btn btn-outline-light"><i class="fas fa-handshake" aria-hidden="true"></i> Partners</a>
+            </div>
+        </div>
+    </section>
+
+    </main>
+
+    <!-- Footer -->
+        <footer>
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-col">
+                    <h3>DIRA Foundation</h3>
+                    <p>A non-profit association in the Northwest Region of Cameroon, working with communities and institutions on education, opportunity, research, health awareness and community development.</p>
+                    <div class="social-links">
+                        <a href="https://www.linkedin.com/company/dira-digital-era/" aria-label="DIRA on LinkedIn" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a>
+                        <a href="https://x.com/diradigitalera/" aria-label="DIRA on X" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter" aria-hidden="true"></i></a>
+                        <a href="https://www.instagram.com/digital_era_dira/" aria-label="DIRA on Instagram" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+                        <a href="https://www.tiktok.com/@digital.era.dira" aria-label="DIRA on TikTok" target="_blank" rel="noopener noreferrer"><i class="fab fa-tiktok" aria-hidden="true"></i></a>
+                    </div>
+                </div>
+
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="work.html">Our Work</a></li>
+                        <li><a href="partner.html">Partners</a></li>
+                        <li><a href="involve.html">Get Involved</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h3>Take Part</h3>
+                    <ul class="footer-links">
+                        <li><a href="involve.html">Volunteer</a></li>
+                        <li><a href="partner.html#collaborate">Propose a collaboration</a></li>
+                        <li><a href="involve.html#donation">Support the foundation</a></li>
+                        <li><a href="about.html#governance">Governance</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h3>Contact Us</h3>
+                    <p><i class="fas fa-map-marker-alt" aria-hidden="true"></i> Douala and Bamenda, Cameroon</p>
+                    <p><i class="fas fa-envelope" aria-hidden="true"></i> <a href="mailto:diradigitalera@gmail.com" style="color:inherit;">diradigitalera@gmail.com</a></p>
+                    <p><i class="fas fa-phone" aria-hidden="true"></i> <a href="tel:+237682366472" style="color:inherit;">+237 6 82 36 64 72</a></p>
+                </div>
+            </div>
+
+            <div class="copyright">
+                &copy; 2026 DIRA Foundation. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Menu Functionality
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const mobileMenuClose = document.getElementById('mobileMenuClose');
+        const overlay = document.getElementById('overlay');
+
+        function openMobileMenu() {
+            mobileMenu.classList.add('active');
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMobileMenu() {
+            mobileMenu.classList.remove('active');
+            overlay.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        mobileMenuBtn.addEventListener('click', openMobileMenu);
+        mobileMenuClose.addEventListener('click', closeMobileMenu);
+        overlay.addEventListener('click', closeMobileMenu);
+
+        // Close menu when clicking on a link
+        const mobileMenuLinks = document.querySelectorAll('.mobile-menu a');
+        mobileMenuLinks.forEach(link => {
+            link.addEventListener('click', closeMobileMenu);
+        });
+
+        // Header scroll effect
+        window.addEventListener('scroll', function () {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.style.padding = '5px 0';
+                header.style.boxShadow = '0 5px 20px rgba(0, 0, 0, 0.1)';
+            } else {
+                header.style.padding = '15px 0';
+                header.style.boxShadow = '0 2px 15px rgba(0, 0, 0, 0.1)';
+            }
+        });
+
+        // Video Embed Functionality
+        function embedYouTubeVideo(videoId) {
+            const videoPlaceholder = document.querySelector('.video-placeholder');
+            if (videoPlaceholder && videoId) {
+                videoPlaceholder.innerHTML = `
+                    <iframe width="100%" height="100%" 
+                        src="https://www.youtube.com/embed/${videoId}" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                    </iframe>
+                `;
+            }
+        }
+        embedYouTubeVideo('bUWWLOp08F4');
+    </script>
+</body>
+
+</html>
