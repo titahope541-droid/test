@@ -1021,29 +1021,7 @@
         <div class="container">
             <h2 class="section-title">Engagements and Meetings</h2>
             <p class="section-subtitle">Photographs of DIRA Foundation team members meeting with institutions and organisations</p>
-            <div class="gallery-grid" id="gallery-grid">
-                <div class="gallery-item">
-                    <img class="gallery-photo" src="images/team-at-north-west-regional-assembly.jpg" width="810" height="1080" loading="lazy" alt="DIRA Foundation team members standing in front of the North West Regional Assembly signboard">
-                </div>
-                <div class="gallery-item">
-                    <img class="gallery-photo" src="images/team-members-outside-building.jpg" width="1400" height="1050" loading="lazy" alt="DIRA Foundation team members standing together outside a building">
-                </div>
-                <div class="gallery-item">
-                    <img class="gallery-photo" src="images/handshake-at-meeting-table.jpg" width="810" height="1080" loading="lazy" alt="Two men shaking hands across a meeting table">
-                </div>
-                <div class="gallery-item">
-                    <img class="gallery-photo" src="images/meeting-with-representatives.jpg" width="1050" height="1400" loading="lazy" alt="A meeting between DIRA Foundation team members and representatives around an office table">
-                </div>
-                <div class="gallery-item">
-                    <img class="gallery-photo" src="images/team-meeting-at-office-table.jpg" width="787" height="1400" loading="lazy" alt="DIRA Foundation team members meeting with representatives at an office table">
-                </div>
-                <div class="gallery-item">
-                    <img class="gallery-photo" src="images/working-session-in-meeting-room.jpg" width="787" height="1400" loading="lazy" alt="A working session in a meeting room">
-                </div>
-                <div class="gallery-item">
-                    <img class="gallery-photo" src="images/team-members-at-meeting-table.jpg" width="1050" height="1400" loading="lazy" alt="DIRA Foundation team members standing at a meeting table">
-                </div>
-            </div>
+            <div class="gallery-grid" id="gallery-grid"></div>
             <div class="fd-center">
                 <button class="fd-btn" id="galleryLoadMore" type="button" aria-controls="gallery-grid" aria-expanded="false" hidden>Show more</button>
             </div>
@@ -1173,8 +1151,28 @@
         }
         embedYouTubeVideo('bUWWLOp08F4');
 
+        const galleryImages = [
+            { src: 'images/team-at-north-west-regional-assembly.jpg', alt: 'DIRA Foundation team members standing in front of the North West Regional Assembly signboard' },
+            { src: 'images/team-members-outside-building.jpg', alt: 'DIRA Foundation team members standing together outside a building' },
+            { src: 'images/meeting-with-representatives.jpg', alt: 'A meeting between DIRA Foundation team members and representatives around an office table' },
+            { src: 'images/team-meeting-at-office-table.jpg', alt: 'DIRA Foundation team members meeting with representatives at an office table' },
+            { src: 'images/working-session-in-meeting-room.jpg', alt: 'A working session in a meeting room' },
+            { src: 'images/minresi.JPG', alt: 'DIRA Foundation team at Minresi' },
+            { src: 'images/minresi-2.jpeg', alt: 'DIRA Foundation team members at a second Minresi gathering' },
+            { src: 'images/tech fest.jpg', alt: 'DIRA Foundation team at a tech festival event' },
+            { src: 'images/IMG_6595.jpg', alt: 'DIRA Foundation team photo from a community engagement event' }
+        ];
+
         const galleryGrid = document.querySelector('#gallery .gallery-grid');
         const galleryLoadMore = document.getElementById('galleryLoadMore');
+        if (galleryGrid) {
+            galleryGrid.innerHTML = galleryImages.map((image) => `
+                <div class="gallery-item">
+                    <img class="gallery-photo" src="${image.src}" width="1400" height="1050" loading="lazy" alt="${image.alt}">
+                </div>
+            `).join('');
+        }
+
         if (galleryGrid && galleryLoadMore) {
             const galleryItems = Array.from(galleryGrid.querySelectorAll('.gallery-item'));
             const initialVisibleItems = 4;
