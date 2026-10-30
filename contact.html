@@ -19,7 +19,7 @@
     <!-- seo-domain:start --><!-- seo-domain:end -->
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
     
-    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="icon" type="image/jpeg" href="./assets/logo.jpg">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
     <style>
@@ -280,23 +280,79 @@
 
         /* Page Header */
         .page-header {
-            padding: 180px 0 80px;
-            background: linear-gradient(135deg, var(--primary-purple) 0%, var(--dark-purple) 100%);
-            color: white;
+            min-height: 50vh;
+            position: relative;
+            isolation: isolate;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background:
+                radial-gradient(ellipse at 15% 10%, rgba(114, 81, 139, 0.32) 0%, transparent 48%),
+                radial-gradient(ellipse at 90% 100%, rgba(91, 61, 113, 0.28) 0%, transparent 42%),
+                linear-gradient(135deg, #211629 0%, #302039 50%, #211629 100%);
+            color: #F6F1F7;
+            padding: 110px 24px 48px;
             text-align: center;
         }
 
+        .glass-accent {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            top: 35%;
+            right: 25%;
+            border-radius: 30px;
+            transform: rotate(35deg);
+            background: rgba(185, 145, 210, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .glass-accent--small {
+            width: 80px;
+            height: 80px;
+            top: 18%;
+            right: 12%;
+            border-radius: 22px;
+            transform: rotate(-18deg);
+        }
+
+        .glass-accent--lower {
+            width: 160px;
+            height: 160px;
+            top: auto;
+            right: auto;
+            bottom: -48px;
+            left: 18%;
+            border-radius: 38px;
+            transform: rotate(22deg);
+        }
+
+        .glass-accent--middle {
+            width: 64px;
+            height: 64px;
+            top: 62%;
+            right: 43%;
+            border-radius: 18px;
+            transform: rotate(45deg);
+        }
+
         .page-title {
-            font-size: 3.5rem;
-            margin-bottom: 20px;
-            font-weight: 700;
+            font-size: clamp(2rem, 4vw, 3.25rem);
+            line-height: 1.15;
+            letter-spacing: -0.035em;
+            margin: 0 0 14px;
+            color: #F6F1F7;
         }
 
         .page-subtitle {
-            font-size: 1.3rem;
-            max-width: 700px;
+            color: #C6B8CF;
+            max-width: 620px;
             margin: 0 auto;
-            opacity: 0.9;
+            line-height: 1.7;
         }
 
         /* Contact Section */
@@ -777,14 +833,6 @@
                 font-size: 2rem;
             }
 
-            .page-title {
-                font-size: 2.5rem;
-            }
-
-            .page-subtitle {
-                font-size: 1.1rem;
-            }
-
             nav ul {
                 display: none;
             }
@@ -814,10 +862,6 @@
         }
 
         @media (max-width: 480px) {
-            .page-title {
-                font-size: 2rem;
-            }
-
             .section-title {
                 font-size: 1.8rem;
             }
@@ -898,7 +942,7 @@
     <header>
         <div class="container header-container">
             <div class="logo">
-                <img src="logo.png" style="width:3em; height:3em;" alt="DIRA Foundation logo" width="48" height="48">
+                <img src="./assets/logo.jpg" style="width: 3em; height: 3em; border-radius: 50%;" alt="DIRA Foundation logo" width="48" height="48">
                 <div class="logo-text" style="line-height: 20px;">
                     DIRA<br><span>Foundation</span>
                 </div>
@@ -908,6 +952,7 @@
                     <li><a href="index.html">Home</a></li>
                     <li><a href="about.html">About Us</a></li>
                     <li><a href="work.html">Our Work</a></li>
+                    <li><a href="articles.html">Articles</a></li>
                     <li><a href="partner.html">Partners</a></li>
                     <li><a href="involve.html">Get Involved</a></li>
                     <li><a href="contact.html" class="nav-cta active" aria-current="page">Contact</a></li>
@@ -928,6 +973,7 @@
             <li><a href="index.html">Home</a></li>
             <li><a href="about.html">About Us</a></li>
             <li><a href="work.html">Our Work</a></li>
+            <li><a href="articles.html">Articles</a></li>
             <li><a href="partner.html">Partners</a></li>
             <li><a href="involve.html">Get Involved</a></li>
             <li><a href="contact.html" class="active" aria-current="page">Contact</a></li>
@@ -939,6 +985,10 @@
     <main id="main">
     <!-- Page Header -->
     <section class="page-header">
+        <div class="glass-accent" aria-hidden="true"></div>
+        <div class="glass-accent glass-accent--small" aria-hidden="true"></div>
+        <div class="glass-accent glass-accent--lower" aria-hidden="true"></div>
+        <div class="glass-accent glass-accent--middle" aria-hidden="true"></div>
         <div class="container">
             <h1 class="page-title">Contact Us</h1>
             <p class="page-subtitle">Questions about our programmes, collaboration, membership or volunteering? Get in touch with the DIRA Foundation team.</p>
@@ -961,8 +1011,7 @@
                             </div>
                             <div class="method-info">
                                 <h3>Our Location</h3>
-                                <p>Registered seat: GNS Street, Mbengwi, Momo Division, Northwest Region</p>
-                                <p>Contact points: Bamenda and Douala, Cameroon</p>
+                                <p>North West Region, Bamenda</p>
                             </div>
                         </div>
 
@@ -972,10 +1021,10 @@
                             </div>
                             <div class="method-info">
                                 <h3>Email Us</h3>
-                                <p>General inquiries: <a href="mailto:diradigitalera@gmail.com"
-                                        class="method-link">diradigitalera@gmail.com</a></p>
-                                <p>Partnerships: <a href="mailto:diradigitalera@gmail.com"
-                                        class="method-link">diradigitalera@gmail.com</a></p>
+                                <p>General inquiries: <a href="mailto:Foundation@diracmr.com"
+                                        class="method-link">Foundation@diracmr.com</a></p>
+                                <p>Partnerships: <a href="mailto:Foundation@diracmr.com"
+                                        class="method-link">Foundation@diracmr.com</a></p>
                             </div>
                         </div>
 
@@ -994,16 +1043,16 @@
                     <div class="social-section">
                         <h3 class="social-title">Follow us for updates:</h3>
                         <div class="social-links">
-                            <a href="https://www.linkedin.com/company/dira-digital-era/" class="social-link" aria-label="DIRA on LinkedIn" target="_blank" rel="noopener noreferrer">
+                            <a href="https://www.linkedin.com/company/dira-digital-era/" class="social-link" aria-label="DIRA Foundation on LinkedIn" target="_blank" rel="noopener noreferrer">
                                 <i class="fab fa-linkedin"></i>
                             </a>
-                            <a href="https://x.com/diradigitalera/" class="social-link" aria-label="DIRA on X" target="_blank" rel="noopener noreferrer">
+                            <a href="https://x.com/diradigitalera/" class="social-link" aria-label="DIRA Foundation on X" target="_blank" rel="noopener noreferrer">
                                 <i class="fab fa-twitter"></i>
                             </a>
-                            <a href="https://www.instagram.com/digital_era_dira/" class="social-link" aria-label="DIRA on Instagram" target="_blank" rel="noopener noreferrer">
+                            <a href="https://www.instagram.com/digital_era_dira/" class="social-link" aria-label="DIRA Foundation on Instagram" target="_blank" rel="noopener noreferrer">
                                 <i class="fab fa-instagram"></i>
                             </a>
-                            <a href="https://www.youtube.com/@DIRA_DIGITAL_ERA" class="social-link" aria-label="DIRA on YouTube" target="_blank" rel="noopener noreferrer">
+                            <a href="https://www.youtube.com/@DIRA_DIGITAL_ERA" class="social-link" aria-label="DIRA Foundation on YouTube" target="_blank" rel="noopener noreferrer">
                                 <i class="fab fa-youtube"></i>
                             </a>
                         </div>
@@ -1146,12 +1195,12 @@
             <div class="footer-container">
                 <div class="footer-col">
                     <h3>DIRA Foundation</h3>
-                    <p>A non-profit association in the Northwest Region of Cameroon, working with communities and institutions on education, opportunity, research, health awareness and community development.</p>
+                    <p>A non-profit association based in Bamenda, North West Region of Cameroon, working with communities and institutions on education, opportunity, research, health awareness and community development.</p>
                     <div class="social-links">
-                        <a href="https://www.linkedin.com/company/dira-digital-era/" aria-label="DIRA on LinkedIn" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a>
-                        <a href="https://x.com/diradigitalera/" aria-label="DIRA on X" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter" aria-hidden="true"></i></a>
-                        <a href="https://www.instagram.com/digital_era_dira/" aria-label="DIRA on Instagram" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram" aria-hidden="true"></i></a>
-                        <a href="https://www.tiktok.com/@digital.era.dira" aria-label="DIRA on TikTok" target="_blank" rel="noopener noreferrer"><i class="fab fa-tiktok" aria-hidden="true"></i></a>
+                        <a href="https://www.linkedin.com/company/dira-digital-era/" aria-label="DIRA Foundation on LinkedIn" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a>
+                        <a href="https://x.com/diradigitalera/" aria-label="DIRA Foundation on X" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter" aria-hidden="true"></i></a>
+                        <a href="https://www.instagram.com/digital_era_dira/" aria-label="DIRA Foundation on Instagram" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+                        <a href="https://www.tiktok.com/@digital.era.dira" aria-label="DIRA Foundation on TikTok" target="_blank" rel="noopener noreferrer"><i class="fab fa-tiktok" aria-hidden="true"></i></a>
                     </div>
                 </div>
 
@@ -1161,6 +1210,7 @@
                         <li><a href="index.html">Home</a></li>
                         <li><a href="about.html">About Us</a></li>
                         <li><a href="work.html">Our Work</a></li>
+                        <li><a href="articles.html">Articles</a></li>
                         <li><a href="partner.html">Partners</a></li>
                         <li><a href="involve.html">Get Involved</a></li>
                         <li><a href="contact.html">Contact</a></li>
@@ -1179,8 +1229,8 @@
 
                 <div class="footer-col">
                     <h3>Contact Us</h3>
-                    <p><i class="fas fa-map-marker-alt" aria-hidden="true"></i> Douala and Bamenda, Cameroon</p>
-                    <p><i class="fas fa-envelope" aria-hidden="true"></i> <a href="mailto:diradigitalera@gmail.com" style="color:inherit;">diradigitalera@gmail.com</a></p>
+                    <p><i class="fas fa-map-marker-alt" aria-hidden="true"></i> North West Region, Bamenda</p>
+                    <p><i class="fas fa-envelope" aria-hidden="true"></i> <a href="mailto:Foundation@diracmr.com" style="color:inherit;">Foundation@diracmr.com</a></p>
                     <p><i class="fas fa-phone" aria-hidden="true"></i> <a href="tel:+237682366472" style="color:inherit;">+237 6 82 36 64 72</a></p>
                 </div>
             </div>
@@ -1279,7 +1329,7 @@
             const mailSubject = `Contact Form: ${subjectLabel}`;
             const mailBody = `Full Name: ${name}\nEmail: ${email}\nOrganization: ${org || 'Not provided'}\nSubject: ${subjectLabel}\n\nMessage:\n${message}`;
 
-            const mailtoLink = `mailto:diradigitalera@gmail.com?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(mailBody)}`;
+            const mailtoLink = `mailto:Foundation@diracmr.com?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(mailBody)}`;
 
             window.location.href = mailtoLink;
         });

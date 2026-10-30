@@ -1,0 +1,13 @@
+{
+  "name": "dira-foundation-website",
+  "version": "1.0.0",
+  "private": true,
+  "description": "DIRA Foundation website with an articles page and admin upload page",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

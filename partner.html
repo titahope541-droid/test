@@ -19,7 +19,7 @@
     <!-- seo-domain:start --><!-- seo-domain:end -->
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
     
-    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="icon" type="image/jpeg" href="./assets/logo.jpg">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
     <style>
@@ -280,23 +280,79 @@
 
         /* Page Header */
         .page-header {
-            padding: 180px 0 80px;
-            background: linear-gradient(135deg, var(--primary-purple) 0%, var(--dark-purple) 100%);
-            color: white;
+            min-height: 50vh;
+            position: relative;
+            isolation: isolate;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background:
+                radial-gradient(ellipse at 15% 10%, rgba(114, 81, 139, 0.32) 0%, transparent 48%),
+                radial-gradient(ellipse at 90% 100%, rgba(91, 61, 113, 0.28) 0%, transparent 42%),
+                linear-gradient(135deg, #211629 0%, #302039 50%, #211629 100%);
+            color: #F6F1F7;
+            padding: 110px 24px 48px;
             text-align: center;
         }
 
+        .glass-accent {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            top: 35%;
+            right: 25%;
+            border-radius: 30px;
+            transform: rotate(35deg);
+            background: rgba(185, 145, 210, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .glass-accent--small {
+            width: 80px;
+            height: 80px;
+            top: 18%;
+            right: 12%;
+            border-radius: 22px;
+            transform: rotate(-18deg);
+        }
+
+        .glass-accent--lower {
+            width: 160px;
+            height: 160px;
+            top: auto;
+            right: auto;
+            bottom: -48px;
+            left: 18%;
+            border-radius: 38px;
+            transform: rotate(22deg);
+        }
+
+        .glass-accent--middle {
+            width: 64px;
+            height: 64px;
+            top: 62%;
+            right: 43%;
+            border-radius: 18px;
+            transform: rotate(45deg);
+        }
+
         .page-title {
-            font-size: 3.5rem;
-            margin-bottom: 20px;
-            font-weight: 700;
+            font-size: clamp(2rem, 4vw, 3.25rem);
+            line-height: 1.15;
+            letter-spacing: -0.035em;
+            margin: 0 0 14px;
+            color: #F6F1F7;
         }
 
         .page-subtitle {
-            font-size: 1.3rem;
-            max-width: 700px;
+            color: #C6B8CF;
+            max-width: 620px;
             margin: 0 auto;
-            opacity: 0.9;
+            line-height: 1.7;
         }
 
         /* Services Section */
@@ -775,14 +831,6 @@
                 font-size: 2rem;
             }
 
-            .page-title {
-                font-size: 2.5rem;
-            }
-
-            .page-subtitle {
-                font-size: 1.1rem;
-            }
-
             nav ul {
                 display: none;
             }
@@ -813,10 +861,6 @@
         }
 
         @media (max-width: 480px) {
-            .page-title {
-                font-size: 2rem;
-            }
-
             .section-title {
                 font-size: 1.8rem;
             }
@@ -889,7 +933,7 @@
     <header>
         <div class="container header-container">
             <div class="logo">
-                <img src="logo.png" style="width:3em; height:3em;" alt="DIRA Foundation logo" width="48" height="48">
+                <img src="./assets/logo.jpg" style="width: 3em; height: 3em; border-radius: 50%;" alt="DIRA Foundation logo" width="48" height="48">
                 <div class="logo-text" style="line-height: 20px;">
                     DIRA<br><span>Foundation</span>
                 </div>
@@ -899,7 +943,8 @@
                     <li><a href="index.html">Home</a></li>
                     <li><a href="about.html">About Us</a></li>
                     <li><a href="work.html">Our Work</a></li>
-                    <li><a href="partner.html" class="active" aria-current="page">Partner With Us</a></li>
+                    <li><a href="articles.html">Articles</a></li>
+                    <li><a href="partner.html" class="active" aria-current="page">Partners</a></li>
                     <li><a href="involve.html">Get Involved</a></li>
                     <li><a href="contact.html" class="nav-cta">Contact</a></li>
                 </ul>
@@ -919,7 +964,8 @@
             <li><a href="index.html">Home</a></li>
             <li><a href="about.html">About Us</a></li>
             <li><a href="work.html">Our Work</a></li>
-            <li><a href="partner.html" class="active" aria-current="page">Partner With Us</a></li>
+            <li><a href="articles.html">Articles</a></li>
+            <li><a href="partner.html" class="active" aria-current="page">Partners</a></li>
             <li><a href="involve.html">Get Involved</a></li>
             <li><a href="contact.html">Contact</a></li>
         </ul>
@@ -930,6 +976,10 @@
         <main id="main">
     <!-- Page Header -->
     <section class="page-header">
+        <div class="glass-accent" aria-hidden="true"></div>
+        <div class="glass-accent glass-accent--small" aria-hidden="true"></div>
+        <div class="glass-accent glass-accent--lower" aria-hidden="true"></div>
+        <div class="glass-accent glass-accent--middle" aria-hidden="true"></div>
         <div class="container">
             <h1 class="page-title">Partners and Institutional Collaboration</h1>
             <p class="page-subtitle">DIRA Foundation works with government institutions, community organisations and others in pursuit of its objectives.</p>
@@ -940,22 +990,22 @@
     <section class="fd-section" id="institutions">
         <div class="container">
             <h2 class="section-title">Government and Regional Institutions</h2>
-            <p class="fd-lead">Collaboration with ministries, agencies and public institutions is one of the foundation's stated objectives. These are institutions the DIRA team has engaged with in the Northwest Region.</p>
+            <p class="fd-lead">Collaboration with ministries, agencies and public institutions is one of the foundation's stated objectives. These are institutions the DIRA Foundation team has engaged with in the Northwest Region.</p>
             <div class="fd-grid" style="grid-template-columns: repeat(auto-fit, minmax(min(380px, 100%), 1fr));">
                 <article class="fd-partner">
-                    <img src="MINPMEESA.jpg" width="120" height="120" loading="lazy" alt="MINPMEESA logo">
+                    <img src="./assets/minresi_logo.png" width="120" height="120" loading="lazy" alt="MINRESI logo">
                     <div>
                         <span class="fd-tag">Government institution</span>
-                        <h3>MINPMEESA, North West Regional Delegation</h3>
-                        <p>The Regional Delegation of Small and Medium-sized Enterprises, Social Economy and Handicrafts for the North West Region. DIRA team members have been received at its offices. Its field relates to our objective of supporting youth-owned and women-owned enterprises.</p>
+                        <h3>MINRESI, North West Regional Delegation</h3>
+                        <p>The Regional Delegation of Small and Medium-sized Enterprises, Social Economy and Handicrafts for the North West Region. DIRA Foundation team members have been received at its offices. Its field relates to our objective of supporting youth-owned and women-owned enterprises.</p>
                     </div>
                 </article>
                 <article class="fd-partner">
-                    <img src="nwra.jpg" width="120" height="120" loading="lazy" alt="North West Regional Assembly logo">
+                    <img src="./assets/NWR_assembly.jpg" width="120" height="120" loading="lazy" alt="North West Regional Assembly logo">
                     <div>
                         <span class="fd-tag">Regional institution</span>
                         <h3>North West Regional Assembly</h3>
-                        <p>Assemblée Régionale du Nord-Ouest. DIRA team members have visited the Assembly, in the region where the foundation's activities are based.</p>
+                        <p>Assemblée Régionale du Nord-Ouest. DIRA Foundation team members have visited the Assembly, in the region where the foundation's activities are based.</p>
                     </div>
                 </article>
             </div>
@@ -969,15 +1019,15 @@
             <p class="fd-lead">Organisations the foundation collaborates with at community level.</p>
             <div class="fd-grid" style="grid-template-columns: repeat(auto-fit, minmax(min(340px, 100%), 1fr));">
                 <article class="fd-partner small">
-                    <img src="logo%20women.png" width="84" height="84" loading="lazy" alt="Biomedical Engineering Women's Community Cameroon logo">
+                    <img src="./assets/logo women.png" width="84" height="84" loading="lazy" alt="Biomedical Engineering Women's Community Cameroon logo">
                     <div>
                         <span class="fd-tag">Community organisation</span>
                         <h3>Biomedical Engineering Women's Community Cameroon</h3>
-                        <p>The DIRA team built a website and member portal for this community, with resources, event registration and a single place for information.</p>
+                        <p>The DIRA Foundation team built a website and member portal for this community, with resources, event registration and a single place for information.</p>
                     </div>
                 </article>
                 <article class="fd-partner small">
-                    <img src="gcr.jpg" width="84" height="84" loading="lazy" alt="Global Community Rescue logo">
+                    <img src="./assets/gcr.jpg" width="84" height="84" loading="lazy" alt="Global Community Rescue logo">
                     <div>
                         <span class="fd-tag">Community organisation</span>
                         <h3>Global Community Rescue (GCR)</h3>
@@ -985,7 +1035,7 @@
                     </div>
                 </article>
                 <article class="fd-partner small">
-                    <img src="aswedo.png" width="84" height="84" loading="lazy" alt="ASWEDO logo">
+                    <img src="./assets/aswedo.png" width="84" height="84" loading="lazy" alt="ASWEDO logo">
                     <div>
                         <span class="fd-tag">Community organisation</span>
                         <h3>ASWEDO</h3>
@@ -1156,12 +1206,12 @@
             <div class="footer-container">
                 <div class="footer-col">
                     <h3>DIRA Foundation</h3>
-                    <p>A non-profit association in the Northwest Region of Cameroon, working with communities and institutions on education, opportunity, research, health awareness and community development.</p>
+                    <p>A non-profit association based in Bamenda, North West Region of Cameroon, working with communities and institutions on education, opportunity, research, health awareness and community development.</p>
                     <div class="social-links">
-                        <a href="https://www.linkedin.com/company/dira-digital-era/" aria-label="DIRA on LinkedIn" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a>
-                        <a href="https://x.com/diradigitalera/" aria-label="DIRA on X" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter" aria-hidden="true"></i></a>
-                        <a href="https://www.instagram.com/digital_era_dira/" aria-label="DIRA on Instagram" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram" aria-hidden="true"></i></a>
-                        <a href="https://www.tiktok.com/@digital.era.dira" aria-label="DIRA on TikTok" target="_blank" rel="noopener noreferrer"><i class="fab fa-tiktok" aria-hidden="true"></i></a>
+                        <a href="https://www.linkedin.com/company/dira-digital-era/" aria-label="DIRA Foundation on LinkedIn" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a>
+                        <a href="https://x.com/diradigitalera/" aria-label="DIRA Foundation on X" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter" aria-hidden="true"></i></a>
+                        <a href="https://www.instagram.com/digital_era_dira/" aria-label="DIRA Foundation on Instagram" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+                        <a href="https://www.tiktok.com/@digital.era.dira" aria-label="DIRA Foundation on TikTok" target="_blank" rel="noopener noreferrer"><i class="fab fa-tiktok" aria-hidden="true"></i></a>
                     </div>
                 </div>
 
@@ -1171,6 +1221,7 @@
                         <li><a href="index.html">Home</a></li>
                         <li><a href="about.html">About Us</a></li>
                         <li><a href="work.html">Our Work</a></li>
+                        <li><a href="articles.html">Articles</a></li>
                         <li><a href="partner.html">Partners</a></li>
                         <li><a href="involve.html">Get Involved</a></li>
                         <li><a href="contact.html">Contact</a></li>
@@ -1189,8 +1240,8 @@
 
                 <div class="footer-col">
                     <h3>Contact Us</h3>
-                    <p><i class="fas fa-map-marker-alt" aria-hidden="true"></i> Douala and Bamenda, Cameroon</p>
-                    <p><i class="fas fa-envelope" aria-hidden="true"></i> <a href="mailto:diradigitalera@gmail.com" style="color:inherit;">diradigitalera@gmail.com</a></p>
+                    <p><i class="fas fa-map-marker-alt" aria-hidden="true"></i> North West Region, Bamenda</p>
+                    <p><i class="fas fa-envelope" aria-hidden="true"></i> <a href="mailto:Foundation@diracmr.com" style="color:inherit;">Foundation@diracmr.com</a></p>
                     <p><i class="fas fa-phone" aria-hidden="true"></i> <a href="tel:+237682366472" style="color:inherit;">+237 6 82 36 64 72</a></p>
                 </div>
             </div>
@@ -1350,7 +1401,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const encodedBody = encodeURIComponent(body);
         
         // Create mailto link
-        const mailtoLink = `mailto:diradigitalera@gmail.com?subject=${encodedSubject}&body=${encodedBody}`;
+        const mailtoLink = `mailto:Foundation@diracmr.com?subject=${encodedSubject}&body=${encodedBody}`;
         
         // Open email client
         window.location.href = mailtoLink;

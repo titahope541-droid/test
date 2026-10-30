@@ -38,15 +38,13 @@
         "@context": "https://schema.org",
         "@type": "Organization",
         "name": "DIRA Foundation",
-        "alternateName": "DIRA Association",
-        "description": "DIRA Foundation is a non-profit association in the Northwest Region of Cameroon working on digital literacy, education, youth and women's enterprise, research, health awareness and community development.",
-        "email": "diradigitalera@gmail.com",
+        "description": "DIRA Foundation is a non-profit association based in Bamenda, North West Region of Cameroon, working on digital literacy, education, youth and women's enterprise, research, health awareness and community development.",
+        "email": "Foundation@diracmr.com",
         "telephone": "+237682366472",
         "address": {
           "@type": "PostalAddress",
-          "streetAddress": "GNS Street",
-          "addressLocality": "Mbengwi",
-          "addressRegion": "Northwest Region",
+          "addressLocality": "Bamenda",
+          "addressRegion": "North West Region",
           "addressCountry": "CM"
         },
         "parentOrganization": { "@type": "Organization", "name": "DIRA Group" },
@@ -59,7 +57,7 @@
       }
     </script>
 
-    <link rel="icon" type="image/png" href="logo.png" />
+    <link rel="icon" type="image/jpeg" href="./assets/logo.jpg" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
@@ -1151,6 +1149,57 @@
         border-radius: 20px;
         padding: 4px 12px;
       }
+      .featured-programme {
+        display: grid;
+        grid-template-columns: minmax(220px, 0.8fr) minmax(0, 2fr);
+        overflow: hidden;
+        background: var(--white);
+        border: 1px solid var(--medium-gray);
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+      }
+      .featured-programme-visual {
+        display: flex;
+        min-height: 280px;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 16px;
+        padding: 32px;
+        background: linear-gradient(135deg, var(--primary-purple), var(--dark-purple));
+        color: #fff;
+        text-align: center;
+      }
+      .featured-programme-visual i {
+        font-size: 3rem;
+      }
+      .featured-programme-visual strong {
+        font-size: 1.5rem;
+      }
+      .featured-programme-content {
+        padding: 36px;
+      }
+      .featured-programme-content h3 {
+        margin: 14px 0 12px;
+        color: var(--dark-gray);
+        font-size: 1.6rem;
+      }
+      .featured-programme-content p {
+        color: var(--text-gray);
+        line-height: 1.7;
+      }
+      .featured-programme-highlights {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin: 22px 0;
+      }
+      .featured-programme-highlights span {
+        padding: 10px 14px;
+        border-radius: 10px;
+        background: var(--light-gray);
+        color: var(--dark-gray);
+      }
       .fd-activity {
         display: grid;
         grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
@@ -1316,6 +1365,15 @@
           flex-direction: column;
           text-align: center;
         }
+        .featured-programme {
+          grid-template-columns: 1fr;
+        }
+        .featured-programme-visual {
+          min-height: 180px;
+        }
+        .featured-programme-content {
+          padding: 26px;
+        }
         .fd-photo {
           height: 280px;
         }
@@ -1330,8 +1388,8 @@
       <div class="container header-container">
         <div class="logo">
           <img
-            src="logo.png"
-            style="width: 3em; height: 3em"
+            src="./assets/logo.jpg"
+            style="width: 3em; height: 3em; border-radius: 50%;"
             alt="DIRA Foundation logo"
             width="48"
             height="48"
@@ -1345,6 +1403,7 @@
             <li><a href="index.html" class="active" aria-current="page">Home</a></li>
             <li><a href="about.html">About Us</a></li>
             <li><a href="work.html">Our Work</a></li>
+            <li><a href="articles.html">Articles</a></li>
             <li><a href="partner.html">Partners</a></li>
             <li><a href="involve.html">Get Involved</a></li>
             <li><a href="contact.html" class="nav-cta">Contact</a></li>
@@ -1373,6 +1432,7 @@
         <li><a href="index.html" class="active" aria-current="page">Home</a></li>
         <li><a href="about.html">About Us</a></li>
         <li><a href="work.html">Our Work</a></li>
+        <li><a href="articles.html">Articles</a></li>
         <li><a href="partner.html">Partners</a></li>
         <li><a href="involve.html">Get Involved</a></li>
         <li><a href="contact.html">Contact</a></li>
@@ -1533,14 +1593,46 @@
         </div>
       </section>
 
+      <!-- Featured Programme -->
+      <section class="fd-section alt" id="featured-programme">
+        <div class="container">
+          <h2 class="section-title">Featured Programme</h2>
+          <p class="fd-lead">
+            Supporting local businesses and entrepreneurs to build for growth.
+          </p>
+          <article class="featured-programme">
+            <div class="featured-programme-visual" aria-hidden="true" style="padding: 0; border-radius: 0; overflow: hidden;">
+              <img
+                src="./images/IMG_6595.jpg"
+                alt="DIRA Startup Incubator Programme"
+                style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px">
+            </div>
+            <div class="featured-programme-content">
+              <span class="fd-tag">Planned for 2027</span>
+              <h3>DIRA Startup Incubator Program</h3>
+              <p>
+                DIRA Foundation plans to support youth- and women-led
+                businesses and cooperatives across the North West Region with
+                registration, business records, mentoring and practical
+                training in business, finance, sales, technology and AI.
+              </p>
+              <div class="featured-programme-highlights" aria-label="Programme targets">
+                <span><strong>30+</strong> enterprises supported</span>
+                <span><strong>500</strong> people trained</span>
+                <span><strong>40%</strong> minimum women participants</span>
+              </div>
+              <a class="fd-btn" href="work.html#dsip">Explore the programme</a>
+            </div>
+          </article>
+        </div>
+      </section>
+
       <!-- Areas of Work -->
       <section class="fd-section alt" id="areas-of-work">
         <div class="container">
           <h2 class="section-title">Our Areas of Work</h2>
           <p class="fd-lead">
-            These are the areas set out in our constitution. Some are active
-            today and others are part of our mandate. The Our Work page shows
-            what we have documented so far.
+            DIRA Foundation works across the following areas:
           </p>
           <div class="fd-grid">
             <div class="fd-card">
@@ -1649,12 +1741,34 @@
         <div class="container">
           <h2 class="section-title">Programmes and Activities</h2>
           <p class="fd-lead">
-            A selection of documented events and institutional engagements.
+            Events and partnerships supporting innovation and community development.
           </p>
           <article class="fd-activity">
             <img
+              src="images/minresi.jpg"
+              width="1080"
+              height="465"
+              loading="lazy"
+              alt="DIRA Foundation team members at the MINRESI North West Regional Delegation office"
+            />
+            <div class="fd-activity-body">
+              <span class="fd-tag">Programme &middot; Ongoing</span>
+              <h3>Supporting JERSI-NW with MINRESI</h3>
+              <p>
+                DIRA Foundation is partnering with MINRESI's North West
+                Regional Delegation to promote the 9th JERSI-NW Open Day of
+                Excellence for Scientific Research and Innovation, taking place
+                in Bamenda from 10 to 12 November 2026.
+              </p>
+              <a class="fd-btn outline" href="work.html#jersi-nw"
+                >Read more</a
+              >
+            </div>
+          </article>
+          <article class="fd-activity">
+            <img
               class="contain"
-              src="illust_1.jpg"
+              src="images/tech fest.jpg"
               width="905"
               height="1280"
               loading="lazy"
@@ -1680,14 +1794,14 @@
               width="810"
               height="1080"
               loading="lazy"
-              alt="Members of the DIRA team standing in front of the North West Regional Assembly signboard"
+              alt="Members of the DIRA Foundation team standing in front of the North West Regional Assembly signboard"
             />
             <div class="fd-activity-body">
               <span class="fd-tag">Institutional engagement</span>
               <h3>Engagement with regional institutions</h3>
               <p>
-                DIRA team members have visited the North West Regional Assembly
-                and the North West Regional Delegation of MINPMEESA, as part of
+                DIRA Foundation team members have visited the North West Regional Assembly
+                and the North West Regional Delegation of MINRESI, as part of
                 building working relationships with institutions in the region
                 where the foundation is based.
               </p>
@@ -1710,51 +1824,56 @@
           <div class="fd-logos">
             <figure>
               <img
-                src="MINPMEESA.jpg"
+                src="./assets/minresi_logo.png"
                 width="100"
                 height="100"
                 loading="lazy"
-                alt="MINPMEESA logo"
+                alt="MINRESI logo"
+                style="border-radius: 50%;"
               />
-              <figcaption>MINPMEESA, North West Regional Delegation</figcaption>
+              <figcaption>MINRESI, North West Regional Delegation</figcaption>
             </figure>
             <figure>
               <img
-                src="nwra.jpg"
+                src="./assets/NWR_assembly.jpg"
                 width="100"
                 height="100"
                 loading="lazy"
                 alt="North West Regional Assembly logo"
+                style="border-radius: 50%;"
               />
               <figcaption>North West Regional Assembly</figcaption>
             </figure>
             <figure>
               <img
-                src="gcr.jpg"
+                src="./assets/gcr.jpg"
                 width="100"
                 height="100"
                 loading="lazy"
                 alt="Global Community Rescue logo"
+                style="border-radius: 50%;"
               />
               <figcaption>Global Community Rescue (GCR)</figcaption>
             </figure>
             <figure>
               <img
-                src="aswedo.png"
+                src="./assets/aswedo.png"
                 width="100"
                 height="100"
                 loading="lazy"
                 alt="ASWEDO logo"
+                style="border-radius: 50%;"
               />
               <figcaption>ASWEDO</figcaption>
             </figure>
             <figure>
               <img
-                src="logo%20women.png"
+                src="./assets/logo women.png"
                 width="100"
                 height="100"
                 loading="lazy"
                 alt="Biomedical Engineering Women's Community Cameroon logo"
+                style="border-radius: 50%;"
               />
               <figcaption>
                 Biomedical Engineering Women's Community Cameroon
@@ -1846,35 +1965,36 @@
           <div class="footer-col">
             <h3>DIRA Foundation</h3>
             <p>
-              A non-profit association in the Northwest Region of Cameroon,
+              A non-profit association based in Bamenda, North West Region of
+              Cameroon,
               working with communities and institutions on education,
               opportunity, research, health awareness and community development.
             </p>
             <div class="social-links">
               <a
                 href="https://www.linkedin.com/company/dira-digital-era/"
-                aria-label="DIRA on LinkedIn"
+                aria-label="DIRA Foundation on LinkedIn"
                 target="_blank"
                 rel="noopener noreferrer"
                 ><i class="fab fa-linkedin-in" aria-hidden="true"></i
               ></a>
               <a
                 href="https://x.com/diradigitalera/"
-                aria-label="DIRA on X"
+                aria-label="DIRA Foundation on X"
                 target="_blank"
                 rel="noopener noreferrer"
                 ><i class="fab fa-twitter" aria-hidden="true"></i
               ></a>
               <a
                 href="https://www.instagram.com/digital_era_dira/"
-                aria-label="DIRA on Instagram"
+                aria-label="DIRA Foundation on Instagram"
                 target="_blank"
                 rel="noopener noreferrer"
                 ><i class="fab fa-instagram" aria-hidden="true"></i
               ></a>
               <a
                 href="https://www.tiktok.com/@digital.era.dira"
-                aria-label="DIRA on TikTok"
+                aria-label="DIRA Foundation on TikTok"
                 target="_blank"
                 rel="noopener noreferrer"
                 ><i class="fab fa-tiktok" aria-hidden="true"></i
@@ -1888,6 +2008,7 @@
               <li><a href="index.html">Home</a></li>
               <li><a href="about.html">About Us</a></li>
               <li><a href="work.html">Our Work</a></li>
+              <li><a href="articles.html">Articles</a></li>
               <li><a href="partner.html">Partners</a></li>
               <li><a href="involve.html">Get Involved</a></li>
               <li><a href="contact.html">Contact</a></li>
@@ -1911,13 +2032,13 @@
           <div class="footer-col">
             <h3>Contact Us</h3>
             <p>
-              <i class="fas fa-map-marker-alt" aria-hidden="true"></i> Douala
-              and Bamenda, Cameroon
+              <i class="fas fa-map-marker-alt" aria-hidden="true"></i> North
+              West Region, Bamenda
             </p>
             <p>
               <i class="fas fa-envelope" aria-hidden="true"></i>
-              <a href="mailto:diradigitalera@gmail.com" style="color: inherit"
-                >diradigitalera@gmail.com</a
+              <a href="mailto:Foundation@diracmr.com" style="color: inherit"
+                >Foundation@diracmr.com</a
               >
             </p>
             <p>

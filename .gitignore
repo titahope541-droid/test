@@ -1,0 +1,6 @@
+.env
+node_modules/
+data/articles.json
+data/articles.json.tmp
+uploads/*
+!uploads/.gitkeep

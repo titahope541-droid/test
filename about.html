@@ -19,7 +19,7 @@
     <!-- seo-domain:start --><!-- seo-domain:end -->
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
     
-    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="icon" type="image/jpeg" href="./assets/logo.jpg">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
     <style>
@@ -280,23 +280,79 @@
 
         /* Page Header */
         .page-header {
-            padding: 180px 0 80px;
-            background: linear-gradient(135deg, var(--primary-purple) 0%, var(--dark-purple) 100%);
-            color: white;
+            min-height: 50vh;
+            position: relative;
+            isolation: isolate;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background:
+                radial-gradient(ellipse at 15% 10%, rgba(114, 81, 139, 0.32) 0%, transparent 48%),
+                radial-gradient(ellipse at 90% 100%, rgba(91, 61, 113, 0.28) 0%, transparent 42%),
+                linear-gradient(135deg, #211629 0%, #302039 50%, #211629 100%);
+            color: #F6F1F7;
+            padding: 110px 24px 48px;
             text-align: center;
         }
 
+        .glass-accent {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            top: 35%;
+            right: 25%;
+            border-radius: 30px;
+            transform: rotate(35deg);
+            background: rgba(185, 145, 210, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .glass-accent--small {
+            width: 80px;
+            height: 80px;
+            top: 18%;
+            right: 12%;
+            border-radius: 22px;
+            transform: rotate(-18deg);
+        }
+
+        .glass-accent--lower {
+            width: 160px;
+            height: 160px;
+            top: auto;
+            right: auto;
+            bottom: -48px;
+            left: 18%;
+            border-radius: 38px;
+            transform: rotate(22deg);
+        }
+
+        .glass-accent--middle {
+            width: 64px;
+            height: 64px;
+            top: 62%;
+            right: 43%;
+            border-radius: 18px;
+            transform: rotate(45deg);
+        }
+
         .page-title {
-            font-size: 3.5rem;
-            margin-bottom: 20px;
-            font-weight: 700;
+            font-size: clamp(2rem, 4vw, 3.25rem);
+            line-height: 1.15;
+            letter-spacing: -0.035em;
+            margin: 0 0 14px;
+            color: #F6F1F7;
         }
 
         .page-subtitle {
-            font-size: 1.3rem;
-            max-width: 700px;
+            color: #C6B8CF;
+            max-width: 620px;
             margin: 0 auto;
-            opacity: 0.9;
+            line-height: 1.7;
         }
 
         /* Our Story Section */
@@ -733,14 +789,6 @@
                 font-size: 2rem;
             }
 
-            .page-title {
-                font-size: 2.5rem;
-            }
-
-            .page-subtitle {
-                font-size: 1.1rem;
-            }
-
             nav ul {
                 display: none;
             }
@@ -767,10 +815,6 @@
         }
 
         @media (max-width: 480px) {
-            .page-title {
-                font-size: 2rem;
-            }
-
             .section-title {
                 font-size: 1.8rem;
             }
@@ -841,7 +885,7 @@
     <header>
         <div class="container header-container">
             <div class="logo">
-                <img src="logo.png" style="width:3em; height:3em;" alt="DIRA Foundation logo" width="48" height="48">
+                <img src="./assets/logo.jpg" style="width: 3em; height: 3em; border-radius: 50%;" alt="DIRA Foundation logo" width="48" height="48">
                 <div class="logo-text" style="line-height: 20px;">
                     DIRA<br><span>Foundation</span>
                 </div>
@@ -851,6 +895,7 @@
                     <li><a href="index.html">Home</a></li>
                     <li><a href="about.html" class="active" aria-current="page">About Us</a></li>
                     <li><a href="work.html">Our Work</a></li>
+                    <li><a href="articles.html">Articles</a></li>
                     <li><a href="partner.html">Partners</a></li>
                     <li><a href="involve.html">Get Involved</a></li>
                     <li><a href="contact.html" class="nav-cta">Contact</a></li>
@@ -871,6 +916,7 @@
             <li><a href="index.html">Home</a></li>
             <li><a href="about.html" class="active" aria-current="page">About Us</a></li>
             <li><a href="work.html">Our Work</a></li>
+            <li><a href="articles.html">Articles</a></li>
             <li><a href="partner.html">Partners</a></li>
             <li><a href="involve.html">Get Involved</a></li>
             <li><a href="contact.html">Contact</a></li>
@@ -882,6 +928,10 @@
         <main id="main">
     <!-- Page Header -->
     <section class="page-header">
+        <div class="glass-accent" aria-hidden="true"></div>
+        <div class="glass-accent glass-accent--small" aria-hidden="true"></div>
+        <div class="glass-accent glass-accent--lower" aria-hidden="true"></div>
+        <div class="glass-accent glass-accent--middle" aria-hidden="true"></div>
         <div class="container">
             <h1 class="page-title">About DIRA Foundation</h1>
             <p class="page-subtitle">A non-profit association working for education, opportunity, research and community development in Cameroon.</p>
@@ -896,10 +946,10 @@
                     <h2>Who We Are</h2>
                     <p>DIRA Foundation is a non-profit association registered under Law No. 90/053 of 19 December 1990 on freedom of association in the Republic of Cameroon. It is apolitical and non-religious, and it was established for an unlimited duration. Its constitution was adopted at Bamenda in 2026.</p>
                     <p>Our mission is to advance digital innovation, education, entrepreneurship, research and community development in Cameroon, so that individuals, institutions and communities can build, access and benefit from the digital and knowledge economy.</p>
-                    <p>The registered seat is at GNS Street, Mbengwi, Momo Division, Northwest Region. Our activities are based in the Northwest Region and extend nationally and, as capacity and legal status permit, internationally.</p>
+                    <p>The foundation is based in Bamenda, North West Region.</p>
                 </div>
                 <div class="story-image">
-                    <img class="fd-photo" src="images/team-at-north-west-regional-assembly.jpg" width="810" height="1080" loading="lazy" alt="Members of the DIRA team in front of the North West Regional Assembly signboard">
+                    <img class="fd-photo" src="images/team-at-north-west-regional-assembly.jpg" width="810" height="1080" loading="lazy" alt="Members of the DIRA Foundation team in front of the North West Regional Assembly signboard">
                 </div>
             </div>
         </div>
@@ -909,7 +959,7 @@
     <section class="fd-section alt" id="objectives">
         <div class="container">
             <h2 class="section-title">Our Mission and Objectives</h2>
-            <p class="fd-lead">To pursue its mission, the foundation's constitution sets out the following objectives. They describe our mandate; our Our Work page shows the activities documented so far.</p>
+            <p class="fd-lead">The foundation's objectives include:</p>
             <div class="fd-prose">
                 <ol class="fd-list">
                     <li>Promote digital literacy, technology education and skills training among young people, women and underserved communities.</li>
@@ -965,64 +1015,37 @@
         </div>
     </section>
 
-        <!-- Governance -->
-    <section class="leadership" id="governance">
-        <div class="container">
-            <h2 class="section-title">Governance</h2>
-            <p class="section-subtitle">The foundation is governed by the General Assembly and an Executive Committee of four members: President, Secretary, Treasurer and Logistics Planner.</p>
-
-            <div class="leadership-container">
-                <div class="leader-card">
-                    <div class="leader-image">
-                        <i class="fas fa-user" aria-hidden="true"></i>
-                    </div>
-                    <div class="leader-content">
-                        <h3 class="leader-name">Fru Allen-Brian Njimbong</h3>
-                        <p class="leader-role">Founder and President</p>
-                        <p class="leader-bio">Founder of DIRA Foundation and of DIRA Group and its affiliated commercial entities. As President, he presides over the General Assembly and the Executive Committee and represents the foundation in its dealings with institutions.</p>
-                    </div>
-                </div>
-
-                <div class="leader-card">
-                    <div class="leader-image">
-                        <i class="fas fa-user" aria-hidden="true"></i>
-                    </div>
-                    <div class="leader-content">
-                        <h3 class="leader-name">Miki Lideroy Che</h3>
-                        <p class="leader-role">Secretary</p>
-                        <p class="leader-bio">Secretary of the Executive Committee of DIRA Foundation.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+     
 
     <section class="fd-section" id="gallery">
         <div class="container">
             <h2 class="section-title">Engagements and Meetings</h2>
-            <p class="section-subtitle">Photographs of DIRA team members meeting with institutions and organisations</p>
-            <div class="gallery-grid">
+            <p class="section-subtitle">Photographs of DIRA Foundation team members meeting with institutions and organisations</p>
+            <div class="gallery-grid" id="gallery-grid">
                 <div class="gallery-item">
-                    <img class="gallery-photo" src="images/team-at-north-west-regional-assembly.jpg" width="810" height="1080" loading="lazy" alt="DIRA team members standing in front of the North West Regional Assembly signboard">
+                    <img class="gallery-photo" src="images/team-at-north-west-regional-assembly.jpg" width="810" height="1080" loading="lazy" alt="DIRA Foundation team members standing in front of the North West Regional Assembly signboard">
                 </div>
                 <div class="gallery-item">
-                    <img class="gallery-photo" src="images/team-members-outside-building.jpg" width="1400" height="1050" loading="lazy" alt="DIRA team members standing together outside a building">
+                    <img class="gallery-photo" src="images/team-members-outside-building.jpg" width="1400" height="1050" loading="lazy" alt="DIRA Foundation team members standing together outside a building">
                 </div>
                 <div class="gallery-item">
                     <img class="gallery-photo" src="images/handshake-at-meeting-table.jpg" width="810" height="1080" loading="lazy" alt="Two men shaking hands across a meeting table">
                 </div>
                 <div class="gallery-item">
-                    <img class="gallery-photo" src="images/meeting-with-representatives.jpg" width="1050" height="1400" loading="lazy" alt="A meeting between DIRA team members and representatives around an office table">
+                    <img class="gallery-photo" src="images/meeting-with-representatives.jpg" width="1050" height="1400" loading="lazy" alt="A meeting between DIRA Foundation team members and representatives around an office table">
                 </div>
                 <div class="gallery-item">
-                    <img class="gallery-photo" src="images/team-meeting-at-office-table.jpg" width="787" height="1400" loading="lazy" alt="DIRA team members meeting with representatives at an office table">
+                    <img class="gallery-photo" src="images/team-meeting-at-office-table.jpg" width="787" height="1400" loading="lazy" alt="DIRA Foundation team members meeting with representatives at an office table">
                 </div>
                 <div class="gallery-item">
                     <img class="gallery-photo" src="images/working-session-in-meeting-room.jpg" width="787" height="1400" loading="lazy" alt="A working session in a meeting room">
                 </div>
                 <div class="gallery-item">
-                    <img class="gallery-photo" src="images/team-members-at-meeting-table.jpg" width="1050" height="1400" loading="lazy" alt="DIRA team members standing at a meeting table">
+                    <img class="gallery-photo" src="images/team-members-at-meeting-table.jpg" width="1050" height="1400" loading="lazy" alt="DIRA Foundation team members standing at a meeting table">
                 </div>
+            </div>
+            <div class="fd-center">
+                <button class="fd-btn" id="galleryLoadMore" type="button" aria-controls="gallery-grid" aria-expanded="false" hidden>Show more</button>
             </div>
         </div>
     </section>
@@ -1047,12 +1070,12 @@
             <div class="footer-container">
                 <div class="footer-col">
                     <h3>DIRA Foundation</h3>
-                    <p>A non-profit association in the Northwest Region of Cameroon, working with communities and institutions on education, opportunity, research, health awareness and community development.</p>
+                    <p>A non-profit association based in Bamenda, North West Region of Cameroon, working with communities and institutions on education, opportunity, research, health awareness and community development.</p>
                     <div class="social-links">
-                        <a href="https://www.linkedin.com/company/dira-digital-era/" aria-label="DIRA on LinkedIn" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a>
-                        <a href="https://x.com/diradigitalera/" aria-label="DIRA on X" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter" aria-hidden="true"></i></a>
-                        <a href="https://www.instagram.com/digital_era_dira/" aria-label="DIRA on Instagram" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram" aria-hidden="true"></i></a>
-                        <a href="https://www.tiktok.com/@digital.era.dira" aria-label="DIRA on TikTok" target="_blank" rel="noopener noreferrer"><i class="fab fa-tiktok" aria-hidden="true"></i></a>
+                        <a href="https://www.linkedin.com/company/dira-digital-era/" aria-label="DIRA Foundation on LinkedIn" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a>
+                        <a href="https://x.com/diradigitalera/" aria-label="DIRA Foundation on X" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter" aria-hidden="true"></i></a>
+                        <a href="https://www.instagram.com/digital_era_dira/" aria-label="DIRA Foundation on Instagram" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+                        <a href="https://www.tiktok.com/@digital.era.dira" aria-label="DIRA Foundation on TikTok" target="_blank" rel="noopener noreferrer"><i class="fab fa-tiktok" aria-hidden="true"></i></a>
                     </div>
                 </div>
 
@@ -1062,6 +1085,7 @@
                         <li><a href="index.html">Home</a></li>
                         <li><a href="about.html">About Us</a></li>
                         <li><a href="work.html">Our Work</a></li>
+                        <li><a href="articles.html">Articles</a></li>
                         <li><a href="partner.html">Partners</a></li>
                         <li><a href="involve.html">Get Involved</a></li>
                         <li><a href="contact.html">Contact</a></li>
@@ -1080,8 +1104,8 @@
 
                 <div class="footer-col">
                     <h3>Contact Us</h3>
-                    <p><i class="fas fa-map-marker-alt" aria-hidden="true"></i> Douala and Bamenda, Cameroon</p>
-                    <p><i class="fas fa-envelope" aria-hidden="true"></i> <a href="mailto:diradigitalera@gmail.com" style="color:inherit;">diradigitalera@gmail.com</a></p>
+                    <p><i class="fas fa-map-marker-alt" aria-hidden="true"></i> North West Region, Bamenda</p>
+                    <p><i class="fas fa-envelope" aria-hidden="true"></i> <a href="mailto:Foundation@diracmr.com" style="color:inherit;">Foundation@diracmr.com</a></p>
                     <p><i class="fas fa-phone" aria-hidden="true"></i> <a href="tel:+237682366472" style="color:inherit;">+237 6 82 36 64 72</a></p>
                 </div>
             </div>
@@ -1148,6 +1172,25 @@
             }
         }
         embedYouTubeVideo('bUWWLOp08F4');
+
+        const galleryGrid = document.querySelector('#gallery .gallery-grid');
+        const galleryLoadMore = document.getElementById('galleryLoadMore');
+        if (galleryGrid && galleryLoadMore) {
+            const galleryItems = Array.from(galleryGrid.querySelectorAll('.gallery-item'));
+            const initialVisibleItems = 4;
+            galleryItems.slice(initialVisibleItems).forEach(item => {
+                item.hidden = true;
+            });
+            galleryLoadMore.hidden = galleryItems.length <= initialVisibleItems;
+            galleryLoadMore.addEventListener('click', () => {
+                const isExpanded = galleryLoadMore.getAttribute('aria-expanded') === 'true';
+                galleryItems.slice(initialVisibleItems).forEach(item => {
+                    item.hidden = isExpanded;
+                });
+                galleryLoadMore.setAttribute('aria-expanded', String(!isExpanded));
+                galleryLoadMore.textContent = isExpanded ? 'Show more' : 'Show less';
+            });
+        }
     </script>
 </body>
 
