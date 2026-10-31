@@ -756,6 +756,7 @@
                         <form id="articleForm">
                             <input type="hidden" id="articleId">
                             <input type="hidden" id="coverImage">
+                            <input type="hidden" id="coverImagePublicId">
                             <div class="adm-field">
                                 <label for="title">Title *</label>
                                 <input type="text" id="title" maxlength="150" required>
@@ -778,8 +779,17 @@
 - another bullet point
 1. a numbered step
 &gt; a quotation
-[link text](https://example.org)</pre>
+[link text](https://example.org)
+![Image description](/uploads/0123456789abcdef01234567.jpg)</pre>
                                 </details>
+                            </div>
+                            <div class="adm-field">
+                                <label for="inlineImageFile">Add an image in the article text</label>
+                                <div class="adm-row">
+                                    <input type="text" id="inlineImageAlt" maxlength="200" placeholder="Image description (required)">
+                                    <input type="file" id="inlineImageFile" accept="image/jpeg,image/png,image/webp">
+                                </div>
+                                <p class="adm-hint">Choose an image to insert it at the text cursor. Add a short description for accessibility.</p>
                             </div>
                             <div class="adm-row">
                                 <div class="adm-field">
@@ -787,7 +797,7 @@
                                     <input type="text" id="author" maxlength="80" placeholder="DIRA Foundation">
                                 </div>
                                 <div class="adm-field">
-                                    <label for="coverFile">Cover image</label>
+                                    <label for="coverFile">Header image (cover)</label>
                                     <input type="file" id="coverFile" accept="image/jpeg,image/png,image/webp">
                                     <p class="adm-hint">JPG, PNG or WebP. Large images are resized automatically.</p>
                                 </div>
@@ -995,8 +1005,9 @@
         }
 
         // ---------- editor ----------
-        function setCover(path) {
+        function setCover(path, publicId) {
             $('coverImage').value = path || '';
+            $('coverImagePublicId').value = publicId || '';
             $('preview').style.display = path ? 'block' : 'none';
             if (path) $('previewImg').src = path;
             $('altField').hidden = !path;
@@ -1011,7 +1022,7 @@
             resetForm();
             $('articleId').value = a.id; $('title').value = a.title; $('summary').value = a.summary || '';
             $('body').value = a.body; $('author').value = a.author === 'DIRA Foundation' ? '' : a.author;
-            $('published').checked = !!a.published; setCover(a.coverImage); $('coverAlt').value = a.coverAlt || '';
+            $('published').checked = !!a.published; setCover(a.coverImage, a.coverImagePublicId); $('coverAlt').value = a.coverAlt || '';
             $('editorTitle').textContent = 'Edit article'; $('cancelEdit').hidden = false;
             $('editorCard').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
@@ -1023,23 +1034,75 @@
             return new Promise((resolve, reject) => {
                 const url = URL.createObjectURL(file); const img = new Image();
                 img.onload = () => {
-                    const max = 1600, r = Math.min(1, max / Math.max(img.width, img.height));
-                    const c = document.createElement('canvas'); c.width = Math.round(img.width * r); c.height = Math.round(img.height * r);
-                    const ctx = c.getContext('2d'); ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, c.width, c.height); ctx.drawImage(img, 0, 0, c.width, c.height);
-                    URL.revokeObjectURL(url); resolve(c.toDataURL('image/jpeg', 0.85));
+                    try {
+                        const max = 1600, scale = Math.min(1, max / Math.max(img.width, img.height));
+                        const c = document.createElement('canvas');
+                        c.width = Math.max(1, Math.round(img.width * scale));
+                        c.height = Math.max(1, Math.round(img.height * scale));
+                        const ctx = c.getContext('2d');
+                        if (!ctx) throw new Error('This image could not be processed.');
+                        let dataUrl = '';
+                        for (let attempt = 0; attempt < 8; attempt++) {
+                            ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, c.width, c.height);
+                            ctx.drawImage(img, 0, 0, c.width, c.height);
+                            dataUrl = c.toDataURL('image/jpeg', Math.max(0.45, 0.82 - attempt * 0.08));
+                            if (dataUrl.length <= 5 * 1024 * 1024) break;
+                            c.width = Math.max(1, Math.round(c.width * 0.8));
+                            c.height = Math.max(1, Math.round(c.height * 0.8));
+                        }
+                        if (dataUrl.length > 5 * 1024 * 1024) throw new Error('This image is too large to upload. Please choose a smaller image.');
+                        URL.revokeObjectURL(url);
+                        resolve(dataUrl);
+                    } catch (error) {
+                        URL.revokeObjectURL(url);
+                        reject(error);
+                    }
                 };
                 img.onerror = () => { URL.revokeObjectURL(url); reject(new Error('This image could not be read. Please use a JPG, PNG or WebP file.')); };
                 img.src = url;
             });
         }
+        async function uploadImage(file) {
+            const dataUrl = await toJpegDataUrl(file);
+            return api('/api/admin/upload', 'POST', { dataUrl });
+        }
         $('coverFile').addEventListener('change', async () => {
             const f = $('coverFile').files[0]; if (!f) return;
             say($('formMsg'), 'Uploading image...', 'ok');
             try {
-                const dataUrl = await toJpegDataUrl(f);
-                const r = await api('/api/admin/upload', 'POST', { dataUrl });
-                setCover(r.path); say($('formMsg'), '');
+                const r = await uploadImage(f);
+                setCover(r.path, r.publicId); say($('formMsg'), '');
             } catch (err) { say($('formMsg'), err.message, 'error'); $('coverFile').value = ''; }
+        });
+        $('inlineImageFile').addEventListener('change', async () => {
+            const input = $('inlineImageFile');
+            const f = input.files[0]; if (!f) return;
+            const alt = $('inlineImageAlt').value.trim();
+            if (!alt) {
+                say($('formMsg'), 'Add an image description before uploading.', 'error');
+                input.value = '';
+                $('inlineImageAlt').focus();
+                return;
+            }
+            const body = $('body');
+            const start = body.selectionStart;
+            const end = body.selectionEnd;
+            say($('formMsg'), 'Uploading image...', 'ok');
+            try {
+                const r = await uploadImage(f);
+                const imageMarkup = '![' + alt.replace(/[\]\r\n]/g, ' ') + '](' + r.path + ')';
+                const before = body.value.slice(0, start);
+                const after = body.value.slice(end);
+                const prefix = before && !before.endsWith('\n\n') ? (before.endsWith('\n') ? '\n' : '\n\n') : '';
+                const suffix = after && !after.startsWith('\n\n') ? (after.startsWith('\n') ? '\n' : '\n\n') : '';
+                body.setRangeText(prefix + imageMarkup + suffix, start, end, 'end');
+                body.focus();
+                say($('formMsg'), '');
+            } catch (err) {
+                say($('formMsg'), err.message, 'error');
+            } finally {
+                input.value = '';
+            }
         });
 
         $('articleForm').addEventListener('submit', async e => {
@@ -1047,19 +1110,25 @@
             const btn = $('saveBtn'); btn.disabled = true; say($('formMsg'), '');
             const payload = {
                 title: $('title').value, summary: $('summary').value, body: $('body').value, author: $('author').value,
-                coverImage: $('coverImage').value, coverAlt: $('coverAlt').value, published: $('published').checked
+                coverImage: $('coverImage').value, coverImagePublicId: $('coverImagePublicId').value,
+                coverAlt: $('coverAlt').value, published: $('published').checked
             };
             const id = $('articleId').value;
             try {
-                await api(id ? '/api/admin/articles/' + id : '/api/admin/articles', id ? 'PUT' : 'POST', payload);
-                resetForm(); say($('formMsg'), id ? 'Article updated.' : 'Article saved.', 'ok'); await loadList();
+                const result = await api(id ? '/api/admin/articles/' + id : '/api/admin/articles', id ? 'PUT' : 'POST', payload);
+                resetForm(); say($('formMsg'), result.warning || (id ? 'Article updated.' : 'Article saved.'), result.warning ? 'error' : 'ok'); await loadList();
             } catch (err) { say($('formMsg'), err.message, 'error'); }
             btn.disabled = false;
         });
 
         async function removeArticle(a) {
             if (!confirm('Delete "' + a.title + '"? This cannot be undone.')) return;
-            try { await api('/api/admin/articles/' + a.id, 'DELETE'); say($('listMsg'), 'Article deleted.', 'ok'); if ($('articleId').value === a.id) resetForm(); await loadList(); }
+            try {
+                const result = await api('/api/admin/articles/' + a.id, 'DELETE');
+                say($('listMsg'), result.warning || 'Article deleted.', result.warning ? 'error' : 'ok');
+                if ($('articleId').value === a.id) resetForm();
+                await loadList();
+            }
             catch (err) { say($('listMsg'), err.message, 'error'); }
         }
 

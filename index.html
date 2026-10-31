@@ -1107,6 +1107,120 @@
         grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
         gap: 28px;
       }
+      .home-article-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+        gap: 28px;
+      }
+      .home-article-card {
+        overflow: hidden;
+        background: var(--white);
+        border: 1px solid var(--medium-gray);
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        display: flex;
+        flex-direction: column;
+      }
+      .home-article-media,
+      .home-article-placeholder {
+        display: block;
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        object-fit: cover;
+        background: #f1e8fa;
+      }
+      .home-article-placeholder {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 2rem;
+        background: linear-gradient(135deg, var(--primary-purple), var(--light-purple));
+      }
+      .home-article-content {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 22px;
+      }
+      .home-article-meta {
+        margin-bottom: 8px;
+        color: var(--text-gray);
+        font-size: 0.85rem;
+      }
+      .home-article-title {
+        margin-bottom: 10px;
+        color: var(--dark-gray);
+        font-size: 1.25rem;
+        line-height: 1.35;
+      }
+      .home-article-title a,
+      .home-article-link {
+        color: var(--primary-purple);
+        font-weight: 600;
+        text-decoration: none;
+      }
+      .home-article-title a {
+        color: var(--dark-gray);
+      }
+      .home-article-title a:hover,
+      .home-article-link:hover {
+        color: var(--primary-purple);
+      }
+      .home-article-summary {
+        flex: 1;
+        margin-bottom: 16px;
+        color: var(--text-gray);
+        line-height: 1.65;
+      }
+      .home-article-grid[aria-busy="true"] .home-article-card {
+        min-height: 340px;
+      }
+      .home-article-skeleton {
+        position: relative;
+        overflow: hidden;
+        background: #eeeaf2;
+      }
+      .home-article-grid[aria-busy="true"] .home-article-media {
+        aspect-ratio: 16 / 9;
+      }
+      .home-article-skeleton::after {
+        position: absolute;
+        inset: 0;
+        transform: translateX(-100%);
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,.65), transparent);
+        animation: article-skeleton-shimmer 1.4s infinite;
+        content: "";
+      }
+      .home-article-skeleton-line {
+        height: 14px;
+        margin-bottom: 12px;
+        border-radius: 7px;
+      }
+      .home-article-skeleton-line.short {
+        width: 42%;
+        height: 12px;
+      }
+      .home-article-skeleton-line.title {
+        width: 82%;
+        height: 22px;
+        margin-top: 6px;
+      }
+      .home-article-skeleton-line.copy {
+        width: 100%;
+      }
+      .home-article-skeleton-line.copy.last {
+        width: 68%;
+        margin-bottom: 20px;
+      }
+      @keyframes article-skeleton-shimmer {
+        100% { transform: translateX(100%); }
+      }
+      .home-articles-message {
+        color: var(--text-gray);
+        text-align: center;
+      }
       .fd-card {
         background: var(--white);
         border: 1px solid var(--medium-gray);
@@ -1376,6 +1490,11 @@
         }
         .fd-photo {
           height: 280px;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .home-article-skeleton::after {
+          animation: none;
         }
       }
     </style>
@@ -1936,6 +2055,52 @@
         </div>
       </section>
 
+      <!-- Latest Articles -->
+      <section class="fd-section alt" id="latest-articles">
+        <div class="container">
+          <h2 class="section-title">Latest Articles</h2>
+          <p class="fd-lead">
+            News, updates and stories from DIRA Foundation.
+          </p>
+          <div class="home-article-grid" id="home-article-grid" aria-label="Latest articles" aria-busy="true">
+            <article class="home-article-card" aria-hidden="true">
+              <div class="home-article-media home-article-skeleton"></div>
+              <div class="home-article-content">
+                <span class="home-article-skeleton home-article-skeleton-line short"></span>
+                <span class="home-article-skeleton home-article-skeleton-line title"></span>
+                <span class="home-article-skeleton home-article-skeleton-line copy"></span>
+                <span class="home-article-skeleton home-article-skeleton-line copy last"></span>
+                <span class="home-article-skeleton home-article-skeleton-line short"></span>
+              </div>
+            </article>
+            <article class="home-article-card" aria-hidden="true">
+              <div class="home-article-media home-article-skeleton"></div>
+              <div class="home-article-content">
+                <span class="home-article-skeleton home-article-skeleton-line short"></span>
+                <span class="home-article-skeleton home-article-skeleton-line title"></span>
+                <span class="home-article-skeleton home-article-skeleton-line copy"></span>
+                <span class="home-article-skeleton home-article-skeleton-line copy last"></span>
+                <span class="home-article-skeleton home-article-skeleton-line short"></span>
+              </div>
+            </article>
+            <article class="home-article-card" aria-hidden="true">
+              <div class="home-article-media home-article-skeleton"></div>
+              <div class="home-article-content">
+                <span class="home-article-skeleton home-article-skeleton-line short"></span>
+                <span class="home-article-skeleton home-article-skeleton-line title"></span>
+                <span class="home-article-skeleton home-article-skeleton-line copy"></span>
+                <span class="home-article-skeleton home-article-skeleton-line copy last"></span>
+                <span class="home-article-skeleton home-article-skeleton-line short"></span>
+              </div>
+            </article>
+          </div>
+          <p class="home-articles-message" id="home-articles-status" role="status" aria-live="polite" hidden></p>
+          <div class="fd-center">
+            <a class="fd-btn" href="articles.html">View all articles</a>
+          </div>
+        </div>
+      </section>
+
       <!-- CTA Section -->
       <section class="cta-section">
         <div class="container">
@@ -2100,6 +2265,107 @@
           header.style.boxShadow = "0 2px 15px rgba(0, 0, 0, 0.1)";
         }
       });
+
+      async function loadHomeArticles() {
+        const grid = document.getElementById("home-article-grid");
+        const status = document.getElementById("home-articles-status");
+        if (!grid || !status) return;
+
+        const showMessage = (message) => {
+          status.textContent = message;
+          status.hidden = false;
+        };
+        const makeElement = (tag, className, text) => {
+          const element = document.createElement(tag);
+          if (className) element.className = className;
+          if (text) element.textContent = text;
+          return element;
+        };
+
+        try {
+          const response = await fetch("/api/articles?limit=3", {
+            headers: { Accept: "application/json" },
+          });
+          if (!response.ok) throw new Error("Articles request failed.");
+          const data = await response.json();
+          if (!Array.isArray(data.articles)) throw new Error("Invalid articles response.");
+
+          grid.replaceChildren();
+          const articles = data.articles.filter((article) =>
+            article && typeof article.title === "string" &&
+            typeof article.slug === "string" && /^[a-z0-9-]+$/.test(article.slug)
+          );
+          if (!articles.length) {
+            showMessage("No published articles yet.");
+            return;
+          }
+
+          articles.forEach((article) => {
+            const card = makeElement("article", "home-article-card");
+            const href = "/articles/" + encodeURIComponent(article.slug);
+            const imageUrl = typeof article.coverImage === "string" &&
+              (/^\/uploads\/[a-f0-9]{24}\.(?:jpg|png|webp)$/.test(article.coverImage) ||
+                /^https:\/\/res\.cloudinary\.com\/[a-z0-9_-]+\/image\/upload\//i.test(article.coverImage))
+              ? article.coverImage
+              : "";
+            if (imageUrl) {
+              const media = makeElement("a", "home-article-media");
+              media.href = href;
+              media.setAttribute("aria-label", "Read " + article.title);
+              const image = makeElement("img", "home-article-media");
+              image.src = imageUrl;
+              image.alt = typeof article.coverAlt === "string" ? article.coverAlt : "";
+              image.loading = "lazy";
+              media.append(image);
+              card.append(media);
+            } else {
+              const media = makeElement("a", "home-article-placeholder");
+              media.href = href;
+              media.setAttribute("aria-label", "Read " + article.title);
+              const icon = makeElement("i", "fas fa-newspaper");
+              icon.setAttribute("aria-hidden", "true");
+              media.append(icon);
+              card.append(media);
+            }
+
+            const content = makeElement("div", "home-article-content");
+            const meta = makeElement("p", "home-article-meta");
+            const date = new Date(article.publishedAt);
+            if (article.publishedAt && !Number.isNaN(date.getTime())) {
+              const time = makeElement("time", "", new Intl.DateTimeFormat("en-GB", {
+                day: "numeric",
+                month: "short",
+                year: "numeric",
+              }).format(date));
+              time.dateTime = article.publishedAt;
+              meta.append(time);
+            }
+            if (article.author) {
+              if (meta.childNodes.length) meta.append(document.createTextNode(" · "));
+              meta.append(document.createTextNode(article.author));
+            }
+
+            const heading = makeElement("h3", "home-article-title");
+            const title = makeElement("a", "", article.title);
+            title.href = href;
+            heading.append(title);
+            const summary = makeElement("p", "home-article-summary", article.summary || "");
+            const readMore = makeElement("a", "home-article-link", "Read article →");
+            readMore.href = href;
+            content.append(meta, heading, summary, readMore);
+            card.append(content);
+            grid.append(card);
+          });
+        } catch (error) {
+          grid.replaceChildren();
+          showMessage("Articles couldn't be loaded right now. Please try again later.");
+          console.error("Could not load homepage articles:", error);
+        } finally {
+          grid.setAttribute("aria-busy", "false");
+        }
+      }
+
+      loadHomeArticles();
 
       const heroSlides = document.querySelectorAll(".hero-slide");
       const reducedMotion = window.matchMedia(

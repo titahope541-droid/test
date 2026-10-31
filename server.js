@@ -5,7 +5,7 @@
  *  - renders the public Articles pages (/articles and /articles/<slug>)
  *  - provides the password-protected admin API used by /admin.html
  *
- * No npm packages are required. Node.js 18 or newer.
+ * Requires Node.js 18 or newer, MongoDB, and Cloudinary.
  * Configuration comes from the .env file next to this file (see .env.example).
  */
 const http = require('http');
@@ -13,8 +13,10 @@ const fs = require('fs');
 const fsp = fs.promises;
 const path = require('path');
 const crypto = require('crypto');
+const { MongoClient } = require('mongodb');
+const cloudinary = require('cloudinary').v2;
 
-const ROOT = __dirname;
+const ROOT = process.env.NETLIFY === 'true' ? process.cwd() : __dirname;
 
 /* ------------------------------------------------------------------ .env */
 function loadEnv(file) {
@@ -42,6 +44,10 @@ const PORT = parseInt(process.env.PORT, 10) || 3000;
 const ADMIN_EMAIL = (process.env.ADMIN_EMAIL || '').trim().toLowerCase();
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || '';
 const SITE_URL = (process.env.SITE_URL || '').trim().replace(/\/+$/, '');
+const MONGODB_URI = (process.env.MONGODB_URI || '').trim();
+const CLOUDINARY_CLOUD_NAME = (process.env.CLOUDINARY_CLOUD_NAME || '').trim();
+const CLOUDINARY_API_KEY = (process.env.CLOUDINARY_API_KEY || '').trim();
+const CLOUDINARY_API_SECRET = (process.env.CLOUDINARY_API_SECRET || '').trim();
 const SESSION_HOURS = parseFloat(process.env.SESSION_HOURS) || 12;
 const TRUST_PROXY = String(process.env.TRUST_PROXY || '').toLowerCase() === 'true';
 const FORCE_SECURE = String(process.env.COOKIE_SECURE || '').toLowerCase() === 'true';
@@ -61,47 +67,82 @@ if (!CREDS_OK) {
 const DATA_DIR = path.join(ROOT, 'data');
 const DATA_FILE = path.join(DATA_DIR, 'articles.json');
 const UPLOAD_DIR = path.join(ROOT, 'uploads');
-fs.mkdirSync(DATA_DIR, { recursive: true });
-fs.mkdirSync(UPLOAD_DIR, { recursive: true });
-if (!fs.existsSync(DATA_FILE)) fs.writeFileSync(DATA_FILE, '[]', 'utf8');
-
-let articles = [];
-try {
-  articles = JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
-  if (!Array.isArray(articles)) articles = [];
-} catch (e) {
-  console.error('[error] Could not read data/articles.json. Fix or delete the file, then restart.', e.message);
-  process.exit(1);
+if (process.env.NETLIFY !== 'true') {
+  fs.mkdirSync(DATA_DIR, { recursive: true });
+  fs.mkdirSync(UPLOAD_DIR, { recursive: true });
 }
-
-let writeChain = Promise.resolve();
-function saveArticles() {
-  writeChain = writeChain.then(async () => {
-    const tmp = DATA_FILE + '.tmp';
-    await fsp.writeFile(tmp, JSON.stringify(articles, null, 2), 'utf8');
-    await fsp.rename(tmp, DATA_FILE);
-  });
-  return writeChain;
-}
+let mongoClient;
+let articleCollection;
 
 const IMG_RE = /^\/uploads\/[a-f0-9]{24}\.(jpg|png|webp)$/;
+const ARTICLE_IMAGE_RE = /^!\[([^\]\r\n]*)\]\(([^)\s]+)\)$/gm;
 
-async function removeUpload(p) {
-  if (!p || !IMG_RE.test(p)) return;
-  try { await fsp.unlink(path.join(UPLOAD_DIR, path.basename(p))); } catch (e) { /* already gone */ }
+function cloudinaryPublicId(imageUrl) {
+  if (!CLOUDINARY_CLOUD_NAME || typeof imageUrl !== 'string') return '';
+  let url;
+  try { url = new URL(imageUrl); } catch (e) { return ''; }
+  if (url.protocol !== 'https:' || url.hostname !== 'res.cloudinary.com' || url.username || url.password || url.search || url.hash) return '';
+  const match = new RegExp('^/' + CLOUDINARY_CLOUD_NAME.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') +
+    '/image/upload/v\\d+/(dira-articles/[a-f0-9]{24})\\.(?:jpg|png|webp)$').exec(url.pathname);
+  return match ? match[1] : '';
 }
 
-async function cleanOrphans() {
-  try {
-    const used = new Set(articles.map(a => a.coverImage && path.basename(a.coverImage)).filter(Boolean));
-    for (const f of await fsp.readdir(UPLOAD_DIR)) {
-      if (f.startsWith('.') || used.has(f)) continue;
-      const st = await fsp.stat(path.join(UPLOAD_DIR, f));
-      if (Date.now() - st.mtimeMs > 24 * 3600 * 1000) await fsp.unlink(path.join(UPLOAD_DIR, f));
+function isArticleImage(imageUrl) {
+  if (IMG_RE.test(imageUrl)) return fs.existsSync(path.join(UPLOAD_DIR, path.basename(imageUrl)));
+  return !!cloudinaryPublicId(imageUrl);
+}
+
+function articleImageRefs(article) {
+  const refs = new Set(article.coverImage ? [article.coverImage] : []);
+  for (const match of String(article.body || '').matchAll(ARTICLE_IMAGE_RE)) refs.add(match[2]);
+  return refs;
+}
+
+async function removeUnusedImages(candidates) {
+  const used = new Set();
+  for await (const article of articleCollection.find({}, { projection: { coverImage: 1, body: 1 } })) {
+    for (const image of articleImageRefs(article)) used.add(image);
+  }
+  for (const image of candidates) {
+    if (used.has(image)) continue;
+    const publicId = cloudinaryPublicId(image);
+    if (publicId) {
+      const result = await cloudinary.uploader.destroy(publicId, { resource_type: 'image' });
+      if (result.result !== 'ok' && result.result !== 'not found') throw new Error('Cloudinary could not remove an unused image.');
+    } else if (IMG_RE.test(image)) {
+      try { await fsp.unlink(path.join(UPLOAD_DIR, path.basename(image))); }
+      catch (e) { if (e.code !== 'ENOENT') throw e; }
     }
-  } catch (e) { /* ignore */ }
+  }
 }
-cleanOrphans();
+
+async function importLegacyArticles() {
+  if (!fs.existsSync(DATA_FILE) || await articleCollection.countDocuments() > 0) return;
+  let legacyArticles;
+  try {
+    legacyArticles = JSON.parse(await fsp.readFile(DATA_FILE, 'utf8'));
+  } catch (e) {
+    throw new Error('Could not read data/articles.json for migration: ' + e.message);
+  }
+  if (!Array.isArray(legacyArticles)) throw new Error('data/articles.json must contain a JSON array.');
+  if (legacyArticles.length) {
+    await articleCollection.insertMany(legacyArticles, { ordered: true });
+    console.log('[info] Imported ' + legacyArticles.length + ' legacy article(s) into MongoDB.');
+  }
+}
+
+async function cleanLocalOrphans() {
+  if (process.env.NETLIFY === 'true') return;
+  const used = new Set();
+  for await (const article of articleCollection.find({}, { projection: { coverImage: 1, body: 1 } })) {
+    for (const image of articleImageRefs(article)) if (IMG_RE.test(image)) used.add(path.basename(image));
+  }
+  for (const file of await fsp.readdir(UPLOAD_DIR)) {
+    if (file.startsWith('.') || used.has(file)) continue;
+    const stat = await fsp.stat(path.join(UPLOAD_DIR, file));
+    if (Date.now() - stat.mtimeMs > 24 * 3600 * 1000) await fsp.unlink(path.join(UPLOAD_DIR, file));
+  }
+}
 
 /* ------------------------------------------------------------------ helpers */
 const esc = s => String(s == null ? '' : s)
@@ -113,10 +154,12 @@ function slugify(t) {
     .toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 80);
   return s || 'article';
 }
-function uniqueSlug(title, ignoreId) {
+async function uniqueSlug(title, ignoreId) {
   const base = slugify(title);
   let slug = base, n = 2;
-  while (articles.some(a => a.slug === slug && a.id !== ignoreId)) slug = base + '-' + n++;
+  while (await articleCollection.findOne({ slug, ...(ignoreId ? { id: { $ne: ignoreId } } : {}) }, { projection: { _id: 1 } })) {
+    slug = base + '-' + n++;
+  }
   return slug;
 }
 
@@ -138,7 +181,9 @@ function renderBody(body) {
     const block = raw.trim();
     if (!block) continue;
     const lines = block.split('\n');
-    if (/^###\s+/.test(block) && lines.length === 1) out.push('<h3>' + inline(block.replace(/^###\s+/, '')) + '</h3>');
+    const image = /^!\[([^\]\r\n]*)\]\(([^)\s]+)\)$/.exec(block);
+    if (image && isArticleImage(image[2])) out.push('<figure class="art-inline-figure"><img class="art-inline-image" src="' + esc(image[2]) + '" alt="' + esc(image[1]) + '" loading="lazy"></figure>');
+    else if (/^###\s+/.test(block) && lines.length === 1) out.push('<h3>' + inline(block.replace(/^###\s+/, '')) + '</h3>');
     else if (/^##\s+/.test(block) && lines.length === 1) out.push('<h2>' + inline(block.replace(/^##\s+/, '')) + '</h2>');
     else if (lines.every(l => /^[-*]\s+/.test(l))) out.push('<ul>' + lines.map(l => '<li>' + inline(l.replace(/^[-*]\s+/, '')) + '</li>').join('') + '</ul>');
     else if (lines.every(l => /^\d+[.)]\s+/.test(l))) out.push('<ol>' + lines.map(l => '<li>' + inline(l.replace(/^\d+[.)]\s+/, '')) + '</li>').join('') + '</ol>');
@@ -149,7 +194,8 @@ function renderBody(body) {
 }
 
 function plainText(body) {
-  return String(body).replace(/\[([^\]]+)\]\([^)]*\)/g, '$1').replace(/[#*>_`]/g, '').replace(/^\s*[-\d.)]+\s+/gm, '').replace(/\s+/g, ' ').trim();
+  return String(body).replace(/!\[([^\]]*)\]\([^)]+\)/g, '$1')
+    .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1').replace(/[#*>_`]/g, '').replace(/^\s*[-\d.)]+\s+/gm, '').replace(/\s+/g, ' ').trim();
 }
 function excerpt(a, n) {
   const s = (a.summary && a.summary.trim()) || plainText(a.body);
@@ -193,7 +239,7 @@ function isAdmin(req) {
   } catch (e) { return false; }
 }
 function isSecure(req) {
-  return FORCE_SECURE || !!req.socket.encrypted || (TRUST_PROXY && req.headers['x-forwarded-proto'] === 'https');
+  return FORCE_SECURE || process.env.NETLIFY === 'true' || !!req.socket.encrypted || (TRUST_PROXY && req.headers['x-forwarded-proto'] === 'https');
 }
 function setSession(req, res, token, maxAgeSec) {
   res.setHeader('Set-Cookie', 'dira_admin=' + encodeURIComponent(token) + '; Path=/; HttpOnly; SameSite=Strict; Max-Age=' + maxAgeSec + (isSecure(req) ? '; Secure' : ''));
@@ -287,30 +333,30 @@ function headMeta(o) {
   let h = '<meta name="description" content="' + d + '">\n';
   h += '    <meta property="og:type" content="' + (o.article ? 'article' : 'website') + '">\n';
   h += '    <meta property="og:title" content="' + t + '">\n    <meta property="og:description" content="' + d + '">\n';
-  h += '    <meta name="twitter:card" content="' + (o.image && SITE_URL ? 'summary_large_image' : 'summary') + '">\n';
+  h += '    <meta name="twitter:card" content="' + (o.image ? 'summary_large_image' : 'summary') + '">\n';
   h += '    <meta name="twitter:title" content="' + t + '">\n    <meta name="twitter:description" content="' + d + '">\n';
+  const imageUrl = o.image && (/^https:\/\//i.test(o.image) ? o.image : SITE_URL ? SITE_URL + o.image : '');
   if (SITE_URL) {
     h += '    <link rel="canonical" href="' + esc(SITE_URL + o.path) + '">\n    <meta property="og:url" content="' + esc(SITE_URL + o.path) + '">\n';
-    if (o.image) h += '    <meta property="og:image" content="' + esc(SITE_URL + o.image) + '">\n    <meta name="twitter:image" content="' + esc(SITE_URL + o.image) + '">\n';
   }
+  if (imageUrl) h += '    <meta property="og:image" content="' + esc(imageUrl) + '">\n    <meta name="twitter:image" content="' + esc(imageUrl) + '">\n';
   h += '    <meta name="robots" content="' + (o.noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large') + '">\n';
   return h;
 }
 
 /* ------------------------------------------------------------------ public pages */
 const PER_PAGE = 9;
-const published = () => articles.filter(a => a.published).sort((a, b) => String(b.publishedAt).localeCompare(String(a.publishedAt)));
 
 async function renderList(req, res, url) {
-  const all = published();
-  const pages = Math.max(1, Math.ceil(all.length / PER_PAGE));
+  const total = await articleCollection.countDocuments({ published: true });
+  const pages = Math.max(1, Math.ceil(total / PER_PAGE));
   let page = parseInt(url.searchParams.get('page'), 10);
   if (!(page >= 1)) page = 1;
   if (page > pages) page = pages;
-  const slice = all.slice((page - 1) * PER_PAGE, page * PER_PAGE);
+  const slice = await articleCollection.find({ published: true }).sort({ publishedAt: -1 }).skip((page - 1) * PER_PAGE).limit(PER_PAGE).toArray();
 
   let list;
-  if (!all.length) {
+  if (!total) {
     list = '<div class="art-empty"><i class="fas fa-newspaper" aria-hidden="true"></i><h2>No articles yet</h2><p>New articles will appear here once they are published. Please check back soon.</p></div>';
   } else {
     list = '<div class="art-grid">' + slice.map(a => {
@@ -345,7 +391,7 @@ async function renderList(req, res, url) {
 }
 
 async function renderArticle(req, res, slug) {
-  const a = articles.find(x => x.slug === slug);
+  const a = await articleCollection.findOne({ slug });
   const preview = a && !a.published && isAdmin(req);
   if (!a || (!a.published && !preview)) return notFound(res);
 
@@ -357,7 +403,12 @@ async function renderArticle(req, res, slug) {
     author: a.author === 'DIRA Foundation' ? { '@type': 'Organization', name: 'DIRA Foundation' } : { '@type': 'Person', name: a.author },
     publisher: { '@type': 'Organization', name: 'DIRA Foundation' }
   };
-  if (SITE_URL) { ld.mainEntityOfPage = SITE_URL + '/articles/' + a.slug; if (a.coverImage) ld.image = SITE_URL + a.coverImage; }
+  if (SITE_URL) {
+    ld.mainEntityOfPage = SITE_URL + '/articles/' + a.slug;
+    if (a.coverImage) ld.image = /^https:\/\//i.test(a.coverImage) ? a.coverImage : SITE_URL + a.coverImage;
+  } else if (a.coverImage && /^https:\/\//i.test(a.coverImage)) {
+    ld.image = a.coverImage;
+  }
   const cover = a.coverImage
     ? '<img class="art-cover" src="' + esc(a.coverImage) + '" alt="' + esc(a.coverAlt || '') + '">' : '';
   const html = fill(await template('article.html'), {
@@ -371,6 +422,48 @@ async function renderArticle(req, res, slug) {
     ARTICLE_BODY: renderBody(a.body)
   });
   send(res, 200, html, { 'Content-Type': MIME['.html'], 'Cache-Control': 'no-cache' });
+}
+
+function getPublicSiteUrl(req) {
+  if (SITE_URL) return new URL(SITE_URL).origin;
+  const host = String(req.headers['x-forwarded-host'] || req.headers.host || '').split(',')[0].trim();
+  if (!host) throw new Error('Cannot determine the public site URL; set SITE_URL.');
+  const protocol = isSecure(req) ? 'https:' : 'http:';
+  return new URL(protocol + '//' + host).origin;
+}
+
+function xmlEscape(value) {
+  return String(value).replace(/[<>&'"]/g, char => ({
+    '<': '&lt;', '>': '&gt;', '&': '&amp;', "'": '&apos;', '"': '&quot;'
+  })[char]);
+}
+
+async function renderSitemap(req, res) {
+  const baseUrl = getPublicSiteUrl(req);
+  const pages = ['/', '/about.html', '/work.html', '/partner.html', '/involve.html', '/contact.html', '/articles'];
+  const articles = await articleCollection.find({ published: true })
+    .project({ _id: 0, slug: 1, updatedAt: 1, publishedAt: 1 })
+    .toArray();
+  const urls = pages.map(page => '<url><loc>' + xmlEscape(baseUrl + page) + '</loc></url>');
+  for (const article of articles) {
+    if (!/^[a-z0-9-]+$/.test(article.slug || '')) continue;
+    const lastmod = article.updatedAt || article.publishedAt;
+    const timestamp = lastmod && new Date(lastmod);
+    const lastmodTag = timestamp && !Number.isNaN(timestamp.getTime())
+      ? '<lastmod>' + timestamp.toISOString().slice(0, 10) + '</lastmod>'
+      : '';
+    urls.push('<url><loc>' + xmlEscape(baseUrl + '/articles/' + encodeURIComponent(article.slug)) + '</loc>' + lastmodTag + '</url>');
+  }
+  const xml = '<?xml version="1.0" encoding="UTF-8"?>\n' +
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
+    urls.map(url => '  ' + url).join('\n') + '\n</urlset>\n';
+  send(res, 200, xml, { 'Content-Type': 'application/xml; charset=utf-8', 'Cache-Control': 'public, max-age=300' });
+}
+
+function renderRobots(req, res) {
+  const baseUrl = getPublicSiteUrl(req);
+  const text = 'User-agent: *\nAllow: /\nDisallow: /admin.html\nDisallow: /api/\n\nSitemap: ' + baseUrl + '/sitemap.xml\n';
+  send(res, 200, text, { 'Content-Type': 'text/plain; charset=utf-8', 'Cache-Control': 'public, max-age=3600' });
 }
 
 async function notFound(res) {
@@ -395,6 +488,7 @@ function validateArticle(b, existing) {
   const author = String(b.author || '').trim() || 'DIRA Foundation';
   const coverAlt = String(b.coverAlt || '').trim();
   let coverImage = String(b.coverImage || '').trim();
+  const coverImagePublicId = cloudinaryPublicId(coverImage);
   if (title.length < 3 || title.length > 150) return { error: 'Title must be between 3 and 150 characters.' };
   if (!body) return { error: 'The article body cannot be empty.' };
   if (body.length > 60000) return { error: 'The article body is too long (60,000 characters maximum).' };
@@ -402,15 +496,39 @@ function validateArticle(b, existing) {
   if (author.length > 80) return { error: 'The author name must be 80 characters or fewer.' };
   if (coverAlt.length > 200) return { error: 'The image description must be 200 characters or fewer.' };
   if (coverImage) {
-    if (!IMG_RE.test(coverImage) || !fs.existsSync(path.join(UPLOAD_DIR, path.basename(coverImage)))) return { error: 'The cover image is not valid. Please upload it again.' };
+    if (!isArticleImage(coverImage)) return { error: 'The header image is not valid. Please upload it again.' };
   }
-  return { value: { title, body, summary, author, coverAlt, coverImage, published: !!b.published } };
+  for (const match of body.matchAll(ARTICLE_IMAGE_RE)) {
+    if (match[1].length > 200) return { error: 'Image descriptions in the article text must be 200 characters or fewer.' };
+    if (!isArticleImage(match[2])) return { error: 'An image in the article text is not valid. Please upload it again.' };
+  }
+  return { value: { title, body, summary, author, coverAlt, coverImage, coverImagePublicId, published: !!b.published } };
 }
 
 async function handleApi(req, res, url) {
   const route = url.pathname;
   const m = req.method;
   res.setHeader('Cache-Control', 'no-store');
+
+  if (route === '/api/articles' && m === 'GET') {
+    const requestedLimit = parseInt(url.searchParams.get('limit'), 10);
+    const limit = Number.isInteger(requestedLimit) ? Math.min(Math.max(requestedLimit, 1), 6) : 3;
+    const articles = await articleCollection.find({ published: true })
+      .sort({ publishedAt: -1 }).limit(limit)
+      .project({ _id: 0, title: 1, slug: 1, summary: 1, body: 1, author: 1, publishedAt: 1, coverImage: 1, coverAlt: 1 })
+      .toArray();
+    return json(res, 200, {
+      articles: articles.map(article => ({
+        title: article.title,
+        slug: article.slug,
+        summary: excerpt(article, 160),
+        author: article.author,
+        publishedAt: article.publishedAt,
+        coverImage: article.coverImage || '',
+        coverAlt: article.coverAlt || ''
+      }))
+    });
+  }
 
   if (route === '/api/admin/session' && m === 'GET') {
     return json(res, 200, { authenticated: isAdmin(req), configured: CREDS_OK });
@@ -440,42 +558,47 @@ async function handleApi(req, res, url) {
   if (!isAdmin(req)) return json(res, 401, { error: 'Please sign in.' });
 
   if (route === '/api/admin/articles' && m === 'GET') {
-    const list = articles.slice().sort((a, b) => String(b.createdAt).localeCompare(String(a.createdAt)));
+    const list = await articleCollection.find({}).sort({ createdAt: -1 }).toArray();
     return json(res, 200, { articles: list });
   }
   if (route === '/api/admin/articles' && m === 'POST') {
     const r = validateArticle(await readJson(req, 200 * 1024));
     if (r.error) return json(res, 400, { error: r.error });
     const now = new Date().toISOString();
-    const a = Object.assign({ id: crypto.randomBytes(8).toString('hex'), slug: uniqueSlug(r.value.title), createdAt: now, updatedAt: now,
+    const a = Object.assign({ id: crypto.randomBytes(8).toString('hex'), slug: await uniqueSlug(r.value.title), createdAt: now, updatedAt: now,
       publishedAt: r.value.published ? now : null }, r.value);
-    articles.push(a);
-    await saveArticles();
+    await articleCollection.insertOne(a);
     return json(res, 201, { article: a });
   }
   let mm = route.match(/^\/api\/admin\/articles\/([a-f0-9]{16})$/);
   if (mm) {
-    const idx = articles.findIndex(x => x.id === mm[1]);
-    if (idx < 0) return json(res, 404, { error: 'Article not found.' });
+    const old = await articleCollection.findOne({ id: mm[1] });
+    if (!old) return json(res, 404, { error: 'Article not found.' });
     if (m === 'PUT') {
-      const r = validateArticle(await readJson(req, 200 * 1024), articles[idx]);
+      const r = validateArticle(await readJson(req, 200 * 1024), old);
       if (r.error) return json(res, 400, { error: r.error });
-      const old = articles[idx];
+      const oldImages = articleImageRefs(old);
       const now = new Date().toISOString();
       const next = Object.assign({}, old, r.value, { updatedAt: now });
       // Keep the URL stable once an article has been published, so shared links never break.
-      if (r.value.title !== old.title && !old.publishedAt) next.slug = uniqueSlug(r.value.title, old.id);
+      if (r.value.title !== old.title && !old.publishedAt) next.slug = await uniqueSlug(r.value.title, old.id);
       if (r.value.published && !old.publishedAt) next.publishedAt = now;
-      articles[idx] = next;
-      await saveArticles();
-      if (old.coverImage && old.coverImage !== next.coverImage) await removeUpload(old.coverImage);
-      return json(res, 200, { article: next });
+      delete next._id;
+      const updated = await articleCollection.updateOne({ id: old.id }, { $set: next });
+      if (!updated.matchedCount) return json(res, 404, { error: 'Article not found.' });
+      let warning = '';
+      try { await removeUnusedImages(oldImages); }
+      catch (e) { console.error('[warn] Article saved, but old image cleanup failed:', e.message); warning = 'Article saved, but an unused image could not be removed from Cloudinary.'; }
+      return json(res, 200, { article: next, warning });
     }
     if (m === 'DELETE') {
-      const [old] = articles.splice(idx, 1);
-      await saveArticles();
-      await removeUpload(old.coverImage);
-      return json(res, 200, { ok: true });
+      const oldImages = articleImageRefs(old);
+      const deleted = await articleCollection.deleteOne({ id: old.id });
+      if (!deleted.deletedCount) return json(res, 404, { error: 'Article not found.' });
+      let warning = '';
+      try { await removeUnusedImages(oldImages); }
+      catch (e) { console.error('[warn] Article deleted, but old image cleanup failed:', e.message); warning = 'Article deleted, but an unused image could not be removed from Cloudinary.'; }
+      return json(res, 200, { ok: true, warning });
     }
   }
   if (route === '/api/admin/upload' && m === 'POST') {
@@ -489,9 +612,17 @@ async function handleApi(req, res, url) {
     else if (buf.length > 12 && buf.slice(0, 8).equals(Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]))) ext = 'png';
     else if (buf.length > 12 && buf.slice(0, 4).toString() === 'RIFF' && buf.slice(8, 12).toString() === 'WEBP') ext = 'webp';
     if (!ext) return json(res, 400, { error: 'The file is not a valid JPG, PNG or WebP image.' });
-    const name = crypto.randomBytes(12).toString('hex') + '.' + ext;
-    await fsp.writeFile(path.join(UPLOAD_DIR, name), buf);
-    return json(res, 201, { path: '/uploads/' + name });
+    const uploaded = await cloudinary.uploader.upload(String(b.dataUrl), {
+      public_id: 'dira-articles/' + crypto.randomBytes(12).toString('hex'),
+      resource_type: 'image',
+      allowed_formats: ['jpg', 'png', 'webp'],
+      overwrite: false
+    });
+    if (!uploaded.secure_url || !uploaded.public_id || cloudinaryPublicId(uploaded.secure_url) !== uploaded.public_id) {
+      if (uploaded.public_id) await cloudinary.uploader.destroy(uploaded.public_id, { resource_type: 'image' });
+      throw new Error('Cloudinary returned an invalid image reference.');
+    }
+    return json(res, 201, { path: uploaded.secure_url, publicId: uploaded.public_id });
   }
   return json(res, 404, { error: 'Not found.' });
 }
@@ -536,6 +667,8 @@ const server = http.createServer(async (req, res) => {
     if (am) return await renderArticle(req, res, am[1]);
     if (p === '/article.html') return notFound(res);
     if (p === '/admin') { res.writeHead(302, { Location: '/admin.html' }); return res.end(); }
+    if (p === '/sitemap.xml') return await renderSitemap(req, res);
+    if (p === '/robots.txt') return renderRobots(req, res);
     return await serveStatic(req, res, p);
   } catch (e) {
     const status = e.status || 500;
@@ -549,8 +682,83 @@ const server = http.createServer(async (req, res) => {
   }
 });
 
-server.listen(PORT, () => {
-  console.log('DIRA Foundation site running at http://localhost:' + PORT);
-  console.log('Articles:  http://localhost:' + PORT + '/articles');
-  console.log('Admin:     http://localhost:' + PORT + '/admin.html' + (CREDS_OK ? '' : '   (login disabled until .env is configured)'));
-});
+async function initializeBackend() {
+  const missing = [];
+  if (!MONGODB_URI) missing.push('MONGODB_URI');
+  if (!CLOUDINARY_CLOUD_NAME) missing.push('CLOUDINARY_CLOUD_NAME');
+  if (!CLOUDINARY_API_KEY) missing.push('CLOUDINARY_API_KEY');
+  if (!CLOUDINARY_API_SECRET) missing.push('CLOUDINARY_API_SECRET');
+  if (missing.length) throw new Error('Set the required values in .env: ' + missing.join(', '));
+
+  cloudinary.config({
+    cloud_name: CLOUDINARY_CLOUD_NAME,
+    api_key: CLOUDINARY_API_KEY,
+    api_secret: CLOUDINARY_API_SECRET,
+    secure: true
+  });
+  mongoClient = new MongoClient(MONGODB_URI);
+  await mongoClient.connect();
+  articleCollection = mongoClient.db().collection('articles');
+  await articleCollection.createIndex({ id: 1 }, { unique: true });
+  await articleCollection.createIndex({ slug: 1 }, { unique: true });
+  await articleCollection.createIndex({ published: 1, publishedAt: -1 });
+  await importLegacyArticles();
+  await cleanLocalOrphans();
+}
+
+let backendReady;
+function ensureBackend() {
+  if (!backendReady) {
+    backendReady = initializeBackend().catch(error => {
+      backendReady = null;
+      throw error;
+    });
+  }
+  return backendReady;
+}
+
+if (require.main === module) {
+  ensureBackend().then(() => new Promise((resolve, reject) => {
+    server.once('error', reject);
+    server.listen(PORT, () => {
+      server.removeListener('error', reject);
+      resolve();
+    });
+  })).then(() => {
+    console.log('DIRA Foundation site running at http://localhost:' + PORT);
+    console.log('Articles:  http://localhost:' + PORT + '/articles');
+    console.log('Admin:     http://localhost:' + PORT + '/admin.html' + (CREDS_OK ? '' : '   (login disabled until .env is configured)'));
+  }).catch(async error => {
+    console.error('[error] Could not start the server:', error.message);
+    if (mongoClient) await mongoClient.close().catch(() => {});
+    process.exitCode = 1;
+  });
+
+  for (const signal of ['SIGINT', 'SIGTERM']) {
+    process.on(signal, () => {
+      server.close(async () => {
+        if (mongoClient) await mongoClient.close();
+        process.exit(0);
+      });
+    });
+  }
+} else {
+  const serverless = require('serverless-http');
+  const serverlessHandler = serverless(server);
+  module.exports.handler = async (event, context) => {
+    const routedPath = event.queryStringParameters && event.queryStringParameters.__route;
+    if (!routedPath || !/^\/(?:api\/|articles(?:\/|$)|sitemap\.xml$|robots\.txt$)/.test(routedPath)) {
+      return { statusCode: 404, headers: { 'Content-Type': 'text/plain; charset=utf-8' }, body: 'Not found' };
+    }
+    if (routedPath !== '/robots.txt') await ensureBackend();
+    const queryStringParameters = Object.assign({}, event.queryStringParameters);
+    delete queryStringParameters.__route;
+    event = Object.assign({}, event, {
+      path: routedPath,
+      rawPath: routedPath,
+      queryStringParameters
+    });
+    delete event.rawUrl;
+    return serverlessHandler(event, context);
+  };
+}
