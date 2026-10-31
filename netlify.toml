@@ -6,6 +6,7 @@
   NODE_VERSION = "20"
   TRUST_PROXY = "true"
   COOKIE_SECURE = "true"
+  SECRETS_SCAN_ENABLED = "false"
 
 [functions]
   node_bundler = "esbuild"
@@ -154,6 +155,3 @@
   to = "/.netlify/functions/server?__route=/api/:splat"
   status = 200
   force = true
-
-  [build.environment]
-  SECRETS_SCAN_ENABLED = "false"
