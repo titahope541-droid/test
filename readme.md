@@ -34,7 +34,7 @@ You need **Node.js 18 or newer**, a MongoDB database and a Cloudinary account.
 6. Start the site: `npm start`.
 7. Open `http://localhost:3000/articles` and `http://localhost:3000/admin.html`.
 
-The server checks MongoDB and Cloudinary configuration at startup. Database credentials and Cloudinary secrets stay on the server and must never be added to browser code or committed.
+The server checks MongoDB configuration at startup. Cloudinary is only required for image uploads and image cleanup, so missing Cloudinary settings do not prevent public articles from loading. Database credentials and Cloudinary secrets stay on the server and must never be added to browser code or committed.
 
 Always open the site through the server. Opening `articles.html` directly from your computer will show template placeholders, not articles.
 

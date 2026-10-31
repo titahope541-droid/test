@@ -128,8 +128,8 @@
 
 [[redirects]]
   from = "/articles.html"
-  to = "/articles"
-  status = 301
+  to = "/.netlify/functions/server?__route=/articles"
+  status = 200
   force = true
 
 [[redirects]]

@@ -87,6 +87,16 @@ function cloudinaryPublicId(imageUrl) {
   return match ? match[1] : '';
 }
 
+function ensureCloudinaryConfigured() {
+  const missing = [];
+  if (!CLOUDINARY_CLOUD_NAME) missing.push('CLOUDINARY_CLOUD_NAME');
+  if (!CLOUDINARY_API_KEY) missing.push('CLOUDINARY_API_KEY');
+  if (!CLOUDINARY_API_SECRET) missing.push('CLOUDINARY_API_SECRET');
+  if (missing.length) {
+    throw Object.assign(new Error('Image uploads require Cloudinary configuration: ' + missing.join(', ')), { status: 503 });
+  }
+}
+
 function isArticleImage(imageUrl) {
   if (IMG_RE.test(imageUrl)) return fs.existsSync(path.join(UPLOAD_DIR, path.basename(imageUrl)));
   return !!cloudinaryPublicId(imageUrl);
@@ -107,6 +117,7 @@ async function removeUnusedImages(candidates) {
     if (used.has(image)) continue;
     const publicId = cloudinaryPublicId(image);
     if (publicId) {
+      ensureCloudinaryConfigured();
       const result = await cloudinary.uploader.destroy(publicId, { resource_type: 'image' });
       if (result.result !== 'ok' && result.result !== 'not found') throw new Error('Cloudinary could not remove an unused image.');
     } else if (IMG_RE.test(image)) {
@@ -612,6 +623,7 @@ async function handleApi(req, res, url) {
     else if (buf.length > 12 && buf.slice(0, 8).equals(Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]))) ext = 'png';
     else if (buf.length > 12 && buf.slice(0, 4).toString() === 'RIFF' && buf.slice(8, 12).toString() === 'WEBP') ext = 'webp';
     if (!ext) return json(res, 400, { error: 'The file is not a valid JPG, PNG or WebP image.' });
+    ensureCloudinaryConfigured();
     const uploaded = await cloudinary.uploader.upload(String(b.dataUrl), {
       public_id: 'dira-articles/' + crypto.randomBytes(12).toString('hex'),
       resource_type: 'image',
@@ -683,19 +695,15 @@ const server = http.createServer(async (req, res) => {
 });
 
 async function initializeBackend() {
-  const missing = [];
-  if (!MONGODB_URI) missing.push('MONGODB_URI');
-  if (!CLOUDINARY_CLOUD_NAME) missing.push('CLOUDINARY_CLOUD_NAME');
-  if (!CLOUDINARY_API_KEY) missing.push('CLOUDINARY_API_KEY');
-  if (!CLOUDINARY_API_SECRET) missing.push('CLOUDINARY_API_SECRET');
-  if (missing.length) throw new Error('Set the required values in .env: ' + missing.join(', '));
-
-  cloudinary.config({
-    cloud_name: CLOUDINARY_CLOUD_NAME,
-    api_key: CLOUDINARY_API_KEY,
-    api_secret: CLOUDINARY_API_SECRET,
-    secure: true
-  });
+  if (!MONGODB_URI) throw new Error('Set the required value in .env: MONGODB_URI');
+  if (CLOUDINARY_CLOUD_NAME && CLOUDINARY_API_KEY && CLOUDINARY_API_SECRET) {
+    cloudinary.config({
+      cloud_name: CLOUDINARY_CLOUD_NAME,
+      api_key: CLOUDINARY_API_KEY,
+      api_secret: CLOUDINARY_API_SECRET,
+      secure: true
+    });
+  }
   mongoClient = new MongoClient(MONGODB_URI);
   await mongoClient.connect();
   articleCollection = mongoClient.db().collection('articles');
