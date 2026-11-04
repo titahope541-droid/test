@@ -16,7 +16,7 @@ This adds a public **Articles** page and a password-protected **admin page** for
 | `package.json`, `.gitignore` | Start command and git ignore rules |
 | `data/`, `uploads/` | Legacy local article/image storage; new content is stored in MongoDB and Cloudinary |
 
-You need **Node.js 18 or newer**, a MongoDB database and a Cloudinary account.
+You need **Node.js 18 or newer**, a MongoDB database and a Cloudinary account. Fapshi credentials are optional unless you want to enable online donations.
 
 ## Setup
 
@@ -28,13 +28,16 @@ You need **Node.js 18 or newer**, a MongoDB database and a Cloudinary account.
    - `ADMIN_EMAIL` and `ADMIN_PASSWORD` (at least 8 characters, not the example text)
    - `MONGODB_URI` from your MongoDB deployment, including your database name in the connection string
    - `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY` and `CLOUDINARY_API_SECRET` from the Cloudinary Console
+   - `FAPSHI_API_USER` and `FAPSHI_API_KEY` from your Fapshi collection service, and `FAPSHI_ENVIRONMENT` (`sandbox` for testing or `live` for real payments)
    - `SESSION_SECRET`: a long random string. Create one with
      `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"`
-   - `SITE_URL`: your real website address, for example `https://www.example.org` (optional, used for canonical links and social previews)
+   - `SITE_URL`: your public website origin, for example `https://www.example.org` (optional; used for canonical links and social previews).
 6. Start the site: `npm start`.
 7. Open `http://localhost:3000/articles` and `http://localhost:3000/admin.html`.
 
 The server checks MongoDB configuration at startup. Cloudinary is only required for image uploads and image cleanup, so missing Cloudinary settings do not prevent public articles from loading. Database credentials and Cloudinary secrets stay on the server and must never be added to browser code or committed.
+
+Online donations use Fapshi's hosted checkout for MTN Mobile Money and Orange Money. Set Fapshi credentials only as server environment variables; never expose them in browser code. Use sandbox credentials and `FAPSHI_ENVIRONMENT=sandbox` for testing, then switch to live credentials and `FAPSHI_ENVIRONMENT=live` when the service is activated. Donors enter an amount of at least 100 XAF; the return page checks the transaction status with Fapshi. The post-payment return URL is derived from the request's host and protocol, so `SITE_URL` is not required for checkout.
 
 Always open the site through the server. Opening `articles.html` directly from your computer will show template placeholders, not articles.
 
@@ -69,12 +72,14 @@ Back up the MongoDB database and Cloudinary assets. On standalone server startup
 The repository includes `netlify.toml` and a Netlify Function adapter. Netlify serves the static pages and runs the existing article API and dynamic article routes as a function. Do not use `node server.js` as the Netlify start command.
 
 1. Push this repository to GitHub/GitLab/Bitbucket and import it as a new Netlify site. Set the base directory to the repository root and leave the publish directory and functions directory to the values in `netlify.toml`.
-2. In **Site configuration → Environment variables**, add `MONGODB_URI`, `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`, `ADMIN_EMAIL`, `ADMIN_PASSWORD`, and `SESSION_SECRET`. Set `SITE_URL` to the final HTTPS site URL (for example `https://example.netlify.app`). Do not upload `.env` or put secrets in `netlify.toml`.
+2. In **Site configuration → Environment variables**, add `MONGODB_URI`, `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`, `ADMIN_EMAIL`, `ADMIN_PASSWORD`, and `SESSION_SECRET`. Set `SITE_URL` to the final HTTPS site URL (for example `https://example.netlify.app`). For online donations, also set `FAPSHI_API_USER`, `FAPSHI_API_KEY`, and `FAPSHI_ENVIRONMENT` to `sandbox` or `live` as appropriate. Do not upload `.env` or put secrets in `netlify.toml`.
 3. Ensure the MongoDB network access rules allow connections from Netlify Functions (or use an appropriate MongoDB connectivity option). The serverless function reuses its MongoDB connection while its runtime instance remains warm.
 4. Deploy the site. Netlify installs dependencies from `package-lock.json`; verify `/`, `/articles`, an article URL, and `/admin.html` on the deployed HTTPS domain.
 5. Sign in at `/admin.html`, publish a test article and verify it appears on the homepage. Netlify sets secure session cookies and routes `/api/*` and `/articles/*` to the function.
 
 Netlify Functions have a 6 MB buffered request limit. The admin editor compresses images in the browser before uploading; keep upload files modest so the encoded request fits the limit. Set the secrets in Netlify’s environment-variable UI for the deploy context you use (production and deploy previews as needed).
+
+The function detects the Netlify runtime from its function path as well as environment variables. It resolves site templates from the repository root and does not try to create local `data/` or `uploads/` folders in the read-only function bundle.
 
 For other hosts, the standalone server can run on a Node.js host such as a VPS, Render, Railway or cPanel. Configure the MongoDB and Cloudinary environment variables on the host. A persistent local disk is not needed for new article content or images.
 
@@ -89,7 +94,7 @@ The new pages already include it. To show it on the existing pages, add this lin
 ## Optional search engine settings
 
 - `/robots.txt` disallows admin and API paths and points to `/sitemap.xml`.
-- The sitemap is generated from the public pages and published MongoDB articles. Set `SITE_URL` to the canonical production domain so its absolute URLs are correct.
+- The sitemap is generated from the public pages, including the startup-incubator, volunteer and terms/privacy pages, and published MongoDB articles. Set `SITE_URL` to the canonical production domain so its absolute URLs are correct.
 
 ## Security notes
 

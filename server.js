@@ -16,7 +16,12 @@ const crypto = require('crypto');
 const { MongoClient } = require('mongodb');
 const cloudinary = require('cloudinary').v2;
 
-const ROOT = process.env.NETLIFY === 'true' ? process.cwd() : __dirname;
+const IN_NETLIFY_FUNCTION = path.basename(__dirname).toLowerCase() === 'functions' &&
+  path.basename(path.dirname(__dirname)).toLowerCase() === 'netlify';
+const IS_NETLIFY = process.env.NETLIFY === 'true' || !!process.env.AWS_LAMBDA_FUNCTION_NAME || IN_NETLIFY_FUNCTION;
+const ROOT = IS_NETLIFY
+  ? (IN_NETLIFY_FUNCTION ? path.resolve(__dirname, '..', '..') : process.cwd())
+  : __dirname;
 
 /* ------------------------------------------------------------------ .env */
 function loadEnv(file) {
@@ -48,6 +53,13 @@ const MONGODB_URI = (process.env.MONGODB_URI || '').trim();
 const CLOUDINARY_CLOUD_NAME = (process.env.CLOUDINARY_CLOUD_NAME || '').trim();
 const CLOUDINARY_API_KEY = (process.env.CLOUDINARY_API_KEY || '').trim();
 const CLOUDINARY_API_SECRET = (process.env.CLOUDINARY_API_SECRET || '').trim();
+const FAPSHI_API_USER = (process.env.FAPSHI_API_USER || '').trim();
+const FAPSHI_API_KEY = (process.env.FAPSHI_API_KEY || '').trim();
+const FAPSHI_ENVIRONMENT = (process.env.FAPSHI_ENVIRONMENT || 'sandbox').trim().toLowerCase();
+const FAPSHI_BASE_URLS = {
+  sandbox: 'https://sandbox.fapshi.com',
+  live: 'https://live.fapshi.com'
+};
 const SESSION_HOURS = parseFloat(process.env.SESSION_HOURS) || 12;
 const TRUST_PROXY = String(process.env.TRUST_PROXY || '').toLowerCase() === 'true';
 const FORCE_SECURE = String(process.env.COOKIE_SECURE || '').toLowerCase() === 'true';
@@ -67,7 +79,7 @@ if (!CREDS_OK) {
 const DATA_DIR = path.join(ROOT, 'data');
 const DATA_FILE = path.join(DATA_DIR, 'articles.json');
 const UPLOAD_DIR = path.join(ROOT, 'uploads');
-if (process.env.NETLIFY !== 'true') {
+if (!IS_NETLIFY) {
   fs.mkdirSync(DATA_DIR, { recursive: true });
   fs.mkdirSync(UPLOAD_DIR, { recursive: true });
 }
@@ -143,7 +155,7 @@ async function importLegacyArticles() {
 }
 
 async function cleanLocalOrphans() {
-  if (process.env.NETLIFY === 'true') return;
+  if (IS_NETLIFY) return;
   const used = new Set();
   for await (const article of articleCollection.find({}, { projection: { coverImage: 1, body: 1 } })) {
     for (const image of articleImageRefs(article)) if (IMG_RE.test(image)) used.add(path.basename(image));
@@ -223,6 +235,96 @@ const safeEqual = (a, b) => crypto.timingSafeEqual(sha(a), sha(b));
 const b64 = b => Buffer.from(b).toString('base64url');
 const credVersion = () => sha(ADMIN_EMAIL + '\n' + ADMIN_PASSWORD).toString('hex').slice(0, 16);
 
+function fapshiConfig() {
+  const baseUrl = FAPSHI_BASE_URLS[FAPSHI_ENVIRONMENT];
+  if (!FAPSHI_API_USER || !FAPSHI_API_KEY || !baseUrl) {
+    throw Object.assign(new Error('Online donations are not configured. Please use the direct transfer option.'), { status: 503 });
+  }
+  return { baseUrl, apiUser: FAPSHI_API_USER, apiKey: FAPSHI_API_KEY };
+}
+
+async function fapshiRequest(endpoint, options) {
+  const config = fapshiConfig();
+  let response;
+  try {
+    response = await fetch(config.baseUrl + endpoint, Object.assign({}, options, {
+      headers: Object.assign({
+        apiuser: config.apiUser,
+        apikey: config.apiKey,
+        'Content-Type': 'application/json'
+      }, options.headers || {}),
+      signal: AbortSignal.timeout(15000)
+    }));
+  } catch (error) {
+    console.error('[error] Could not reach Fapshi:', error.message);
+    throw Object.assign(new Error('The payment service is temporarily unavailable. Please try again.'), { status: 502 });
+  }
+
+  let payload;
+  try {
+    payload = await response.json();
+  } catch (error) {
+    console.error('[error] Fapshi returned an invalid response.');
+    throw Object.assign(new Error('The payment service returned an invalid response. Please try again.'), { status: 502 });
+  }
+  if (!response.ok) {
+    console.error('[warn] Fapshi returned HTTP ' + response.status + ': ' + String(payload.message || 'unknown error'));
+    throw Object.assign(new Error('Fapshi could not process the request. Please check your details or try again later.'), { status: 502 });
+  }
+  return payload;
+}
+
+function donationReturnUrl(req) {
+  const hostHeader = String(req.headers.host || '').trim();
+  if (!hostHeader || /[\s/@\\?#]/.test(hostHeader)) {
+    throw Object.assign(new Error('Could not determine the website address for the payment return.'), { status: 400 });
+  }
+
+  let site;
+  try { site = new URL('https://' + hostHeader); } catch (error) {
+    throw Object.assign(new Error('The website address for the payment return is invalid.'), { status: 400 });
+  }
+  if (!site.hostname || site.username || site.password || site.pathname !== '/' || site.search || site.hash) {
+    throw Object.assign(new Error('The website address for the payment return is invalid.'), { status: 400 });
+  }
+
+  let protocol = req.socket.encrypted ? 'https:' : 'http:';
+  const forwardedProto = (IS_NETLIFY || TRUST_PROXY) && req.headers['x-forwarded-proto']
+    ? String(req.headers['x-forwarded-proto']).split(',')[0].trim().toLowerCase()
+    : '';
+  if (forwardedProto) {
+    if (forwardedProto !== 'http' && forwardedProto !== 'https') {
+      throw Object.assign(new Error('The website protocol for the payment return is invalid.'), { status: 400 });
+    }
+    protocol = forwardedProto + ':';
+  } else if (IS_NETLIFY) {
+    protocol = 'https:';
+  }
+
+  if (protocol !== 'https:' && !['localhost', '127.0.0.1', '[::1]'].includes(site.hostname)) {
+    throw Object.assign(new Error('Payment return URLs must use HTTPS outside localhost.'), { status: 400 });
+  }
+  site.protocol = protocol;
+  return new URL('/involve.html?payment=return', site).toString();
+}
+
+function makePaymentStatusToken(transId) {
+  const expires = Date.now() + 24 * 60 * 60 * 1000;
+  const signature = crypto.createHmac('sha256', FAPSHI_API_KEY).update(transId + '\n' + expires).digest('base64url');
+  return expires + '.' + signature;
+}
+
+function validPaymentStatusToken(transId, token) {
+  const parts = String(token || '').split('.');
+  if (parts.length !== 2 || !/^\d{13}$/.test(parts[0]) || !/^[A-Za-z0-9_-]{43}$/.test(parts[1])) return false;
+  const expires = Number(parts[0]);
+  if (expires < Date.now() || expires > Date.now() + 24 * 60 * 60 * 1000 + 60 * 1000) return false;
+  const expected = crypto.createHmac('sha256', FAPSHI_API_KEY).update(transId + '\n' + expires).digest('base64url');
+  const actualBytes = Buffer.from(parts[1]);
+  const expectedBytes = Buffer.from(expected);
+  return actualBytes.length === expectedBytes.length && crypto.timingSafeEqual(actualBytes, expectedBytes);
+}
+
 function signToken() {
   const payload = b64(JSON.stringify({ exp: Date.now() + SESSION_HOURS * 3600 * 1000, v: credVersion() }));
   const sig = crypto.createHmac('sha256', SECRET).update(payload).digest('base64url');
@@ -250,7 +352,7 @@ function isAdmin(req) {
   } catch (e) { return false; }
 }
 function isSecure(req) {
-  return FORCE_SECURE || process.env.NETLIFY === 'true' || !!req.socket.encrypted || (TRUST_PROXY && req.headers['x-forwarded-proto'] === 'https');
+  return FORCE_SECURE || IS_NETLIFY || !!req.socket.encrypted || (TRUST_PROXY && req.headers['x-forwarded-proto'] === 'https');
 }
 function setSession(req, res, token, maxAgeSec) {
   res.setHeader('Set-Cookie', 'dira_admin=' + encodeURIComponent(token) + '; Path=/; HttpOnly; SameSite=Strict; Max-Age=' + maxAgeSec + (isSecure(req) ? '; Secure' : ''));
@@ -451,7 +553,18 @@ function xmlEscape(value) {
 
 async function renderSitemap(req, res) {
   const baseUrl = getPublicSiteUrl(req);
-  const pages = ['/', '/about.html', '/work.html', '/partner.html', '/involve.html', '/contact.html', '/articles'];
+  const pages = [
+    '/',
+    '/about.html',
+    '/work.html',
+    '/partner.html',
+    '/involve.html',
+    '/contact.html',
+    '/startup-incubator.html',
+    '/volunteer.html',
+    '/terms-privacy.html',
+    '/articles'
+  ];
   const articles = await articleCollection.find({ published: true })
     .project({ _id: 0, slug: 1, updatedAt: 1, publishedAt: 1 })
     .toArray();
@@ -539,6 +652,69 @@ async function handleApi(req, res, url) {
         coverAlt: article.coverAlt || ''
       }))
     });
+  }
+
+  if (route === '/api/payments/initiate' && m === 'POST') {
+    const b = await readJson(req, 10 * 1024);
+    if (!b || typeof b !== 'object' || Array.isArray(b)) {
+      return json(res, 400, { error: 'Payment details must be sent as a JSON object.' });
+    }
+    const amount = b.amount;
+    const email = String(b.email || '').trim();
+    if (!Number.isSafeInteger(amount) || amount < 100) {
+      return json(res, 400, { error: 'Enter a whole-number donation of at least 100 XAF.' });
+    }
+    if (email && (email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))) {
+      return json(res, 400, { error: 'Enter a valid email address or leave the field blank.' });
+    }
+    const externalId = 'dira_' + crypto.randomBytes(12).toString('hex');
+    const paymentRequest = {
+      amount,
+      redirectUrl: donationReturnUrl(req),
+      userId: externalId,
+      externalId,
+      message: 'Donation to DIRA Foundation'
+    };
+    if (email) paymentRequest.email = email;
+
+    const result = await fapshiRequest('/initiate-pay', {
+      method: 'POST',
+      body: JSON.stringify(paymentRequest)
+    });
+    if (!result || typeof result !== 'object') {
+      throw Object.assign(new Error('Fapshi returned an invalid checkout response.'), { status: 502 });
+    }
+    let checkout;
+    try { checkout = new URL(result.link); } catch (error) {
+      throw Object.assign(new Error('Fapshi returned an invalid checkout link.'), { status: 502 });
+    }
+    if (checkout.protocol !== 'https:' || (checkout.hostname !== 'fapshi.com' && !checkout.hostname.endsWith('.fapshi.com')) ||
+      typeof result.transId !== 'string' || !result.transId.trim() || result.transId.length > 200) {
+      throw Object.assign(new Error('Fapshi returned an invalid checkout response.'), { status: 502 });
+    }
+    const transId = result.transId.trim();
+    return json(res, 200, {
+      link: checkout.toString(),
+      transId,
+      statusToken: makePaymentStatusToken(transId)
+    });
+  }
+
+  if (route === '/api/payments/status' && m === 'POST') {
+    const b = await readJson(req, 4 * 1024);
+    if (!b || typeof b !== 'object' || Array.isArray(b)) {
+      return json(res, 400, { error: 'Payment status details must be sent as a JSON object.' });
+    }
+    const transId = String(b.transId || '').trim();
+    if (!transId || transId.length > 200 || !validPaymentStatusToken(transId, b.statusToken)) {
+      return json(res, 403, { error: 'This payment status request is invalid or has expired.' });
+    }
+    const result = await fapshiRequest('/payment-status/' + encodeURIComponent(transId), { method: 'GET' });
+    const allowedStatuses = new Set(['CREATED', 'PENDING', 'SUCCESSFUL', 'FAILED', 'EXPIRED']);
+    if (!allowedStatuses.has(result.status)) {
+      throw Object.assign(new Error('Fapshi returned an invalid payment status.'), { status: 502 });
+    }
+    return json(res, 200, { status: result.status });
   }
 
   if (route === '/api/admin/session' && m === 'GET') {

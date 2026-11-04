@@ -1,0 +1,566 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Terms of Use &amp; Privacy | DIRA Foundation</title>
+    <meta
+      name="description"
+      content="Learn how to use the DIRA Foundation website and how information is handled when you contact us, apply to volunteer, donate or read our articles."
+    />
+    <meta name="theme-color" content="#6a0dad" />
+    <link rel="icon" type="image/jpeg" href="./assets/logo.jpg" />
+    <style>
+      :root {
+        --purple: #6a0dad;
+        --dark-purple: #4b0082;
+        --ink: #333;
+        --muted: #626b75;
+        --line: #e5e7eb;
+        --surface: #f8f9fa;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        color: var(--ink);
+        font: 16px/1.7 "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: #fff;
+      }
+
+      a {
+        color: var(--purple);
+      }
+
+      .container {
+        width: min(1120px, calc(100% - 40px));
+        margin: 0 auto;
+      }
+
+      .skip-link {
+        position: absolute;
+        left: -9999px;
+        top: 0;
+        z-index: 20;
+        padding: 10px 16px;
+        background: #fff;
+      }
+
+      .skip-link:focus {
+        left: 10px;
+        top: 10px;
+      }
+
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background: #fff;
+        box-shadow: 0 2px 15px rgb(0 0 0 / 10%);
+      }
+
+      .header-inner {
+        min-height: 78px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+      }
+
+      .logo {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--purple);
+        font-size: 1.15rem;
+        font-weight: 700;
+        line-height: 1.1;
+        text-decoration: none;
+      }
+
+      .logo img {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+
+      .logo span {
+        color: var(--ink);
+        font-size: 0.9rem;
+      }
+
+      nav ul,
+      .footer-links {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      nav ul {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+      }
+
+      nav a {
+        color: var(--ink);
+        font-weight: 600;
+        text-decoration: none;
+      }
+
+      nav a:hover,
+      nav a[aria-current="page"] {
+        color: var(--purple);
+      }
+
+      .menu-toggle {
+        display: none;
+        min-width: 44px;
+        min-height: 44px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #fff;
+        color: var(--purple);
+        font-size: 1.25rem;
+      }
+
+      .hero {
+        padding: 64px 0 50px;
+        background: linear-gradient(135deg, var(--purple), var(--dark-purple));
+        color: #fff;
+      }
+
+      .hero h1 {
+        margin: 0 0 8px;
+        font-size: clamp(2rem, 5vw, 3rem);
+        line-height: 1.15;
+      }
+
+      .hero p {
+        margin: 0;
+        max-width: 720px;
+        color: rgb(255 255 255 / 90%);
+      }
+
+      main {
+        padding: 40px 0 80px;
+      }
+
+      .updated {
+        margin: 0 0 28px;
+        color: var(--muted);
+        font-size: 0.92rem;
+      }
+
+      .notice {
+        margin-bottom: 32px;
+        padding: 18px 22px;
+        border-left: 4px solid var(--purple);
+        border-radius: 8px;
+        background: var(--surface);
+      }
+
+      .policy-section {
+        padding: 24px 0;
+        border-bottom: 1px solid var(--line);
+        scroll-margin-top: 100px;
+      }
+
+      .policy-section:last-child {
+        border-bottom: 0;
+      }
+
+      .policy-section h2 {
+        margin: 0 0 12px;
+        color: var(--purple);
+        font-size: 1.55rem;
+        line-height: 1.3;
+      }
+
+      .policy-section h3 {
+        margin: 20px 0 6px;
+        font-size: 1.08rem;
+      }
+
+      .policy-section p,
+      .policy-section ul {
+        margin: 0 0 12px;
+      }
+
+      .policy-section li {
+        margin-bottom: 6px;
+      }
+
+      footer {
+        padding: 44px 0 24px;
+        background: #333;
+        color: #fff;
+      }
+
+      .footer-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 32px;
+        padding-bottom: 28px;
+      }
+
+      footer h2 {
+        margin: 0 0 12px;
+        font-size: 1.1rem;
+      }
+
+      footer p {
+        margin: 0;
+        color: rgb(255 255 255 / 78%);
+      }
+
+      .footer-links li {
+        margin: 0 0 7px;
+      }
+
+      .footer-links a,
+      footer a {
+        color: #fff;
+        text-decoration: none;
+      }
+
+      .footer-links a:hover,
+      footer a:hover {
+        text-decoration: underline;
+      }
+
+      .copyright {
+        padding-top: 20px;
+        border-top: 1px solid rgb(255 255 255 / 18%);
+        color: rgb(255 255 255 / 70%);
+        text-align: center;
+        font-size: 0.9rem;
+      }
+
+      @media (max-width: 760px) {
+        .menu-toggle {
+          display: inline-grid;
+          place-items: center;
+        }
+
+        nav {
+          display: none;
+          position: absolute;
+          top: 78px;
+          right: 0;
+          left: 0;
+          padding: 12px 20px 20px;
+          background: #fff;
+          box-shadow: 0 8px 14px rgb(0 0 0 / 10%);
+        }
+
+        nav.open {
+          display: block;
+        }
+
+        nav ul {
+          align-items: stretch;
+          flex-direction: column;
+          gap: 0;
+        }
+
+        nav li {
+          border-bottom: 1px solid var(--line);
+        }
+
+        nav a {
+          display: block;
+          padding: 11px 4px;
+        }
+
+        .footer-grid {
+          grid-template-columns: 1fr;
+          gap: 24px;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          scroll-behavior: auto !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to main content</a>
+    <header>
+      <div class="container header-inner">
+        <a class="logo" href="/index.html" aria-label="DIRA Foundation home">
+          <img src="./assets/logo.jpg" alt="" width="48" height="48" />
+          <span>DIRA<br /><span>Foundation</span></span>
+        </a>
+        <button
+          class="menu-toggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="primaryNav"
+          aria-label="Open navigation"
+        >
+          <span aria-hidden="true">&#9776;</span>
+        </button>
+        <nav id="primaryNav" aria-label="Main navigation">
+          <ul>
+            <li><a href="/index.html">Home</a></li>
+            <li><a href="/about.html">About Us</a></li>
+            <li><a href="/work.html">Our Work</a></li>
+            <li><a href="/articles">Articles</a></li>
+            <li><a href="/partner.html">Partners</a></li>
+            <li><a href="/involve.html">Get Involved</a></li>
+            <li><a href="/contact.html">Contact</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="container">
+        <h1>Terms of Use &amp; Privacy</h1>
+        <p>
+          How this website works, what to expect when engaging with DIRA
+          Foundation, and how information shared through the site is handled.
+        </p>
+      </div>
+    </section>
+
+    <main class="container" id="main">
+      <p class="updated">Last updated: 4 November 2026</p>
+      <p class="notice">
+        DIRA Foundation is a non-profit association based in Bamenda, Cameroon.
+        This page gives a practical overview of our website terms and privacy
+        practices. It is not legal advice; please contact us if you need
+        clarification.
+      </p>
+
+      <section class="policy-section" id="terms">
+        <h2>Terms of Use</h2>
+        <p>
+          By using this website, you agree to use it lawfully and respectfully.
+          These terms apply to the public pages, articles, programme
+          information, volunteer application materials and online donation
+          entry points made available here.
+        </p>
+
+        <h3>Information about our work</h3>
+        <p>
+          Website content is provided for general information about DIRA
+          Foundation and its activities. Programme plans, dates, eligibility,
+          budgets, targets and opportunities may change. Contact us to confirm
+          current details before making decisions or commitments. Nothing on
+          this site is professional, financial, legal or investment advice.
+        </p>
+
+        <h3>Applications, partnerships and donations</h3>
+        <p>
+          Applying to volunteer, expressing interest in a programme or proposing
+          a partnership does not guarantee selection, funding, participation or
+          any other outcome. Donations are voluntary and are used to advance
+          the Foundation's lawful objectives. Online payments are processed by
+          Fapshi under its own terms; contact Fapshi about payment processing
+          and contact us promptly if a payment appears incorrect.
+        </p>
+
+        <h3>Content and acceptable use</h3>
+        <p>
+          Unless otherwise stated, the text and materials published by DIRA
+          Foundation belong to the Foundation or are used with permission.
+          Third-party names, marks, photographs and links may belong to their
+          respective owners. Do not copy, alter, republish or use materials in a
+          way that misrepresents their source or violates another person's
+          rights.
+        </p>
+        <p>
+          Do not attempt to disrupt the site, access non-public systems,
+          interfere with other users, submit unlawful or misleading material,
+          or use the site to distribute malicious code. We may restrict access
+          where necessary to protect the site, users or Foundation.
+        </p>
+
+        <h3>External services and availability</h3>
+        <p>
+          The site may link to external platforms, including Fapshi, social
+          networks, email services and partner websites. Those services operate
+          under their own terms and privacy practices; DIRA Foundation does not
+          control them. We aim to keep the website available and accurate but
+          cannot promise uninterrupted access or that every page will always be
+          error-free.
+        </p>
+
+        <h3>Responsibility and governing law</h3>
+        <p>
+          To the extent permitted by applicable law, DIRA Foundation is not
+          responsible for losses arising from reliance on general website
+          information, temporary unavailability, or third-party websites and
+          services. Nothing in these terms excludes responsibility that cannot
+          lawfully be excluded. These terms are governed by the laws applicable
+          in Cameroon, subject to any mandatory protections that apply to you.
+        </p>
+      </section>
+
+      <section class="policy-section" id="privacy">
+        <h2>Privacy Notice</h2>
+        <p>
+          We handle personal information with care and use it to communicate
+          with people, coordinate Foundation activities, administer donations
+          and maintain the website. We do not sell personal information.
+        </p>
+
+        <h3>Information you choose to provide</h3>
+        <ul>
+          <li>
+            <strong>Contact enquiries:</strong> the name, email, organisation
+            and message you enter in the contact form. The form opens your
+            device's email application; your information is sent to us only if
+            you choose to send that email.
+          </li>
+          <li>
+            <strong>Volunteer applications:</strong> the details you enter,
+            which can include contact information, date of birth, gender,
+            education, skills, availability, emergency contact and motivation.
+            The application is prepared in your email application. It is not
+            submitted to DIRA until you send the email. You attach any CV
+            yourself.
+          </li>
+          <li>
+            <strong>Donations:</strong> the amount and optional email you enter
+            are sent to Fapshi to create a checkout. Fapshi collects and
+            processes payment details directly under its own privacy notice and
+            terms.
+          </li>
+          <li>
+            <strong>Article administration:</strong> information submitted to
+            the password-protected editor by authorised administrators,
+            including article text and images. Published material is visible
+            publicly. Article records are stored in the Foundation's configured
+            database and images may be stored with its image-hosting provider.
+          </li>
+        </ul>
+
+        <h3>Technical information and storage</h3>
+        <p>
+          Our hosting and infrastructure providers may process standard
+          technical information such as IP address, request time, browser
+          details and requested page in service logs and for security,
+          diagnostics and operation of the site. The donation page temporarily
+          stores a transaction reference and a signed status-check token in
+          your browser's session storage so it can check the result after you
+          return from checkout. The administrator area uses an essential
+          signed, HttpOnly session cookie to keep authorised administrators
+          signed in. We do not use advertising cookies or analytics trackers on
+          the pages reviewed for this notice.
+        </p>
+
+        <h3>How information is used and shared</h3>
+        <p>
+          We use information to reply to enquiries, assess and coordinate
+          volunteer applications, communicate about programmes and
+          partnerships, reconcile donation transactions, publish articles, and
+          protect and maintain the website. Information may be handled by
+          service providers supporting email, hosting, database, image storage
+          or payment services, and may be disclosed where required by law or
+          reasonably necessary to protect people, rights or the Foundation.
+          Providers may process information in countries other than Cameroon.
+        </p>
+
+        <h3>Retention and your choices</h3>
+        <p>
+          We keep messages and application information for as long as needed
+          for the relevant communication, programme administration,
+          safeguarding, accountability or legal obligations, then delete or
+          anonymise it when reasonably practicable. Published articles and
+          associated records may be retained as part of the Foundation's public
+          record. Technical logs and payment records may be retained by our
+          service providers under their own policies and applicable requirements.
+        </p>
+        <p>
+          You may contact us to ask about personal information you have sent,
+          request a correction or deletion where appropriate, or raise a
+          privacy concern. We may need to verify your identity and may retain
+          information where required for legal, safeguarding or accountability
+          reasons. Your rights depend on applicable law.
+        </p>
+
+        <h3>Children and sensitive information</h3>
+        <p>
+          Please do not include sensitive personal information about yourself
+          or another person unless it is necessary for your enquiry or
+          application. If you provide information about someone else, make sure
+          you are authorised to do so. A parent or guardian should contact us
+          before submitting information on behalf of a child.
+        </p>
+
+        <h3>Changes and contact</h3>
+        <p>
+          We may update this notice as the website or our practices change. The
+          latest version will be posted on this page with its revision date.
+          For questions or privacy requests, email
+          <a href="mailto:Foundation@diracmr.com">Foundation@diracmr.com</a>.
+        </p>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container">
+        <div class="footer-grid">
+          <div>
+            <h2>DIRA Foundation</h2>
+            <p>
+              A non-profit association based in Bamenda, North West Region of
+              Cameroon, working with communities and institutions on education,
+              opportunity, research, health awareness and community development.
+            </p>
+          </div>
+          <div>
+            <h2>Quick Links</h2>
+            <ul class="footer-links">
+              <li><a href="/index.html">Home</a></li>
+              <li><a href="/about.html">About Us</a></li>
+              <li><a href="/work.html">Our Work</a></li>
+              <li><a href="/articles">Articles</a></li>
+              <li><a href="/partner.html">Partners</a></li>
+              <li><a href="/involve.html">Get Involved</a></li>
+              <li><a href="/contact.html">Contact</a></li>
+              <li><a href="terms-privacy.html">Terms &amp; Privacy</a></li>
+            </ul>
+          </div>
+          <div>
+            <h2>Contact</h2>
+            <p>
+              North West Region, Bamenda<br />
+              <a href="mailto:Foundation@diracmr.com">Foundation@diracmr.com</a
+              ><br />
+              <a href="tel:+237682366472">+237 6 82 36 64 72</a>
+            </p>
+          </div>
+        </div>
+        <div class="copyright">
+          &copy; 2026 DIRA Foundation. All rights reserved.
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      const menuToggle = document.querySelector(".menu-toggle");
+      const primaryNav = document.getElementById("primaryNav");
+      menuToggle.addEventListener("click", () => {
+        const isOpen = menuToggle.getAttribute("aria-expanded") === "true";
+        menuToggle.setAttribute("aria-expanded", String(!isOpen));
+        menuToggle.setAttribute(
+          "aria-label",
+          isOpen ? "Open navigation" : "Close navigation",
+        );
+        primaryNav.classList.toggle("open", !isOpen);
+      });
+    </script>
+  </body>
+</html>

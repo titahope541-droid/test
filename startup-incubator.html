@@ -1,0 +1,1668 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DIRA Startup Incubator Program | 2027 | DIRA Foundation</title>
+    <meta
+      name="description"
+      content="Each year, DIRA Foundation helps Northwest businesses build and grow through DSIP. Explore the 2027 programme, including enterprise support, practical training and a Closing Tech Summit in Bamenda."
+    />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="theme-color" content="#6a0dad" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="DIRA Foundation" />
+    <meta property="og:locale" content="en" />
+    <meta
+      property="og:title"
+      content="DIRA Startup Incubator Program | 2027 | DIRA Foundation"
+    />
+    <meta
+      property="og:description"
+      content="Each year, DIRA Foundation helps Northwest businesses build and grow through DSIP. Explore the 2027 programme, including enterprise support, practical training and a Closing Tech Summit in Bamenda."
+    />
+    <meta name="twitter:card" content="summary" />
+    <meta
+      name="twitter:title"
+      content="DIRA Startup Incubator Program | 2027 | DIRA Foundation"
+    />
+    <meta
+      name="twitter:description"
+      content="Each year, DIRA Foundation helps Northwest businesses build and grow through DSIP. Explore the 2027 programme, including enterprise support, practical training and a Closing Tech Summit in Bamenda."
+    />
+    <!-- seo-domain:start -->
+    <!-- seo-domain:end -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+
+    <link rel="icon" type="image/jpeg" href="./assets/logo.jpg" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unicons.iconscout.com/release/v4.0.8/css/line.css"
+    />
+    <style>
+      /* Base Styles */
+      :root {
+          --primary-purple: #6a0dad;
+          --light-purple: #8a2be2;
+          --dark-purple: #4b0082;
+          --accent-purple: #9370db;
+          --white: #ffffff;
+          --light-gray: #f8f9fa;
+          --medium-gray: #e9ecef;
+          --dark-gray: #333333;
+          --text-gray: #6c757d;
+      }
+
+      * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      body {
+          background-color: var(--white);
+          color: var(--dark-gray);
+          line-height: 1.6;
+          overflow-x: hidden;
+      }
+
+      .container {
+          width: 100%;
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: 0 20px;
+      }
+
+      .section-title {
+          font-size: 2.5rem;
+          text-align: center;
+          margin-bottom: 20px;
+          color: var(--dark-gray);
+          position: relative;
+      }
+
+      .section-title:after {
+          content: '';
+          position: absolute;
+          bottom: -10px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 80px;
+          height: 4px;
+          background: var(--primary-purple);
+          border-radius: 2px;
+      }
+
+      .section-subtitle {
+          text-align: center;
+          font-size: 1.2rem;
+          color: var(--text-gray);
+          max-width: 700px;
+          margin: 0 auto 50px;
+      }
+
+      /* Header Styles */
+      header {
+          background-color: var(--white);
+          box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+          position: fixed;
+          width: 100%;
+          top: 0;
+          z-index: 1000;
+          transition: all 0.3s ease;
+      }
+
+      .header-container {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 15px 0;
+      }
+
+      .logo {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+      }
+
+      .logo-icon {
+          font-size: 28px;
+          color: var(--primary-purple);
+      }
+
+      .logo-text {
+          font-size: 24px;
+          font-weight: 700;
+          color: var(--primary-purple);
+      }
+
+      .logo-text span {
+          color: var(--dark-gray);
+      }
+
+      nav ul {
+          display: flex;
+          list-style: none;
+      }
+
+      nav ul li {
+          margin-left: 30px;
+      }
+
+      nav ul li a {
+          text-decoration: none;
+          color: var(--dark-gray);
+          font-weight: 500;
+          transition: color 0.3s;
+          position: relative;
+      }
+
+      nav ul li a:after {
+          content: '';
+          position: absolute;
+          bottom: -5px;
+          left: 0;
+          width: 0;
+          height: 2px;
+          background: var(--primary-purple);
+          transition: width 0.3s;
+      }
+
+      nav ul li a:hover {
+          color: var(--primary-purple);
+      }
+
+      nav ul li a.active:not(.nav-cta) {
+          color: var(--primary-purple);
+          font-weight: 700;
+      }
+
+      nav ul li a.active:not(.nav-cta):after {
+          width: 100%;
+      }
+
+      nav ul li a.nav-cta.active {
+          background: var(--dark-purple);
+          box-shadow: 0 0 0 2px rgba(106, 13, 173, 0.2);
+      }
+
+      nav ul li a:hover:after {
+          width: 100%;
+      }
+
+      .nav-cta {
+          background: var(--primary-purple);
+          color: white;
+          padding: 8px 20px;
+          border-radius: 30px;
+          transition: all 0.3s;
+      }
+
+      .nav-cta:hover {
+          background: var(--dark-purple);
+          transform: translateY(-2px);
+      }
+
+      .nav-cta:hover:after {
+          width: 0;
+      }
+
+      .mobile-menu-btn {
+          display: none;
+          font-size: 24px;
+          cursor: pointer;
+          color: var(--primary-purple);
+          background: none;
+          border: none;
+      }
+
+      /* Mobile Menu */
+      .mobile-menu {
+          position: fixed;
+          top: 0;
+          right: -100%;
+          width: 80%;
+          max-width: 300px;
+          height: 100vh;
+          background: var(--white);
+          box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+          z-index: 1001;
+          transition: right 0.4s ease;
+          padding: 80px 30px 30px;
+          overflow-y: auto;
+      }
+
+      .mobile-menu.active {
+          right: 0;
+      }
+
+      .mobile-menu ul {
+          list-style: none;
+      }
+
+      .mobile-menu ul li {
+          margin-bottom: 20px;
+      }
+
+      .mobile-menu ul li a {
+          text-decoration: none;
+          color: var(--dark-gray);
+          font-size: 1.1rem;
+          font-weight: 500;
+          display: block;
+          padding: 10px 0;
+          border-bottom: 1px solid var(--medium-gray);
+          transition: color 0.3s;
+      }
+
+      .mobile-menu ul li a:hover {
+          color: var(--primary-purple);
+      }
+
+      .mobile-menu ul li a.active {
+          color: var(--primary-purple);
+          font-weight: 700;
+          border-bottom-color: var(--primary-purple);
+      }
+
+      .mobile-menu-close {
+          position: absolute;
+          top: 20px;
+          right: 20px;
+          font-size: 24px;
+          background: none;
+          border: none;
+          color: var(--dark-gray);
+          cursor: pointer;
+      }
+
+      .overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(0, 0, 0, 0.5);
+          z-index: 999;
+          opacity: 0;
+          visibility: hidden;
+          transition: all 0.3s;
+      }
+
+      .overlay.active {
+          opacity: 1;
+          visibility: visible;
+      }
+
+      /* Page Header */
+      .page-header {
+          padding: 180px 0 80px;
+          background: linear-gradient(135deg, var(--primary-purple) 0%, var(--dark-purple) 100%);
+          color: white;
+          text-align: center;
+      }
+
+      .page-title {
+          font-size: 3.5rem;
+          margin-bottom: 20px;
+          font-weight: 700;
+      }
+
+      .page-subtitle {
+          font-size: 1.3rem;
+          max-width: 700px;
+          margin: 0 auto;
+          opacity: 0.9;
+      }
+
+      /* Our Story Section */
+
+
+
+
+
+
+
+      /* Mission Vision Section */
+
+
+
+
+
+
+
+      /* Values Section */
+
+
+
+
+
+
+
+      /* Leadership Section */
+
+
+
+
+
+
+
+
+
+
+      /* Gallery Grid */
+
+
+
+
+      /*Video*/
+
+
+
+      /* CTA Section */
+      .cta-section {
+          padding: 100px 0;
+          background: linear-gradient(135deg, var(--primary-purple), var(--dark-purple));
+          color: white;
+          text-align: center;
+      }
+
+      .cta-title {
+          font-size: 2.5rem;
+          margin-bottom: 20px;
+      }
+
+      .cta-desc {
+          font-size: 1.2rem;
+          max-width: 700px;
+          margin: 0 auto 40px;
+          opacity: 0.9;
+      }
+
+      .cta-buttons-centered {
+          display: flex;
+          justify-content: center;
+          gap: 20px;
+      }
+
+      .btn {
+          padding: 14px 32px;
+          border-radius: 30px;
+          font-weight: 600;
+          text-decoration: none;
+          transition: all 0.3s ease;
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+      }
+
+      .btn-light {
+          background: white;
+          color: var(--primary-purple);
+      }
+
+      .btn-light:hover {
+          background: var(--light-gray);
+          transform: translateY(-3px);
+          box-shadow: 0 8px 20px rgba(255, 255, 255, 0.2);
+      }
+
+      .btn-outline-light {
+          background: transparent;
+          color: white;
+          border: 2px solid white;
+      }
+
+      .btn-outline-light:hover {
+          background: white;
+          color: var(--primary-purple);
+          transform: translateY(-3px);
+          box-shadow: 0 8px 20px rgba(255, 255, 255, 0.2);
+      }
+
+      /* Footer */
+      footer {
+          background-color: var(--dark-gray);
+          color: var(--white);
+          padding: 70px 0 30px;
+      }
+
+      .footer-container {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+          gap: 40px;
+          margin-bottom: 50px;
+      }
+
+      .footer-col h3 {
+          font-size: 1.3rem;
+          margin-bottom: 25px;
+          position: relative;
+          padding-bottom: 10px;
+      }
+
+      .footer-col h3:after {
+          content: '';
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 40px;
+          height: 3px;
+          background: var(--primary-purple);
+      }
+
+      .footer-col p {
+          margin-bottom: 20px;
+          opacity: 0.8;
+      }
+
+      .footer-links {
+          list-style: none;
+      }
+
+      .footer-links li {
+          margin-bottom: 12px;
+      }
+
+      .footer-links a {
+          color: var(--white);
+          text-decoration: none;
+          opacity: 0.8;
+          transition: opacity 0.3s, padding-left 0.3s;
+      }
+
+      .footer-links a:hover {
+          opacity: 1;
+          padding-left: 5px;
+      }
+
+      .social-links {
+          display: flex;
+          gap: 15px;
+          margin-top: 20px;
+      }
+
+      .social-links a {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 40px;
+          height: 40px;
+          background: rgba(255, 255, 255, 0.1);
+          border-radius: 50%;
+          color: white;
+          text-decoration: none;
+          transition: all 0.3s;
+      }
+
+      .social-links a:hover {
+          background: var(--primary-purple);
+          transform: translateY(-3px);
+      }
+
+      .copyright {
+          text-align: center;
+          padding-top: 30px;
+          border-top: 1px solid rgba(255, 255, 255, 0.1);
+          font-size: 0.9rem;
+          opacity: 0.7;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 992px) {
+
+          .story-container,
+
+
+      }
+
+      @media (max-width: 768px) {
+          .section-title {
+              font-size: 2rem;
+          }
+
+          .page-title {
+              font-size: 2.5rem;
+          }
+
+          .page-subtitle {
+              font-size: 1.1rem;
+          }
+
+          nav ul {
+              display: none;
+          }
+
+          .mobile-menu-btn {
+              display: block;
+          }
+
+          .cta-buttons-centered {
+              flex-direction: column;
+              align-items: center;
+          }
+
+          .btn {
+              width: 220px;
+              text-align: center;
+              justify-content: center;
+          }
+
+          .values-container,
+      }
+
+      @media (max-width: 480px) {
+          .page-title {
+              font-size: 2rem;
+          }
+
+          .section-title {
+              font-size: 1.8rem;
+          }
+
+          .cta-title {
+              font-size: 2rem;
+          }
+
+      }
+
+      /* ---- Foundation repositioning additions ---- */
+      .skip-link { position: absolute; left: -999px; top: 0; background: #fff; color: var(--primary-purple); padding: 10px 16px; z-index: 3000; font-weight: 600; }
+      .skip-link:focus { left: 10px; top: 10px; }
+      .fd-section { padding: 90px 0; background: var(--white); }
+      .fd-section.alt { background: var(--light-gray); }
+      .fd-lead { max-width: 820px; margin: 0 auto 36px; text-align: center; color: var(--text-gray); font-size: 1.08rem; line-height: 1.7; }
+      .fd-prose { max-width: 860px; margin: 0 auto; color: var(--text-gray); line-height: 1.75; }
+      .fd-prose p { margin-bottom: 16px; }
+      .fd-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr)); gap: 28px; }
+      .fd-card { background: var(--white); border: 1px solid var(--medium-gray); border-radius: 10px; padding: 28px; box-shadow: 0 5px 15px rgba(0,0,0,.05); }
+      .fd-card h3 { color: var(--dark-gray); font-size: 1.25rem; margin: 14px 0 10px; }
+      .fd-card p { color: var(--text-gray); line-height: 1.65; }
+      .fd-icon { width: 54px; height: 54px; border-radius: 12px; background: linear-gradient(135deg, var(--primary-purple), var(--light-purple)); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; }
+      .fd-tag { display: inline-block; font-size: .75rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--primary-purple); background: #f1e8fa; border-radius: 20px; padding: 4px 12px; }
+      .fd-list { margin: 12px 0 0 22px; color: var(--text-gray); line-height: 1.65; }
+      .fd-list li { margin-bottom: 10px; }
+      .fd-two { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: 40px; align-items: start; }
+      .fd-btn { display: inline-block; padding: 12px 26px; border-radius: 30px; background: var(--primary-purple); color: #fff; text-decoration: none; font-weight: 600; margin: 6px 6px 0 0; }
+      .fd-btn:hover { background: var(--dark-purple); }
+      .fd-btn.outline { background: transparent; color: var(--primary-purple); border: 2px solid var(--primary-purple); padding: 10px 24px; }
+      .fd-center { text-align: center; margin-top: 30px; }
+      .mobile-menu-btn, .mobile-menu-close { min-width: 44px; min-height: 44px; }
+      @media (max-width: 768px) {
+          .fd-section { padding: 60px 0; }
+      }
+
+      /* ---- DIRA Startup Incubator Program page ---- */
+      .js .reveal { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
+      .js .reveal.in { opacity: 1; transform: none; }
+      .ds-hero { padding-bottom: 120px; position: relative; overflow: hidden; }
+      .ds-hero::before, .ds-hero::after { content: ""; position: absolute; border-radius: 50%; background: rgba(255,255,255,.07); pointer-events: none; }
+      .ds-hero::before { width: 380px; height: 380px; right: -110px; top: -140px; }
+      .ds-hero::after { width: 240px; height: 240px; left: -80px; bottom: -110px; }
+      .ds-eyebrow { display: inline-block; font-size: .8rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; background: rgba(255,255,255,.16); color: #fff; padding: 6px 16px; border-radius: 30px; margin-bottom: 18px; }
+      .ds-statswrap { margin-top: -66px; position: relative; z-index: 2; padding-bottom: 10px; }
+      .ds-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+      .ds-stat { background: var(--white); border-radius: 14px; padding: 28px 18px; text-align: center; box-shadow: 0 14px 34px rgba(60,10,100,.16); border-top: 4px solid var(--primary-purple); }
+      .ds-stat strong { display: block; font-size: 2.3rem; line-height: 1.1; background: linear-gradient(135deg, var(--primary-purple), var(--light-purple)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+      .ds-stat span { display: block; margin-top: 8px; color: var(--text-gray); font-size: .95rem; line-height: 1.4; }
+      .ds-section { padding: 90px 0; background: var(--white); }
+      .ds-section.alt { background: var(--light-gray); }
+      .ds-intro { max-width: 860px; margin: 0 auto 8px; text-align: center; color: var(--text-gray); font-size: 1.12rem; line-height: 1.8; }
+      .ds-glance { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 44px; }
+      .ds-fact { display: flex; gap: 16px; align-items: flex-start; background: var(--white); border: 1px solid var(--medium-gray); border-radius: 12px; padding: 22px; box-shadow: 0 5px 15px rgba(0,0,0,.04); }
+      .ds-fact .ico { flex: 0 0 48px; height: 48px; border-radius: 12px; background: linear-gradient(135deg, var(--primary-purple), var(--light-purple)); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
+      .ds-fact h3 { font-size: .8rem; letter-spacing: .06em; text-transform: uppercase; color: var(--primary-purple); margin-bottom: 4px; }
+      .ds-fact p { color: var(--dark-gray); line-height: 1.5; font-weight: 500; }
+      .ds-split { display: grid; grid-template-columns: 1.1fr 1fr; gap: 44px; align-items: center; }
+      .ds-split h2 { text-align: left; }
+      .ds-split p { color: var(--text-gray); line-height: 1.8; margin-bottom: 14px; font-size: 1.05rem; }
+      .ds-challenge { background: linear-gradient(135deg, var(--primary-purple), var(--dark-purple)); color: #fff; border-radius: 16px; padding: 34px; box-shadow: 0 16px 40px rgba(60,10,100,.25); }
+      .ds-challenge ul { list-style: none; margin: 0; padding: 0; }
+      .ds-challenge li { display: flex; gap: 14px; align-items: flex-start; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,.18); line-height: 1.55; }
+      .ds-challenge li:last-child { border-bottom: 0; padding-bottom: 0; }
+      .ds-challenge li i { margin-top: 4px; opacity: .85; }
+      .ds-dates { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; margin: 36px 0 12px; }
+      .ds-date { background: var(--white); border: 1px solid var(--medium-gray); border-radius: 14px; padding: 16px 26px; text-align: center; min-width: 210px; box-shadow: 0 5px 15px rgba(0,0,0,.05); }
+      .ds-date small { display: block; font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; color: var(--primary-purple); font-weight: 700; margin-bottom: 4px; }
+      .ds-date b { color: var(--dark-gray); font-size: 1.1rem; }
+      .ds-stages { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; margin-top: 40px; position: relative; }
+      .ds-stages::before { content: ""; position: absolute; top: 34px; left: 16%; right: 16%; height: 3px; background: linear-gradient(90deg, var(--primary-purple), var(--light-purple)); opacity: .35; }
+      .ds-stage { position: relative; background: var(--white); border: 1px solid var(--medium-gray); border-radius: 14px; padding: 66px 26px 28px; box-shadow: 0 8px 22px rgba(0,0,0,.06); }
+      .ds-num { position: absolute; top: -4px; left: 50%; transform: translateX(-50%); width: 68px; height: 68px; border-radius: 50%; background: linear-gradient(135deg, var(--primary-purple), var(--light-purple)); color: #fff; font-size: 1.7rem; font-weight: 700; display: flex; align-items: center; justify-content: center; border: 5px solid var(--light-gray); }
+      .ds-stage h3 { text-align: center; color: var(--dark-gray); font-size: 1.3rem; margin-bottom: 6px; }
+      .ds-stage .when { display: block; text-align: center; font-size: .85rem; font-weight: 700; color: var(--primary-purple); margin-bottom: 14px; }
+      .ds-stage p { color: var(--text-gray); line-height: 1.7; margin-bottom: 12px; }
+      .ds-chip { display: inline-block; background: #f1e8fa; color: var(--primary-purple); font-size: .78rem; font-weight: 600; padding: 4px 12px; border-radius: 20px; margin: 4px 6px 0 0; }
+      .ds-hours { max-width: 900px; margin: 40px auto 0; }
+      .ds-hours-bar { display: flex; height: 62px; border-radius: 14px; overflow: hidden; box-shadow: 0 8px 22px rgba(60,10,100,.18); }
+      .ds-hours-bar div { display: flex; flex-direction: column; align-items: center; justify-content: center; color: #fff; font-weight: 700; line-height: 1.2; }
+      .ds-hours-bar small { font-weight: 500; font-size: .75rem; opacity: .9; }
+      .ds-hours-bar .h1 { width: 22.2%; background: var(--light-purple); }
+      .ds-hours-bar .h2 { width: 55.6%; background: var(--primary-purple); }
+      .ds-hours-bar .h3 { width: 22.2%; background: var(--dark-purple); }
+      .ds-hours-note { text-align: center; color: var(--text-gray); margin-top: 14px; line-height: 1.6; }
+      .ds-tracks { display: grid; grid-template-columns: repeat(2, 1fr); gap: 26px; margin-top: 40px; }
+      .ds-track { background: var(--white); border: 1px solid var(--medium-gray); border-radius: 14px; padding: 28px; box-shadow: 0 8px 22px rgba(0,0,0,.05); border-top: 5px solid var(--primary-purple); }
+      .ds-track:nth-child(2) { border-top-color: var(--light-purple); }
+      .ds-track:nth-child(3) { border-top-color: var(--dark-purple); }
+      .ds-track .ico { width: 54px; height: 54px; border-radius: 14px; background: linear-gradient(135deg, var(--primary-purple), var(--light-purple)); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; margin-bottom: 14px; }
+      .ds-track h3 { color: var(--dark-gray); font-size: 1.25rem; margin-bottom: 12px; }
+      .ds-track ul { list-style: none; margin: 0; padding: 0; }
+      .ds-track li { padding: 8px 0 8px 26px; position: relative; color: var(--text-gray); line-height: 1.5; border-bottom: 1px dashed var(--medium-gray); }
+      .ds-track li:last-child { border-bottom: 0; }
+      .ds-track li::before { content: "\f00c"; font-family: "Font Awesome 6 Free"; font-weight: 900; position: absolute; left: 0; top: 9px; color: var(--primary-purple); font-size: .8rem; }
+      .ds-results { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; margin-top: 40px; }
+      .ds-result { display: flex; gap: 18px; align-items: flex-start; background: var(--white); border: 1px solid var(--medium-gray); border-radius: 14px; padding: 24px; box-shadow: 0 5px 15px rgba(0,0,0,.04); }
+      .ds-result .n { flex: 0 0 44px; height: 44px; border-radius: 50%; background: #f1e8fa; color: var(--primary-purple); font-weight: 700; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; }
+      .ds-result p { color: var(--dark-gray); line-height: 1.65; }
+      .ds-record { display: grid; grid-template-columns: .8fr 1.2fr; gap: 40px; align-items: center; }
+      .ds-record img { width: 100%; max-height: 520px; object-fit: contain; border-radius: 14px; background: #f3f0f8; box-shadow: 0 14px 34px rgba(60,10,100,.15); }
+      .ds-record h2 { text-align: left; }
+      .ds-record p { color: var(--text-gray); line-height: 1.8; margin-bottom: 16px; }
+      .ds-mini { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin: 20px 0; }
+      .ds-mini div { background: var(--white); border: 1px solid var(--medium-gray); border-radius: 12px; padding: 16px; text-align: center; }
+      .ds-mini b { display: block; font-size: 1.6rem; color: var(--primary-purple); }
+      .ds-mini span { font-size: .88rem; color: var(--text-gray); }
+      .ds-budget { max-width: 920px; margin: 40px auto 0; background: var(--white); border: 1px solid var(--medium-gray); border-radius: 16px; padding: 30px; box-shadow: 0 8px 22px rgba(0,0,0,.05); }
+      .ds-bud-row { display: grid; grid-template-columns: 1.5fr 2fr 150px; gap: 16px; align-items: center; padding: 11px 0; border-bottom: 1px solid #efeaf5; }
+      .ds-bud-row:last-of-type { border-bottom: 0; }
+      .ds-bud-row .lbl { color: var(--dark-gray); font-weight: 500; line-height: 1.35; }
+      .ds-bar { height: 14px; background: #efe8f7; border-radius: 10px; overflow: hidden; }
+      .ds-bar i { display: block; height: 100%; border-radius: 10px; background: linear-gradient(90deg, var(--primary-purple), var(--light-purple)); transform-origin: left; }
+      .js .ds-bar i { transform: scaleX(0); transition: transform 1.1s cubic-bezier(.2,.7,.2,1); }
+      .js .reveal.in .ds-bar i, .js .ds-budget.in .ds-bar i { transform: scaleX(1); }
+      .ds-bar i.prize { background: linear-gradient(90deg, #e0a100, #f4c542); }
+      .ds-bud-row .amt { text-align: right; color: var(--dark-gray); font-weight: 600; font-size: .95rem; white-space: nowrap; }
+      .ds-bud-row .amt em { font-style: normal; color: var(--primary-purple); margin-left: 6px; }
+      .ds-bud-total { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-top: 12px; padding-top: 18px; border-top: 2px solid var(--primary-purple); font-weight: 700; color: var(--dark-gray); font-size: 1.1rem; }
+      .ds-bud-note { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; max-width: 920px; margin: 22px auto 0; }
+      .ds-bud-note div { background: #f6f0fb; border-radius: 12px; padding: 18px 20px; color: var(--dark-gray); line-height: 1.6; font-size: .95rem; }
+      .ds-bud-note i { color: var(--primary-purple); margin-right: 8px; }
+      .ds-gov { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; margin-top: 40px; }
+      .ds-govcard { background: var(--white); border: 1px solid var(--medium-gray); border-radius: 14px; padding: 26px; box-shadow: 0 5px 15px rgba(0,0,0,.04); }
+      .ds-govcard .ico { width: 50px; height: 50px; border-radius: 12px; background: linear-gradient(135deg, var(--primary-purple), var(--light-purple)); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; margin-bottom: 14px; }
+      .ds-govcard h3 { color: var(--dark-gray); font-size: 1.1rem; margin-bottom: 8px; }
+      .ds-govcard p { color: var(--text-gray); line-height: 1.65; font-size: .96rem; }
+      .ds-inst { display: grid; gap: 28px; margin-top: 40px; }
+      .ds-inst img.photo { width: 100%; max-height: 480px; border-radius: 14px; box-shadow: 0 14px 34px rgba(60,10,100,.15); display: block; object-fit: cover; }
+      .ds-inst-list { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+      .ds-inst-item { min-width: 0; display: flex; flex-direction: column; align-items: center; gap: 14px; background: var(--white); border: 1px solid var(--medium-gray); border-radius: 12px; padding: 22px 18px; text-align: center; }
+      .ds-inst-mark { min-height: 60px; display: flex; align-items: center; justify-content: center; color: var(--primary-purple); font-size: 1.2rem; font-weight: 800; letter-spacing: .02em; line-height: 1.15; overflow-wrap: anywhere; }
+      .ds-inst-item .ico { width: 58px; height: 58px; flex: 0 0 58px; border-radius: 12px; background: #f1e8fa; color: var(--primary-purple); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; }
+      .ds-inst-item h3 { font-size: 1rem; color: var(--dark-gray); margin-bottom: 6px; }
+      .ds-inst-item p { color: var(--text-gray); font-size: .9rem; line-height: 1.55; }
+      @media (prefers-reduced-motion: reduce) { .js .reveal, .js .ds-bar i { transition: none; opacity: 1; transform: none; } }
+      @media (max-width: 992px) {
+          .ds-stats { grid-template-columns: repeat(2, 1fr); }
+          .ds-glance, .ds-gov { grid-template-columns: repeat(2, 1fr); }
+          .ds-split, .ds-record { grid-template-columns: 1fr; }
+          .ds-inst-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+          .ds-stages { grid-template-columns: 1fr; gap: 56px; }
+          .ds-stages::before { display: none; }
+          .ds-bud-row { grid-template-columns: 1fr; gap: 6px; }
+          .ds-bud-row .amt { text-align: left; }
+      }
+      @media (max-width: 640px) {
+          .ds-section { padding: 60px 0; }
+          .ds-glance, .ds-gov, .ds-tracks, .ds-results, .ds-bud-note { grid-template-columns: 1fr; }
+          .ds-stat strong { font-size: 1.9rem; }
+          .ds-budget { padding: 20px 16px; }
+          .ds-hours-bar { height: 76px; }
+          .ds-hours-bar small { display: none; }
+          .ds-hero { padding-bottom: 100px; }
+          .ds-inst { gap: 20px; }
+          .ds-inst img.photo { max-height: 300px; }
+          .ds-inst-item { padding: 18px 14px; }
+      }
+      @media (max-width: 400px) {
+          .ds-inst-list { grid-template-columns: 1fr; }
+      }
+    </style>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Event",
+        "name": "Closing Tech Summit 2027",
+        "description": "The 2027 Closing Tech Summit brings together participants in DIRA Foundation's annual enterprise development programme for an exhibition, pitch competition, panels, a government address and recognition of participating businesses and graduates.",
+        "startDate": "2027-08-20",
+        "endDate": "2027-08-21",
+        "eventStatus": "https://schema.org/EventScheduled",
+        "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+        "location": {
+          "@type": "Place",
+          "name": "Bamenda Congress Hall",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Bamenda",
+            "addressRegion": "Northwest Region",
+            "addressCountry": "CM"
+          }
+        },
+        "organizer": {
+          "@type": "Organization",
+          "name": "DIRA Foundation"
+        }
+      }
+    </script>
+  </head>
+
+  <body>
+    <script>
+      document.documentElement.classList.add("js");
+    </script>
+    <a class="skip-link" href="#main">Skip to main content</a>
+    <!-- Header -->
+    <header>
+      <div class="container header-container">
+        <div class="logo">
+          <img
+            src="./assets/logo.jpg"
+            style="width: 3em; height: 3em; border-radius: 50%"
+            alt="DIRA Foundation logo"
+            width="48"
+            height="48"
+          />
+          <div class="logo-text" style="line-height: 20px">
+            DIRA<br /><span>Foundation</span>
+          </div>
+        </div>
+        <nav>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li>
+              <a href="work.html" class="active" aria-current="page"
+                >Our Work</a
+              >
+            </li>
+            <li><a href="articles.html">Articles</a></li>
+            <li><a href="partner.html">Partners</a></li>
+            <li><a href="involve.html">Get Involved</a></li>
+            <li><a href="contact.html" class="nav-cta">Contact</a></li>
+          </ul>
+        </nav>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+      <button class="mobile-menu-close" id="mobileMenuClose">
+        <i class="fas fa-times"></i>
+      </button>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li>
+          <a href="work.html" class="active" aria-current="page">Our Work</a>
+        </li>
+        <li><a href="articles.html">Articles</a></li>
+        <li><a href="partner.html">Partners</a></li>
+        <li><a href="involve.html">Get Involved</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+
+    <main id="main">
+      <section class="page-header ds-hero">
+        <div class="container">
+          <span class="ds-eyebrow"
+            >A DIRA Foundation programme &middot; 2027 cycle</span
+          >
+          <h1 class="page-title">DIRA Startup Incubator Program (DSIP)</h1>
+          <p class="page-subtitle">
+            Each year, DSIP helps Northwest businesses strengthen their
+            foundations and pursue new opportunities. In 2027, that work brings
+            enterprise support, practical training and a Closing Tech Summit to
+            Bamenda.
+          </p>
+        </div>
+      </section>
+
+      <!-- Key figures -->
+      <section class="ds-statswrap">
+        <div class="container">
+          <div class="ds-stats">
+            <div class="ds-stat reveal">
+              <strong>30 to 50</strong><span>enterprises assessed</span>
+            </div>
+            <div class="ds-stat reveal">
+              <strong>500</strong><span>people to be trained</span>
+            </div>
+            <div class="ds-stat reveal">
+              <strong>4</strong><span>expert-led tracks</span>
+            </div>
+            <div class="ds-stat reveal">
+              <strong>5,000+</strong
+              ><span>attendees expected at the Closing Tech Summit</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- About -->
+      <section class="ds-section" id="about-programme">
+        <div class="container">
+          <h2 class="section-title">About DSIP</h2>
+          <p class="ds-intro reveal">
+            DSIP is DIRA Foundation's annual programme for helping small
+            businesses and cooperatives build the skills and systems they need
+            to grow. The 2027 cycle will support enterprises across the
+            Northwest Region with registration and record-keeping, while
+            training 500 people in business, finance, marketing and technology.
+            The year will culminate in the Closing Tech Summit, with priority
+            given to women-led and youth-led enterprises.
+          </p>
+          <div class="ds-glance">
+            <div class="ds-fact reveal">
+              <div class="ico">
+                <i class="fas fa-landmark" aria-hidden="true"></i>
+              </div>
+              <div>
+                <h3>Programme owner</h3>
+                <p>DIRA Foundation</p>
+              </div>
+            </div>
+            <div class="ds-fact reveal">
+              <div class="ico">
+                <i class="fas fa-location-dot" aria-hidden="true"></i>
+              </div>
+              <div>
+                <h3>Location</h3>
+                <p>
+                  Bamenda and the seven Divisions of the Northwest Region,
+                  Cameroon
+                </p>
+              </div>
+            </div>
+            <div class="ds-fact reveal">
+              <div class="ico">
+                <i class="fas fa-calendar-days" aria-hidden="true"></i>
+              </div>
+              <div>
+                <h3>Training period</h3>
+                <p>20 July to 19 August 2027, over 27 training days</p>
+              </div>
+            </div>
+            <div class="ds-fact reveal">
+              <div class="ico">
+                <i class="fas fa-flag-checkered" aria-hidden="true"></i>
+              </div>
+              <div>
+                <h3>Closing event</h3>
+                <p>
+                  Closing Tech Summit, Bamenda Congress Hall, 20 and 21 August
+                  2027
+                </p>
+              </div>
+            </div>
+            <div class="ds-fact reveal">
+              <div class="ico">
+                <i class="fas fa-coins" aria-hidden="true"></i>
+              </div>
+              <div>
+                <h3>2027 edition budget</h3>
+                <p>100,000,000 XAF (about USD 177,000)</p>
+              </div>
+            </div>
+            <div class="ds-fact reveal">
+              <div class="ico">
+                <i class="fas fa-people-group" aria-hidden="true"></i>
+              </div>
+              <div>
+                <h3>Priority</h3>
+                <p>Women-led and youth-led enterprises</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Challenge -->
+      <section class="ds-section alt" id="challenge">
+        <div class="container">
+          <div class="ds-split">
+            <div class="reveal">
+              <h2 class="section-title" style="text-align: left">
+                The Challenge
+              </h2>
+              <p>
+                Most enterprises in the Northwest Region operate without
+                registration, written records or a documented financial history.
+              </p>
+              <p>
+                The programme responds by helping businesses and cooperatives
+                register and keep proper records.
+              </p>
+            </div>
+            <div class="ds-challenge reveal">
+              <ul>
+                <li>
+                  <i class="fas fa-building-columns" aria-hidden="true"></i
+                  ><span
+                    >Unregistered enterprises cannot meet the requirements of
+                    banks, public buyers or investors.</span
+                  >
+                </li>
+                <li>
+                  <i class="fas fa-receipt" aria-hidden="true"></i
+                  ><span
+                    >The region loses registration fees and tax revenue from
+                    activity that goes unrecorded.</span
+                  >
+                </li>
+                <li>
+                  <i class="fas fa-user-graduate" aria-hidden="true"></i
+                  ><span
+                    >Young people find few openings to work in, or build, formal
+                    enterprises.</span
+                  >
+                </li>
+                <li>
+                  <i class="fas fa-laptop-code" aria-hidden="true"></i
+                  ><span
+                    >Many businesses are unaware of free or affordable digital
+                    tools and AI that could help them grow and work more
+                    productively.</span
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- How it works -->
+      <section class="ds-section" id="how-it-works">
+        <div class="container">
+          <h2 class="section-title">How the Programme Works</h2>
+          <p class="ds-intro reveal">
+            The programme runs in three connected stages, from identifying
+            enterprises to presenting results at the Closing Tech Summit.
+          </p>
+          <div class="ds-dates reveal">
+            <div class="ds-date">
+              <small>Training begins</small><b>20 July 2027</b>
+            </div>
+            <div class="ds-date">
+              <small>Training ends</small><b>19 August 2027</b>
+            </div>
+            <div class="ds-date">
+              <small>Closing Tech Summit</small><b>20 and 21 August 2027</b>
+            </div>
+          </div>
+          <div class="ds-stages">
+            <div class="ds-stage reveal">
+              <div class="ds-num">1</div>
+              <h3>Identification</h3>
+              <span class="when">Northwest Digital Readiness Survey</span>
+              <p>
+                The survey assesses 30 to 50 enterprises, cooperative credit
+                unions and social-economy organisations across the seven
+                Divisions of the region.
+              </p>
+              <p>
+                It is financed by DIRA SAS and carried out under a signed
+                Memorandum of Understanding with the Regional Delegation of
+                MINPMEESA.
+              </p>
+            </div>
+            <div class="ds-stage reveal">
+              <div class="ds-num">2</div>
+              <h3>Formalisation and Training</h3>
+              <span class="when">20 July to 19 August 2027</span>
+              <p>
+                Selected enterprises complete registration and record-keeping
+                with a mentor, and receive coaching through the Agency for the
+                Promotion of Small and Medium-Sized Enterprises (APME), working
+                with MINPMEESA.
+              </p>
+              <p>
+                Five hundred trainees follow a common core and four expert-led
+                tracks. Representatives of partner ministries lead sessions on
+                opportunities, compliance and the realities of running a
+                business or cooperative.
+              </p>
+            </div>
+            <div class="ds-stage reveal">
+              <div class="ds-num">3</div>
+              <h3>Closing Tech Summit</h3>
+              <span class="when"
+                >Bamenda Congress Hall, 20 and 21 August 2027</span
+              >
+              <p>Two days that bring the programme together:</p>
+              <span class="ds-chip">Exhibition</span
+              ><span class="ds-chip">Pitch competition</span
+              ><span class="ds-chip">10,000,000 XAF prize pool</span
+              ><span class="ds-chip">Panels</span
+              ><span class="ds-chip">Government address</span
+              ><span class="ds-chip"
+                >Recognition of enterprises and graduates</span
+              >
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Curriculum -->
+      <section class="ds-section alt" id="curriculum">
+        <div class="container">
+          <h2 class="section-title">Curriculum</h2>
+          <p class="ds-intro reveal">
+            The curriculum totals about 135 contact hours. Each track is led by
+            an expert from the relevant profession and supported by specialist
+            practitioners.
+          </p>
+          <div class="ds-hours reveal">
+            <div
+              class="ds-hours-bar"
+              role="img"
+              aria-label="135 contact hours: 30 common core, 75 specialist track, 30 team practicum"
+            >
+              <div class="h1">30 h<small>Common core</small></div>
+              <div class="h2">75 h<small>Specialist track</small></div>
+              <div class="h3">30 h<small>Team practicum</small></div>
+            </div>
+            <p class="ds-hours-note">
+              Common core, 30 hours &nbsp;&middot;&nbsp; Specialist track, 75
+              hours &nbsp;&middot;&nbsp; Team practicum, 30 hours
+            </p>
+          </div>
+          <div class="ds-tracks">
+            <div class="ds-track reveal">
+              <div class="ico">
+                <i class="fas fa-briefcase" aria-hidden="true"></i>
+              </div>
+              <h3>Business Development and Enterprise Management</h3>
+              <ul>
+                <li>Business development and strategy</li>
+                <li>Enterprise and cooperative management</li>
+                <li>Business planning and project design</li>
+              </ul>
+            </div>
+            <div class="ds-track reveal">
+              <div class="ico">
+                <i class="fas fa-building-columns" aria-hidden="true"></i>
+              </div>
+              <h3>Finance, Banking and Fiscal Management</h3>
+              <ul>
+                <li>Financial literacy and record-keeping</li>
+                <li>Banking and financial products</li>
+                <li>Fiscal management, taxes and compliance</li>
+              </ul>
+            </div>
+            <div class="ds-track reveal">
+              <div class="ico">
+                <i class="fas fa-bullhorn" aria-hidden="true"></i>
+              </div>
+              <h3>Sales, Marketing and Brand</h3>
+              <ul>
+                <li>Sales and marketing</li>
+                <li>Strategic branding and communication</li>
+                <li>Social media and content creation</li>
+              </ul>
+            </div>
+            <div class="ds-track reveal">
+              <div class="ico">
+                <i class="fas fa-microchip" aria-hidden="true"></i>
+              </div>
+              <h3>Technology and AI Integration</h3>
+              <ul>
+                <li>Digital tools for business operations</li>
+                <li>Applied AI for small enterprises</li>
+                <li>Compliance and business law basics</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Expected results -->
+      <section class="ds-section" id="expected-results">
+        <div class="container">
+          <h2 class="section-title">2027 Edition: Expected Results</h2>
+          <div class="ds-results">
+            <div class="ds-result reveal">
+              <div class="n">1</div>
+              <p>
+                At least 30 enterprises registered and equipped with records,
+                each with a written starting assessment and a mentor.
+              </p>
+            </div>
+            <div class="ds-result reveal">
+              <div class="n">2</div>
+              <p>
+                500 people trained, with women making up at least 40 percent of
+                participants.
+              </p>
+            </div>
+            <div class="ds-result reveal">
+              <div class="n">3</div>
+              <p>
+                A documented group of formalised enterprises that can be
+                introduced, with each enterprise's consent, to financial
+                institutions, public buyers and partners.
+              </p>
+            </div>
+            <div class="ds-result reveal">
+              <div class="n">4</div>
+              <p>
+                A growing ecosystem of sustainable SMEs, supported by an
+                established, self-sustaining accelerator programme.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Track record -->
+      <section class="ds-section alt" id="foundation">
+        <div class="container">
+          <div class="ds-record">
+            <img
+              class="reveal"
+              src="illust_1.jpg"
+              width="905"
+              height="1280"
+              loading="lazy"
+              alt="DIRA Tech Fest flyer"
+            />
+            <div class="reveal">
+              <h2 class="section-title" style="text-align: left">
+                DIRA Tech Fest: A Successful Pilot
+              </h2>
+              <p>
+                DIRA Tech Fest 2026 served as a practical test of DIRA's
+                approach to youth skills, entrepreneurship and innovation. Held
+                in Bamenda from 27 to 29 March, it brought young people and
+                businesses together and demonstrated the appetite for sustained
+                enterprise support. The 2027 Startup Incubator Program takes
+                these lessons further through a year-long programme of training,
+                mentoring and business formalisation.
+              </p>
+              <div class="ds-mini">
+                <div>
+                  <b>108</b><span>young people trained across ten tracks</span>
+                </div>
+                <div>
+                  <b>10</b><span>working products built in 48 hours</span>
+                </div>
+                <div><b>1,000+</b><span>attendees</span></div>
+                <div><b>45</b><span>exhibiting businesses</span></div>
+              </div>
+              <p>
+                Delegates of three ministries and the Regional Manager of NFC
+                Bank took part in the closing panel.
+              </p>
+              <a class="fd-btn outline" href="work.html#dira-tech-fest"
+                >More about DIRA Tech Fest</a
+              >
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Budget -->
+      <section class="ds-section" id="budget">
+        <div class="container">
+          <h2 class="section-title">2027 Edition Budget</h2>
+          <p class="ds-intro reveal">
+            The 2027 edition is budgeted at 100,000,000 XAF. The chart shows how
+            each line contributes to the total.
+          </p>
+          <div class="ds-budget reveal">
+            <div class="ds-bud-row">
+              <div class="lbl">
+                Business formalisation and incorporation support
+              </div>
+              <div
+                class="ds-bar"
+                role="img"
+                aria-label="15 percent of the budget"
+              >
+                <i style="width: 83.3%"></i>
+              </div>
+              <div class="amt">15,000,000 XAF<em>15%</em></div>
+            </div>
+            <div class="ds-bud-row">
+              <div class="lbl">
+                Training delivery: four expert-led tracks and common core
+              </div>
+              <div
+                class="ds-bar"
+                role="img"
+                aria-label="18 percent of the budget"
+              >
+                <i style="width: 100%"></i>
+              </div>
+              <div class="amt">18,000,000 XAF<em>18%</em></div>
+            </div>
+            <div class="ds-bud-row">
+              <div class="lbl">
+                Closing Tech Summit production: venue, stage, sound and lighting
+              </div>
+              <div
+                class="ds-bar"
+                role="img"
+                aria-label="16 percent of the budget"
+              >
+                <i style="width: 88.9%"></i>
+              </div>
+              <div class="amt">16,000,000 XAF<em>16%</em></div>
+            </div>
+            <div class="ds-bud-row">
+              <div class="lbl">Media, publicity and documentation</div>
+              <div
+                class="ds-bar"
+                role="img"
+                aria-label="9 percent of the budget"
+              >
+                <i style="width: 50%"></i>
+              </div>
+              <div class="amt">9,000,000 XAF<em>9%</em></div>
+            </div>
+            <div class="ds-bud-row">
+              <div class="lbl">Prize pool</div>
+              <div
+                class="ds-bar"
+                role="img"
+                aria-label="10 percent of the budget"
+              >
+                <i class="prize" style="width: 55.6%"></i>
+              </div>
+              <div class="amt">10,000,000 XAF<em>10%</em></div>
+            </div>
+            <div class="ds-bud-row">
+              <div class="lbl">Speaker and guest logistics</div>
+              <div
+                class="ds-bar"
+                role="img"
+                aria-label="6 percent of the budget"
+              >
+                <i style="width: 33.3%"></i>
+              </div>
+              <div class="amt">6,000,000 XAF<em>6%</em></div>
+            </div>
+            <div class="ds-bud-row">
+              <div class="lbl">Branding, print and merchandise</div>
+              <div
+                class="ds-bar"
+                role="img"
+                aria-label="5 percent of the budget"
+              >
+                <i style="width: 27.8%"></i>
+              </div>
+              <div class="amt">5,000,000 XAF<em>5%</em></div>
+            </div>
+            <div class="ds-bud-row">
+              <div class="lbl">Feeding and refreshments</div>
+              <div
+                class="ds-bar"
+                role="img"
+                aria-label="9 percent of the budget"
+              >
+                <i style="width: 50%"></i>
+              </div>
+              <div class="amt">9,000,000 XAF<em>9%</em></div>
+            </div>
+            <div class="ds-bud-row">
+              <div class="lbl">Security, health and safety</div>
+              <div
+                class="ds-bar"
+                role="img"
+                aria-label="3 percent of the budget"
+              >
+                <i style="width: 16.7%"></i>
+              </div>
+              <div class="amt">3,000,000 XAF<em>3%</em></div>
+            </div>
+            <div class="ds-bud-row">
+              <div class="lbl">
+                Programme management, monitoring and evaluation, audit and
+                reporting
+              </div>
+              <div
+                class="ds-bar"
+                role="img"
+                aria-label="4 percent of the budget"
+              >
+                <i style="width: 22.2%"></i>
+              </div>
+              <div class="amt">4,000,000 XAF<em>4%</em></div>
+            </div>
+            <div class="ds-bud-row">
+              <div class="lbl">Contingency reserve</div>
+              <div
+                class="ds-bar"
+                role="img"
+                aria-label="5 percent of the budget"
+              >
+                <i style="width: 27.8%"></i>
+              </div>
+              <div class="amt">5,000,000 XAF<em>5%</em></div>
+            </div>
+            <div class="ds-bud-total">
+              <span>Total programme cost</span><span>100,000,000 XAF</span>
+            </div>
+          </div>
+          <div class="ds-bud-note">
+            <div class="reveal">
+              
+            <div class="reveal">
+              <i class="fas fa-hand-holding-dollar" aria-hidden="true"></i>DIRA
+              Group contributes 4,250,000 XAF in kind and in cash, and DIRA SAS
+              commits cash toward the balance not met by partner and
+              institutional contributions.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Governance -->
+      <section class="ds-section alt" id="governance">
+        <div class="container">
+          <h2 class="section-title">Governance and Reporting</h2>
+          <div class="ds-gov">
+            <div class="ds-govcard reveal">
+              <div class="ico">
+                <i class="fas fa-landmark" aria-hidden="true"></i>
+              </div>
+              <h3>Programme owner</h3>
+              <p>
+                DIRA Foundation owns the programme, is the contracting party and
+                holds all funds in its own account.
+              </p>
+            </div>
+            <div class="ds-govcard reveal">
+              <div class="ico">
+                <i class="fas fa-users-gear" aria-hidden="true"></i>
+              </div>
+              <h3>Direction</h3>
+              <p>
+                The Executive Committee (President, Secretary, Treasurer and
+                Logistics Planner) directs the programme, together with a
+                Programme Director and a monthly Steering Group.
+              </p>
+            </div>
+            <div class="ds-govcard reveal">
+              <div class="ico">
+                <i class="fas fa-file-signature" aria-hidden="true"></i>
+              </div>
+              <h3>Financial controls</h3>
+              <p>
+                Payments above the General Assembly threshold need two
+                authorising officers, and an independent chartered accountant
+                reviews the programme accounts.
+              </p>
+            </div>
+            <div class="ds-govcard reveal">
+              <div class="ico">
+                <i class="fas fa-chart-line" aria-hidden="true"></i>
+              </div>
+              <h3>Reporting</h3>
+              <p>
+                Partners receive quarterly reports and a full programme report
+                within 30 days of the Closing Tech Summit.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Institutions -->
+      <section class="ds-section" id="institutions">
+        <div class="container">
+          <h2 class="section-title">Institutions Involved</h2>
+          <div class="ds-inst">
+            <img
+              class="photo reveal"
+              src="images/team-at-minresi-offices.jpg"
+              width="1080"
+              height="465"
+              loading="lazy"
+              alt="DIRA Foundation team members at the North West Regional Delegation office"
+            />
+            <div class="ds-inst-list">
+              <div class="ds-inst-item reveal">
+                <div class="ds-inst-mark" aria-hidden="true">MINPMEESA</div>
+                <div class="ds-inst-copy">
+                  <h3>MINPMEESA, North West Regional Delegation</h3>
+                  <p>
+                    Partner under a signed Memorandum of Understanding for the
+                    Northwest Digital Readiness Survey.
+                  </p>
+                </div>
+              </div>
+              <div class="ds-inst-item reveal">
+                <div class="ds-inst-mark" aria-hidden="true">APME</div>
+                <div class="ds-inst-copy">
+                  <h3>APME</h3>
+                  <p>
+                    Provides coaching to selected enterprises, working with
+                    MINPMEESA.
+                  </p>
+                </div>
+              </div>
+              <div class="ds-inst-item reveal">
+                <div class="ds-inst-mark" aria-hidden="true">
+                  <i class="fas fa-building-flag"></i>
+                </div>
+                <div class="ds-inst-copy">
+                  <h3>Partner ministries</h3>
+                  <p>
+                    Lead sessions on opportunities, compliance and running a
+                    business or cooperative.
+                  </p>
+                </div>
+              </div>
+              <div class="ds-inst-item reveal">
+                <div class="ds-inst-mark" aria-hidden="true">DIRA</div>
+                <div class="ds-inst-copy">
+                  <h3>DIRA SAS and DIRA Group</h3>
+                  <p>
+                    DIRA SAS finances the survey and commits cash to the
+                    programme; DIRA Group contributes in kind and in cash.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="cta-section">
+        <div class="container">
+          <h2 class="cta-title">Be Part of DSIP in 2027</h2>
+          <p class="cta-desc">
+            Get in touch to explore how your institution, organisation or skills
+            can contribute to this year's programme.
+          </p>
+          <div class="cta-buttons-centered">
+            <a href="partner.html#collaborate" class="btn btn-light"
+              ><i class="fas fa-handshake" aria-hidden="true"></i> Propose a
+              collaboration</a
+            >
+            <a href="volunteer.html" class="btn btn-outline-light"
+              ><i class="fas fa-hands-helping" aria-hidden="true"></i>
+              Volunteer</a
+            >
+            <a href="contact.html" class="btn btn-outline-light"
+              ><i class="fas fa-envelope" aria-hidden="true"></i> Contact us</a
+            >
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+      <div class="container">
+        <div class="footer-container">
+          <div class="footer-col">
+            <h3>DIRA Foundation</h3>
+            <p>
+              A non-profit association based in Bamenda, North West Region of
+              Cameroon, working with communities and institutions on education,
+              opportunity, research, health awareness and community development.
+            </p>
+            <div class="social-links">
+              <a
+                href="https://www.linkedin.com/company/dira-digital-era/"
+                aria-label="DIRA on LinkedIn"
+                target="_blank"
+                rel="noopener noreferrer"
+                ><i class="fab fa-linkedin-in" aria-hidden="true"></i
+              ></a>
+              <a
+                href="https://x.com/diradigitalera/"
+                aria-label="DIRA on X"
+                target="_blank"
+                rel="noopener noreferrer"
+                ><i class="fab fa-twitter" aria-hidden="true"></i
+              ></a>
+              <a
+                href="https://www.instagram.com/digital_era_dira/"
+                aria-label="DIRA on Instagram"
+                target="_blank"
+                rel="noopener noreferrer"
+                ><i class="fab fa-instagram" aria-hidden="true"></i
+              ></a>
+              <a
+                href="https://www.tiktok.com/@digital.era.dira"
+                aria-label="DIRA on TikTok"
+                target="_blank"
+                rel="noopener noreferrer"
+                ><i class="fab fa-tiktok" aria-hidden="true"></i
+              ></a>
+            </div>
+          </div>
+
+          <div class="footer-col">
+            <h3>Quick Links</h3>
+            <ul class="footer-links">
+              <li><a href="index.html">Home</a></li>
+              <li><a href="about.html">About Us</a></li>
+              <li><a href="work.html">Our Work</a></li>
+              <li><a href="articles.html">Articles</a></li>
+              <li><a href="partner.html">Partners</a></li>
+              <li><a href="involve.html">Get Involved</a></li>
+              <li><a href="contact.html">Contact</a></li>
+              <li><a href="terms-privacy.html">Terms &amp; Privacy</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-col">
+            <h3>Take Part</h3>
+            <ul class="footer-links">
+              <li><a href="involve.html">Volunteer</a></li>
+              <li>
+                <a href="partner.html#collaborate">Propose a collaboration</a>
+              </li>
+              <li>
+                <a href="involve.html#donation">Support the foundation</a>
+              </li>
+              <li><a href="about.html#governance">Governance</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-col">
+            <h3>Contact Us</h3>
+            <p>
+              <i class="fas fa-map-marker-alt" aria-hidden="true"></i> North
+              West Region, Bamenda
+            </p>
+            <p>
+              <i class="fas fa-envelope" aria-hidden="true"></i>
+              <a href="mailto:Foundation@diracmr.com" style="color: inherit"
+                >Foundation@diracmr.com</a
+              >
+            </p>
+            <p>
+              <i class="fas fa-phone" aria-hidden="true"></i>
+              <a href="tel:+237682366472" style="color: inherit"
+                >+237 6 82 36 64 72</a
+              >
+            </p>
+          </div>
+        </div>
+
+        <div class="copyright">
+          &copy; 2026 DIRA Foundation. All rights reserved.
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Mobile Menu Functionality
+      const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+      const mobileMenu = document.getElementById("mobileMenu");
+      const mobileMenuClose = document.getElementById("mobileMenuClose");
+      const overlay = document.getElementById("overlay");
+
+      function openMobileMenu() {
+        mobileMenu.classList.add("active");
+        overlay.classList.add("active");
+        document.body.style.overflow = "hidden";
+      }
+
+      function closeMobileMenu() {
+        mobileMenu.classList.remove("active");
+        overlay.classList.remove("active");
+        document.body.style.overflow = "auto";
+      }
+
+      mobileMenuBtn.addEventListener("click", openMobileMenu);
+      mobileMenuClose.addEventListener("click", closeMobileMenu);
+      overlay.addEventListener("click", closeMobileMenu);
+
+      // Close menu when clicking on a link
+      const mobileMenuLinks = document.querySelectorAll(".mobile-menu a");
+      mobileMenuLinks.forEach((link) => {
+        link.addEventListener("click", closeMobileMenu);
+      });
+
+      // Header scroll effect
+      window.addEventListener("scroll", function () {
+        const header = document.querySelector("header");
+        if (window.scrollY > 50) {
+          header.style.padding = "5px 0";
+          header.style.boxShadow = "0 5px 20px rgba(0, 0, 0, 0.1)";
+        } else {
+          header.style.padding = "15px 0";
+          header.style.boxShadow = "0 2px 15px rgba(0, 0, 0, 0.1)";
+        }
+      });
+
+      // ---------- Reveal on scroll ----------
+      (function () {
+        document.documentElement.classList.add("js");
+        const els = document.querySelectorAll(".reveal");
+        if (!("IntersectionObserver" in window)) {
+          els.forEach((e) => e.classList.add("in"));
+          return;
+        }
+        const io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((en) => {
+              if (en.isIntersecting) {
+                en.target.classList.add("in");
+                io.unobserve(en.target);
+              }
+            });
+          },
+          { threshold: 0.12 },
+        );
+        els.forEach((e) => io.observe(e));
+      })();
+    </script>
+  </body>
+</html>

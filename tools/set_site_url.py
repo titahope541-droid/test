@@ -14,7 +14,17 @@ What it does
 """
 import datetime, json, os, re, sys
 
-PAGES = ["index.html", "about.html", "work.html", "partner.html", "involve.html", "contact.html"]
+PAGES = [
+    "index.html",
+    "about.html",
+    "work.html",
+    "partner.html",
+    "involve.html",
+    "contact.html",
+    "startup-incubator.html",
+    "volunteer.html",
+    "terms-privacy.html",
+]
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 if len(sys.argv) != 2 or not sys.argv[1].startswith(("http://", "https://")):
@@ -46,7 +56,12 @@ for page in PAGES:
     open(path, "w", encoding="utf-8", newline="\n").write(html)
 
 today = datetime.date.today().isoformat()
-urls = "\n".join(f"  <url><loc>{url_for(p)}</loc><lastmod>{today}</lastmod></url>" for p in PAGES)
+sitemap_urls = [url_for(page) for page in PAGES]
+sitemap_urls.append(f"{base}/articles")
+urls = "\n".join(
+    f"  <url><loc>{url}</loc><lastmod>{today}</lastmod></url>"
+    for url in sitemap_urls
+)
 open(os.path.join(ROOT, "sitemap.xml"), "w", encoding="utf-8").write(
     '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + urls + "\n</urlset>\n")
 

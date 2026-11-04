@@ -630,6 +630,17 @@
         background: rgba(106, 13, 173, 0.05);
       }
 
+      .fapshi-method,
+      .manual-donation .donation-method {
+        cursor: default;
+      }
+
+      .fapshi-method:hover,
+      .manual-donation .donation-method:hover {
+        border-color: var(--medium-gray);
+        background: transparent;
+      }
+
       .method-icon {
         font-size: 2rem;
         color: var(--primary-purple);
@@ -645,6 +656,74 @@
       .method-info p {
         font-size: 0.9rem;
         color: var(--text-gray);
+      }
+
+      .fapshi-form {
+        display: grid;
+        gap: 14px;
+        margin: 20px 0;
+      }
+
+      .fapshi-form label {
+        display: grid;
+        gap: 7px;
+        color: var(--dark-gray);
+        font-weight: 600;
+      }
+
+      .fapshi-form input {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid var(--medium-gray);
+        border-radius: 6px;
+        font: inherit;
+      }
+
+      .fapshi-form input:focus {
+        outline: 2px solid var(--primary-purple);
+        outline-offset: 1px;
+      }
+
+      .fapshi-submit {
+        padding: 13px 18px;
+        border: 0;
+        border-radius: 6px;
+        background: var(--primary-purple);
+        color: #fff;
+        font: inherit;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .fapshi-submit:disabled {
+        cursor: wait;
+        opacity: 0.65;
+      }
+
+      .fapshi-status {
+        min-height: 1.4em;
+        margin: 0;
+        color: var(--dark-gray);
+        text-align: center;
+      }
+
+      .fapshi-check {
+        display: none;
+        margin: 0 auto 16px;
+        padding: 9px 14px;
+        border: 1px solid var(--primary-purple);
+        border-radius: 6px;
+        background: transparent;
+        color: var(--primary-purple);
+        font: inherit;
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      .manual-donation {
+        margin-top: 20px;
+        padding-top: 16px;
+        border-top: 1px solid var(--medium-gray);
       }
 
       .donation-note {
@@ -1341,68 +1420,59 @@
 
             <div class="donation-options">
               <h3 class="donation-options-title">Make a Donation</h3>
-              <p>Select payment method</p>
-
-              <div class="donation-methods">
-                <!--<div class="donation-method" onclick="selectPayment('paypal')">
-                            <div class="method-icon">
-                        <img src="icons/paypal.png" style="width: 1.5em;height: 1.5em;" alt="">
-                            </div>
-                            <div class="method-info">
-                                <h4>PayPal</h4>
-                                <p>Secure online payment via PayPal</p>
-                            </div>
-                        </div>-->
-
-                <!--<div class="donation-method">
-                            <div class="method-icon">
-                        <img src="icons/flutterwave.svg" style="width: 1.5em;height: 1.5em;" alt="">
-                            </div>
-                            <div class="method-info">
-                                <h4>Flutterwave</h4>
-                                <p>Includes Mobile Money, Bank Payments, Card Payments and many others</p>
-                            </div>
-                        </div>-->
-
-                <div
-                  class="donation-method"
-                  onclick="selectPayment('flutterwave')"
-                >
+              <div class="donation-method fapshi-method">
                   <div class="method-icon">
-                    <img
-                      src="icons/mtn-mobile-logo-icon.svg"
-                      style="width: 1.5em; height: 1.5em"
-                      alt=""
-                    />
+                    <i class="fas fa-mobile-alt" aria-hidden="true"></i>
                   </div>
                   <div class="method-info">
-                    <h4>MTN Mobile Money</h4>
-                    <p>
-                      Send donations to the number
-                      <span style="color: var(--light-purple); font-weight: 700"
-                        >+237 6 82 36 64 72</span
-                      >
-                    </p>
+                    <h4>Pay securely with Fapshi</h4>
+                    <p>MTN Mobile Money and Orange Money are supported.</p>
                   </div>
-                </div>
-
-                <!--<div class="donation-method" onclick="selectPayment('bank')">
-                            <div class="method-icon">
-                        <img src="icons/mobile-banking.png" style="width: 1.5em;height: 1.5em;" alt="">
-                            </div>
-                            <div class="method-info">
-                                <h4>Bank Transfer</h4>
-                                <p>Direct bank transfer for larger donations</p>
-                            </div>
-                        </div>-->
               </div>
 
-              <!--<div class="role-cta">
-                        <a href="#donate" class="btn btn-primary">
-                            <i class="fas fa-heart"></i>
-                            Donate Now
-                        </a>
-                    </div>-->
+              <form class="fapshi-form" id="fapshiDonationForm">
+                <label for="donationAmount">
+                  Donation amount (XAF)
+                  <input
+                    id="donationAmount"
+                    name="amount"
+                    type="number"
+                    min="100"
+                    step="1"
+                    inputmode="numeric"
+                    required
+                  />
+                </label>
+                <label for="donationEmail">
+                  Email (optional)
+                  <input
+                    id="donationEmail"
+                    name="email"
+                    type="email"
+                    maxlength="254"
+                    autocomplete="email"
+                  />
+                </label>
+                <button class="fapshi-submit" id="fapshiSubmit" type="submit">
+                  Continue to secure payment
+                </button>
+                <p class="fapshi-status" id="fapshiStatus" role="status" aria-live="polite"></p>
+              </form>
+              <button class="fapshi-check" id="fapshiCheck" type="button">
+                Check payment status
+              </button>
+
+              <div class="manual-donation">
+                <div class="donation-method">
+                  <div class="method-icon">
+                    <i class="fas fa-mobile-alt" aria-hidden="true"></i>
+                  </div>
+                  <div class="method-info">
+                    <h4>Prefer a direct MTN transfer?</h4>
+                    <p>Send your donation to <strong>+237 6 82 36 64 72</strong>.</p>
+                  </div>
+                </div>
+              </div>
 
               <p class="donation-note">
                 Donations are received and managed in line with the foundation's
@@ -1482,10 +1552,8 @@
 
                 <div class="role-cta">
                   <a
-                    href="https://forms.gle/qAWYgYtzw8U5BVwj7"
+                    href="volunteer.html?role=field-workers"
                     class="btn btn-primary"
-                    target="_blank"
-                    rel="noopener noreferrer"
                   >
                     <i class="fas fa-user-check" aria-hidden="true"></i>
                     Apply Now
@@ -1545,10 +1613,8 @@
 
                 <div class="role-cta">
                   <a
-                    href="https://forms.gle/qAWYgYtzw8U5BVwj7"
+                    href="volunteer.html?role=communications-officer"
                     class="btn btn-primary"
-                    target="_blank"
-                    rel="noopener noreferrer"
                   >
                     <i class="fas fa-user-check" aria-hidden="true"></i>
                     Apply Now
@@ -1612,10 +1678,8 @@
 
                 <div class="role-cta">
                   <a
-                    href="https://forms.gle/qAWYgYtzw8U5BVwj7"
+                    href="volunteer.html?role=psychologist"
                     class="btn btn-primary"
-                    target="_blank"
-                    rel="noopener noreferrer"
                   >
                     <i class="fas fa-user-check" aria-hidden="true"></i>
                     Apply Now
@@ -1679,10 +1743,8 @@
 
                 <div class="role-cta">
                   <a
-                    href="https://forms.gle/qAWYgYtzw8U5BVwj7"
+                    href="volunteer.html?role=gbv-counsellor"
                     class="btn btn-primary"
-                    target="_blank"
-                    rel="noopener noreferrer"
                   >
                     <i class="fas fa-user-check" aria-hidden="true"></i>
                     Apply Now
@@ -1749,10 +1811,8 @@
 
                 <div class="role-cta">
                   <a
-                    href="https://forms.gle/qAWYgYtzw8U5BVwj7"
+                    href="volunteer.html?role=fiscal-business-consultants"
                     class="btn btn-primary"
-                    target="_blank"
-                    rel="noopener noreferrer"
                   >
                     <i class="fas fa-user-check" aria-hidden="true"></i>
                     Apply Now
@@ -1807,10 +1867,8 @@
 
                 <div class="role-cta">
                   <a
-                    href="https://forms.gle/qAWYgYtzw8U5BVwj7"
+                    href="volunteer.html?role=project-managers"
                     class="btn btn-primary"
-                    target="_blank"
-                    rel="noopener noreferrer"
                   >
                     <i class="fas fa-user-check" aria-hidden="true"></i>
                     Apply Now
@@ -1903,10 +1961,8 @@
           </p>
           <div class="cta-buttons-centered">
             <a
-              href="https://forms.gle/qAWYgYtzw8U5BVwj7"
+              href="volunteer.html"
               class="btn btn-light"
-              target="_blank"
-              rel="noopener noreferrer"
             >
               <i class="fas fa-user-check" aria-hidden="true"></i>
               Apply to Volunteer
@@ -1973,6 +2029,7 @@
               <li><a href="partner.html">Partners</a></li>
               <li><a href="involve.html">Get Involved</a></li>
               <li><a href="contact.html">Contact</a></li>
+              <li><a href="terms-privacy.html">Terms &amp; Privacy</a></li>
             </ul>
           </div>
 
@@ -2058,7 +2115,104 @@
         }
       });
 
-      // Payment method selection
+      const donationForm = document.getElementById("fapshiDonationForm");
+      const donationSubmit = document.getElementById("fapshiSubmit");
+      const donationStatus = document.getElementById("fapshiStatus");
+      const donationCheck = document.getElementById("fapshiCheck");
+      const donationSessionKey = "dira_fapshi_payment";
+
+      function savedDonation() {
+        try {
+          const donation = JSON.parse(sessionStorage.getItem(donationSessionKey) || "null");
+          return donation && typeof donation.transId === "string" && typeof donation.statusToken === "string"
+            ? donation
+            : null;
+        } catch (error) {
+          return null;
+        }
+      }
+
+      async function checkDonationStatus() {
+        const donation = savedDonation();
+        if (!donation) {
+          donationStatus.textContent = "We could not find this payment session. Please contact the foundation if you were charged.";
+          donationCheck.style.display = "none";
+          return;
+        }
+        donationCheck.disabled = true;
+        donationStatus.textContent = "Checking payment status...";
+        try {
+          const response = await fetch("/api/payments/status", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(donation),
+            cache: "no-store"
+          });
+          const result = await response.json();
+          if (!response.ok) throw new Error(result.error || "Unable to check the payment status.");
+          if (result.status === "SUCCESSFUL") {
+            donationStatus.textContent = "Donation received. Thank you for supporting DIRA Foundation.";
+            sessionStorage.removeItem(donationSessionKey);
+            donationCheck.style.display = "none";
+          } else if (result.status === "FAILED") {
+            donationStatus.textContent = "The payment was not completed. You can try again or use the direct transfer option.";
+            sessionStorage.removeItem(donationSessionKey);
+            donationCheck.style.display = "none";
+          } else if (result.status === "EXPIRED") {
+            donationStatus.textContent = "This payment link has expired. Please start a new donation.";
+            sessionStorage.removeItem(donationSessionKey);
+            donationCheck.style.display = "none";
+          } else {
+            donationStatus.textContent = "Payment status: " + result.status + ". If you have completed payment, check again shortly.";
+            donationCheck.style.display = "inline-block";
+          }
+        } catch (error) {
+          donationStatus.textContent = error.message || "Unable to check the payment status. Please try again.";
+          donationCheck.style.display = "inline-block";
+        } finally {
+          donationCheck.disabled = false;
+        }
+      }
+
+      donationForm.addEventListener("submit", async function (event) {
+        event.preventDefault();
+        donationStatus.textContent = "";
+        donationCheck.style.display = "none";
+        donationSubmit.disabled = true;
+        donationSubmit.textContent = "Connecting to Fapshi...";
+        try {
+          const response = await fetch("/api/payments/initiate", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              amount: Number(document.getElementById("donationAmount").value),
+              email: document.getElementById("donationEmail").value.trim()
+            })
+          });
+          const result = await response.json();
+          if (!response.ok) throw new Error(result.error || "Unable to start the payment.");
+          try {
+            sessionStorage.setItem(donationSessionKey, JSON.stringify({
+              transId: result.transId,
+              statusToken: result.statusToken
+            }));
+          } catch (storageError) {
+            donationStatus.textContent = "Payment started; redirecting to Fapshi...";
+          }
+          window.location.assign(result.link);
+        } catch (error) {
+          donationStatus.textContent = error.message || "Unable to start the payment. Please try again.";
+          donationSubmit.disabled = false;
+          donationSubmit.textContent = "Continue to secure payment";
+        }
+      });
+
+      donationCheck.addEventListener("click", checkDonationStatus);
+
+      if (new URLSearchParams(window.location.search).get("payment") === "return") {
+        window.history.replaceState({}, "", window.location.pathname + window.location.hash);
+        checkDonationStatus();
+      }
 
       // Smooth scrolling for anchor links
       document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
