@@ -1,6 +1,6 @@
-# Articles page and admin upload page
+# Website articles and volunteer applications
 
-This adds a public **Articles** page and a password-protected **admin page** for publishing articles to the DIRA Foundation website.
+The website includes a public **Articles** page, a password-protected **admin page** for publishing articles, and a shared volunteer application manager.
 
 ## What is included
 
@@ -9,6 +9,8 @@ This adds a public **Articles** page and a password-protected **admin page** for
 | `articles.html` | Template for the public articles list at `/articles` |
 | `article.html` | Template for a single article at `/articles/your-article-name` |
 | `admin.html` | The admin page at `/admin.html` (sign in, write, upload, edit, delete) |
+| `volunteer-admin.html` | The password-protected volunteer form and applications manager |
+| `volunteer-store.js` | Shared volunteer form and registration data layer |
 | `server.js` | Node.js server: serves the website, renders articles and connects the admin API to MongoDB and Cloudinary |
 | `netlify.toml` | Netlify static-site, Function, redirect and header configuration |
 | `netlify/functions/server.js` | Netlify Function entry point for the backend |
@@ -28,6 +30,7 @@ You need **Node.js 18 or newer**, a MongoDB database and a Cloudinary account. F
    - `ADMIN_EMAIL` and `ADMIN_PASSWORD` (at least 8 characters, not the example text)
    - `MONGODB_URI` from your MongoDB deployment, including your database name in the connection string
    - `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY` and `CLOUDINARY_API_SECRET` from the Cloudinary Console
+   - `RESEND_API_KEY` and `RESEND_FROM_EMAIL` for volunteer application email notifications. Verify the sender address/domain with Resend first. Notifications are sent to `diradigitalera@gmail.com`.
    - `FAPSHI_API_USER` and `FAPSHI_API_KEY` from your Fapshi collection service, and `FAPSHI_ENVIRONMENT` (`sandbox` for testing or `live` for real payments)
    - `SESSION_SECRET`: a long random string. Create one with
      `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"`
@@ -62,6 +65,10 @@ A published article keeps its web address even if you later change its title, so
 
 - Articles: the `articles` collection in the configured MongoDB database
 - Header and in-article images: the `dira-articles` folder in Cloudinary
+- Volunteer form and applications: the `volunteer_forms` and `volunteer_submissions` MongoDB collections
+- Volunteer CV uploads: the `volunteer_files` MongoDB collection (PDF, Word and RTF; up to 4 MB per file)
+
+Open `/volunteer-login.html` to sign in with the same `ADMIN_EMAIL` and `ADMIN_PASSWORD` credentials used by `/admin.html`. Opening `/volunteer-admin.html` while signed out redirects to this login page. Form changes are used by the public volunteer application page. New applications are stored and appear in the registrations list; Resend emails a notification to `diradigitalera@gmail.com`. If the application is saved but the email cannot be sent, the applicant is told and the server logs the notification error. Application records and uploaded CVs are managed in the admin page and can be exported or deleted. Protect access to the MongoDB database and include these collections in database backups.
 
 Back up the MongoDB database and Cloudinary assets. On standalone server startup, if the legacy `data/articles.json` file is present and the MongoDB collection is empty, the server imports those articles once. Netlify does not deploy ignored local data/uploads; migrate any legacy local articles and images to MongoDB and Cloudinary before deploying.
 
@@ -72,12 +79,12 @@ Back up the MongoDB database and Cloudinary assets. On standalone server startup
 The repository includes `netlify.toml` and a Netlify Function adapter. Netlify serves the static pages and runs the existing article API and dynamic article routes as a function. Do not use `node server.js` as the Netlify start command.
 
 1. Push this repository to GitHub/GitLab/Bitbucket and import it as a new Netlify site. Set the base directory to the repository root and leave the publish directory and functions directory to the values in `netlify.toml`.
-2. In **Site configuration → Environment variables**, add `MONGODB_URI`, `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`, `ADMIN_EMAIL`, `ADMIN_PASSWORD`, and `SESSION_SECRET`. Set `SITE_URL` to the final HTTPS site URL (for example `https://example.netlify.app`). For online donations, also set `FAPSHI_API_USER`, `FAPSHI_API_KEY`, and `FAPSHI_ENVIRONMENT` to `sandbox` or `live` as appropriate. Do not upload `.env` or put secrets in `netlify.toml`.
+2. In **Site configuration → Environment variables**, add `MONGODB_URI`, `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`, `ADMIN_EMAIL`, `ADMIN_PASSWORD`, `SESSION_SECRET`, `RESEND_API_KEY` and `RESEND_FROM_EMAIL`. Set `SITE_URL` to the final HTTPS site URL (for example `https://example.netlify.app`). For online donations, also set `FAPSHI_API_USER`, `FAPSHI_API_KEY`, and `FAPSHI_ENVIRONMENT` to `sandbox` or `live` as appropriate. Do not upload `.env` or put secrets in `netlify.toml`.
 3. Ensure the MongoDB network access rules allow connections from Netlify Functions (or use an appropriate MongoDB connectivity option). The serverless function reuses its MongoDB connection while its runtime instance remains warm.
-4. Deploy the site. Netlify installs dependencies from `package-lock.json`; verify `/`, `/articles`, an article URL, and `/admin.html` on the deployed HTTPS domain.
-5. Sign in at `/admin.html`, publish a test article and verify it appears on the homepage. Netlify sets secure session cookies and routes `/api/*` and `/articles/*` to the function.
+4. Deploy the site. Netlify installs dependencies from `package-lock.json`; verify `/`, `/articles`, an article URL, `/admin.html`, `/volunteer.html`, `/volunteer-login.html` and `/volunteer-admin.html` on the deployed HTTPS domain.
+5. Sign in at `/admin.html` and `/volunteer-admin.html` with the configured administrator credentials. Test an article and a volunteer application, including an optional CV, then verify both in their admin pages. Netlify sets secure session cookies and routes `/api/*` and `/articles/*` to the function.
 
-Netlify Functions have a 6 MB buffered request limit. The admin editor compresses images in the browser before uploading; keep upload files modest so the encoded request fits the limit. Set the secrets in Netlify’s environment-variable UI for the deploy context you use (production and deploy previews as needed).
+Netlify Functions have a 6 MB buffered request limit. Volunteer CV uploads are limited to 4 MB per file, and the total submission request is capped to fit within the function limit. The article admin editor compresses images in the browser before uploading; keep those uploads modest as well. Set the secrets in Netlify’s environment-variable UI for the deploy context you use (production and deploy previews as needed).
 
 The function detects the Netlify runtime from its function path as well as environment variables. It resolves site templates from the repository root and does not try to create local `data/` or `uploads/` folders in the read-only function bundle.
 

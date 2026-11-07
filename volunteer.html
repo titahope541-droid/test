@@ -631,6 +631,11 @@
       .vol-actions { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
       .vol-btn { display: inline-flex; align-items: center; gap: 8px; padding: 13px 30px; border-radius: 30px; border: 2px solid var(--primary-purple); background: var(--primary-purple); color: #fff; font: inherit; font-weight: 600; cursor: pointer; text-decoration: none; }
       .vol-btn:hover { background: var(--dark-purple); border-color: var(--dark-purple); }
+      .vol-btn:disabled { opacity: .8; cursor: wait; }
+      .vol-spinner { display: none; width: 16px; height: 16px; border: 2px solid rgba(255,255,255,.4); border-top-color: #fff; border-radius: 50%; }
+      .vol-btn.is-loading .vol-spinner { display: inline-block; animation: vol-spin .7s linear infinite; }
+      @keyframes vol-spin { to { transform: rotate(360deg); } }
+      @media (prefers-reduced-motion: reduce) { .vol-btn.is-loading .vol-spinner { animation: none; border-color: #fff; border-right-color: transparent; } }
       .vol-btn.outline { background: transparent; color: var(--primary-purple); }
       .vol-btn.outline:hover { background: #f1e8fa; }
       .vol-errors { background: #fdecea; color: #922b21; border: 1px solid #f5b7b1; border-radius: 8px; padding: 14px 18px; margin-bottom: 24px; }
@@ -649,6 +654,7 @@
           .vol-prof-row legend { float: none; }
       }
     </style>
+    <link rel="stylesheet" href="/site-chrome.css" />
   </head>
 
   <body>
@@ -656,53 +662,38 @@
     <!-- Header -->
     <header>
       <div class="container header-container">
-        <div class="logo">
-          <img
-            src="logo.png"
-            style="width: 3em; height: 3em"
-            alt="DIRA Foundation logo"
-            width="48"
-            height="48"
-          />
-          <div class="logo-text" style="line-height: 20px">
-            DIRA<br /><span>Foundation</span>
-          </div>
-        </div>
-        <nav>
+        <a class="logo" href="index.html" aria-label="DIRA Foundation home">
+          <img src="assets/logo.jpg" alt="DIRA Foundation logo" width="48" height="48" />
+          <span class="logo-text">DIRA<br /><span>Foundation</span></span>
+        </a>
+        <nav aria-label="Main navigation">
           <ul>
             <li><a href="index.html">Home</a></li>
             <li><a href="about.html">About Us</a></li>
             <li><a href="work.html">Our Work</a></li>
+            <li><a href="articles.html">Articles</a></li>
             <li><a href="partner.html">Partners</a></li>
-            <li>
-              <a href="involve.html" class="active" aria-current="page"
-                >Get Involved</a
-              >
-            </li>
+            <li><a href="involve.html" class="active" aria-current="page">Get Involved</a></li>
             <li><a href="contact.html" class="nav-cta">Contact</a></li>
           </ul>
         </nav>
-        <button class="mobile-menu-btn" id="mobileMenuBtn">
-          <i class="fas fa-bars"></i>
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open mobile menu">
+          <i class="fas fa-bars" aria-hidden="true"></i>
         </button>
       </div>
     </header>
 
-    <!-- Mobile Menu -->
-    <div class="mobile-menu" id="mobileMenu">
-      <button class="mobile-menu-close" id="mobileMenuClose">
-        <i class="fas fa-times"></i>
+    <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+      <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close mobile menu">
+        <i class="fas fa-times" aria-hidden="true"></i>
       </button>
       <ul>
         <li><a href="index.html">Home</a></li>
         <li><a href="about.html">About Us</a></li>
         <li><a href="work.html">Our Work</a></li>
+        <li><a href="articles.html">Articles</a></li>
         <li><a href="partner.html">Partners</a></li>
-        <li>
-          <a href="involve.html" class="active" aria-current="page"
-            >Get Involved</a
-          >
-        </li>
+        <li><a href="involve.html" class="active" aria-current="page">Get Involved</a></li>
         <li><a href="contact.html">Contact</a></li>
       </ul>
     </div>
@@ -983,9 +974,7 @@
                   accept=".pdf,.doc,.docx,.rtf"
                 />
                 <p class="vol-hint">
-                  PDF, Word or RTF. Upload 1 supported file, maximum 10 MB. This
-                  page opens your answers in an email, so you will be reminded
-                  to attach this file to that email before sending.
+                  PDF, Word or RTF. Upload 1 supported file, maximum 4 MB.
                 </p>
               </div>
               <div class="vol-field">
@@ -1236,33 +1225,27 @@
                 />
               </div>
               <div class="vol-actions">
-                <button type="submit" class="vol-btn" id="submitBtn">
-                  <i class="fas fa-paper-plane" aria-hidden="true"></i> Submit
-                  application
+                <button type="submit" class="vol-btn" id="submitBtn" data-default-label="Submit application">
+                  <i class="fas fa-paper-plane" aria-hidden="true"></i>
+                  <span class="vol-btn-label">Submit application</span>
+                  <span class="vol-spinner" aria-hidden="true"></span>
                 </button>
               </div>
               <p class="vol-hint">
-                Submitting opens an email to diradigitalera@gmail.com containing
-                your answers. Press Send in your email app to complete your
-                application.
+                Your application will be sent to DIRA Foundation.
               </p>
             </div>
           </form>
 
           <!-- After submit -->
           <div id="donePanel" class="vol-card vol-done" tabindex="-1" hidden>
-            <h2>Your application is ready to send</h2>
+            <h2>Your application has been received</h2>
             <div id="cvNotice" class="vol-notice" hidden></div>
             <p>
-              Your email app should have opened with your answers filled in.
-              <strong>Press Send there to complete your application.</strong>
+              Thank you. Your application has been received by DIRA Foundation.
             </p>
             <p>
-              If nothing opened, or the message looks cut off, copy the text
-              below and email it to
-              <a href="mailto:diradigitalera@gmail.com"
-                >diradigitalera@gmail.com</a
-              >, or send it to us on WhatsApp at +237 682 36 64 72.
+              Keep a copy of your answers for your records.
             </p>
             <textarea
               id="copyBox"
@@ -1275,9 +1258,6 @@
                 <i class="fas fa-copy" aria-hidden="true"></i> Copy application
                 text
               </button>
-              <a class="vol-btn outline" id="reopenMail" href="#"
-                >Open email again</a
-              >
               <button type="button" class="vol-btn outline" id="backBtn">
                 Edit my answers
               </button>
@@ -1295,35 +1275,35 @@
           <div class="footer-col">
             <h3>DIRA Foundation</h3>
             <p>
-              A non-profit association in the Northwest Region of Cameroon,
-              working with communities and institutions on education,
+              A non-profit association based in Bamenda, North West Region of
+              Cameroon, working with communities and institutions on education,
               opportunity, research, health awareness and community development.
             </p>
             <div class="social-links">
               <a
                 href="https://www.linkedin.com/company/dira-digital-era/"
-                aria-label="DIRA on LinkedIn"
+                aria-label="DIRA Foundation on LinkedIn"
                 target="_blank"
                 rel="noopener noreferrer"
                 ><i class="fab fa-linkedin-in" aria-hidden="true"></i
               ></a>
               <a
                 href="https://x.com/diradigitalera/"
-                aria-label="DIRA on X"
+                aria-label="DIRA Foundation on X"
                 target="_blank"
                 rel="noopener noreferrer"
                 ><i class="fab fa-twitter" aria-hidden="true"></i
               ></a>
               <a
                 href="https://www.instagram.com/digital_era_dira/"
-                aria-label="DIRA on Instagram"
+                aria-label="DIRA Foundation on Instagram"
                 target="_blank"
                 rel="noopener noreferrer"
                 ><i class="fab fa-instagram" aria-hidden="true"></i
               ></a>
               <a
                 href="https://www.tiktok.com/@digital.era.dira"
-                aria-label="DIRA on TikTok"
+                aria-label="DIRA Foundation on TikTok"
                 target="_blank"
                 rel="noopener noreferrer"
                 ><i class="fab fa-tiktok" aria-hidden="true"></i
@@ -1337,6 +1317,7 @@
               <li><a href="index.html">Home</a></li>
               <li><a href="about.html">About Us</a></li>
               <li><a href="work.html">Our Work</a></li>
+              <li><a href="articles.html">Articles</a></li>
               <li><a href="partner.html">Partners</a></li>
               <li><a href="involve.html">Get Involved</a></li>
               <li><a href="contact.html">Contact</a></li>
@@ -1354,20 +1335,19 @@
               <li>
                 <a href="involve.html#donation">Support the foundation</a>
               </li>
-              <li><a href="about.html#governance">Governance</a></li>
             </ul>
           </div>
 
           <div class="footer-col">
             <h3>Contact Us</h3>
             <p>
-              <i class="fas fa-map-marker-alt" aria-hidden="true"></i> Douala
-              and Bamenda, Cameroon
+              <i class="fas fa-map-marker-alt" aria-hidden="true"></i> North
+              West Region, Bamenda
             </p>
             <p>
               <i class="fas fa-envelope" aria-hidden="true"></i>
-              <a href="mailto:diradigitalera@gmail.com" style="color: inherit"
-                >diradigitalera@gmail.com</a
+              <a href="mailto:Foundation@diracmr.com" style="color: inherit"
+                >Foundation@diracmr.com</a
               >
             </p>
             <p>
@@ -1380,11 +1360,14 @@
         </div>
 
         <div class="copyright">
-          &copy; 2026 DIRA Foundation. All rights reserved.
+          &copy; 2026 DIRA Foundation. All rights reserved.<br />Built by DIRA
+          SAS
         </div>
       </div>
     </footer>
 
+    <script>window.DIRA_VOLUNTEER_API = "/api";</script>
+    <script src="volunteer-store.js"></script>
     <script>
       // Mobile Menu Functionality
       const mobileMenuBtn = document.getElementById("mobileMenuBtn");
@@ -1428,9 +1411,11 @@
 
       // ---------- Volunteer application ----------
       (function () {
+        const Store = window.DiraVolunteer;
         const $ = (id) => document.getElementById(id);
         const form = $("volForm");
-        const MAIL = "diradigitalera@gmail.com";
+        let configuredForm = null;
+        let formLoadPromise;
         const ROLE_PARAM = {
           "field-workers": 1,
           "communications-officer": 1,
@@ -1443,7 +1428,6 @@
           document.querySelectorAll('input[name="area"]'),
         );
         const profValues = {};
-        let lastMailto = "";
 
         function areaLabel(box) {
           return box.id === "areaOther"
@@ -1598,8 +1582,8 @@
                 el: $("cv"),
                 msg: "The CV must be a PDF, Word or RTF file.",
               });
-            else if (f.size > 10 * 1024 * 1024)
-              errs.push({ el: $("cv"), msg: "The CV is larger than 10 MB." });
+            else if (f.size > 4 * 1024 * 1024)
+              errs.push({ el: $("cv"), msg: "The CV is larger than 4 MB." });
           }
           return errs;
         }
@@ -1637,6 +1621,14 @@
           box.hidden = false;
           box.focus();
           box.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+
+        function setSubmitLoading(button, loading) {
+          button.disabled = loading;
+          button.classList.toggle("is-loading", loading);
+          button.setAttribute("aria-busy", String(loading));
+          const label = button.querySelector(".vol-btn-label");
+          if (label) label.textContent = loading ? "Submitting..." : button.dataset.defaultLabel;
         }
 
         function buildText() {
@@ -1694,43 +1686,328 @@
           return L.join("\n");
         }
 
-        form.addEventListener("submit", function (e) {
+        function createSubmission(file) {
+          const sectionNames = Object.fromEntries(
+            Store.DEFAULT_FORM.sections.map((section) => [section.id, section.title]),
+          );
+          const answers = Store.DEFAULT_FORM.questions.map((q) => {
+            let raw = "";
+            if (q.id === "areas") {
+              raw = areaBoxes.filter((box) => box.checked).map((box) => ({
+                label: box.id === "areaOther" ? "__other__" : box.dataset.label,
+                other: box.id === "areaOther" ? val("otherArea") : "",
+                level: checked("prof_" + box.value),
+              }));
+            } else if (q.id === "gender" || q.id === "interview" || q.id === "social" ||
+                       q.id === "hours" || q.id === "commitment") {
+              raw = { value: checked(q.id) };
+            } else if (q.id === "heard") {
+              raw = $("heardOther").checked
+                ? { value: "__other__", other: val("heardOtherText") }
+                : { value: checked("heard") };
+            } else if (q.id === "cv") {
+              raw = file || null;
+            } else if (["fullName", "email", "phone", "location", "education", "dob",
+                        "strongest", "additional", "links", "experience", "motivation",
+                        "deadlines", "emergency"].includes(q.id)) {
+              raw = val(q.id);
+            }
+            return {
+              qid: q.id,
+              label: q.label,
+              section: sectionNames[q.sectionId],
+              type: q.type,
+              value: Store.storeValue(q, raw),
+            };
+          });
+          return {
+            id: Store.uid("vol_"),
+            submittedAt: new Date().toISOString(),
+            applicant: { name: val("fullName"), email: val("email"), phone: val("phone") },
+            answers,
+          };
+        }
+
+        function appendIntro(config) {
+          const intro = document.querySelector(".vol-intro");
+          intro.textContent = "";
+          String(config.intro || "").split(/\n{2,}/).filter(Boolean).forEach((paragraph) => {
+            const p = document.createElement("p");
+            const links = /\[([^\]]+)\]\((https?:\/\/[^\s)]+|mailto:[^\s)]+)\)/g;
+            let cursor = 0;
+            let match;
+            while ((match = links.exec(paragraph))) {
+              p.appendChild(document.createTextNode(paragraph.slice(cursor, match.index)));
+              const anchor = document.createElement("a");
+              anchor.href = match[2];
+              anchor.textContent = match[1];
+              if (match[2].startsWith("https:")) {
+                anchor.target = "_blank";
+                anchor.rel = "noopener noreferrer";
+              }
+              p.appendChild(anchor);
+              cursor = links.lastIndex;
+            }
+            p.appendChild(document.createTextNode(paragraph.slice(cursor)));
+            intro.appendChild(p);
+          });
+          const required = document.createElement("p");
+          required.className = "vol-req";
+          required.textContent = "* Indicates a required question";
+          intro.appendChild(required);
+        }
+
+        function renderConfiguredForm(config) {
+          configuredForm = Store.normalizeForm(config);
+          document.querySelector(".page-header .page-title").textContent = configuredForm.title;
+          document.querySelector(".page-header .page-subtitle").textContent = configuredForm.subtitle;
+          appendIntro(configuredForm);
+          form.textContent = "";
+          const controls = new Map();
+          const make = (tag, className, text) => {
+            const node = document.createElement(tag);
+            if (className) node.className = className;
+            if (text != null) node.textContent = text;
+            return node;
+          };
+          function fieldQuestion(q) {
+            const wrapper = make(q.type === "single_choice" || q.type === "multi_choice" ? "fieldset" : "div", "vol-field");
+            const label = make(q.type === "single_choice" || q.type === "multi_choice" ? "legend" : "label", "", q.label);
+            const controlId = "volq_" + q.id;
+            if (label.tagName === "LABEL") label.htmlFor = controlId;
+            if (q.required) label.appendChild(make("span", "star", " *"));
+            wrapper.appendChild(label);
+            if (q.helpText) wrapper.appendChild(make("p", "vol-hint", q.helpText));
+            const answerControl = { focus: null, value: () => "" };
+            const maxLength = q.maxLength || (q.type === "long_text" ? 2000 : 300);
+            if (["short_text", "long_text", "email", "phone", "date"].includes(q.type)) {
+              const control = make(q.type === "long_text" ? "textarea" : "input");
+              control.id = controlId;
+              if (q.type !== "long_text") control.type = q.type === "phone" ? "tel" : q.type === "short_text" ? "text" : q.type;
+              if (q.type !== "date") control.maxLength = maxLength;
+              if (q.placeholder) control.placeholder = q.placeholder;
+              if (q.required) control.required = true;
+              wrapper.appendChild(control);
+              answerControl.focus = control;
+              answerControl.value = () => control.value;
+            } else if (q.type === "file") {
+              const control = make("input");
+              control.id = controlId;
+              control.type = "file";
+              control.accept = (q.accept || [".pdf", ".doc", ".docx", ".rtf"]).join(",");
+              wrapper.appendChild(control);
+              answerControl.focus = control;
+              answerControl.value = () => control.files[0] || null;
+            } else if (q.type === "dropdown") {
+              const control = make("select");
+              control.id = controlId;
+              control.appendChild(new Option("Choose an answer", ""));
+              (q.options || []).forEach((option) => control.appendChild(new Option(option, option)));
+              if (q.allowOther) control.appendChild(new Option("Other", "__other__"));
+              const other = make("input");
+              other.type = "text";
+              other.placeholder = "Please specify";
+              other.hidden = true;
+              control.addEventListener("change", () => { other.hidden = control.value !== "__other__"; });
+              wrapper.append(control, other);
+              answerControl.focus = control;
+              answerControl.value = () => ({ value: control.value, other: other.value });
+            } else if (q.type === "single_choice") {
+              const group = make("div", "vol-options");
+              const radios = [];
+              (q.options || []).concat(q.allowOther ? ["__other__"] : []).forEach((option, index) => {
+                const value = option === "__other__" ? option : option;
+                const line = make("label", "vol-opt");
+                const radio = make("input");
+                radio.type = "radio";
+                radio.name = "vol_" + q.id;
+                radio.value = value;
+                line.append(radio, document.createTextNode(" " + (value === "__other__" ? "Other" : value)));
+                group.appendChild(line);
+                radios.push(radio);
+                if (index === 0) answerControl.focus = radio;
+              });
+              const other = make("input");
+              other.type = "text";
+              other.placeholder = "Please specify";
+              other.hidden = true;
+              radios.forEach((radio) => radio.addEventListener("change", () => { other.hidden = radio.value !== "__other__" || !radio.checked; }));
+              wrapper.append(group, other);
+              answerControl.value = () => {
+                const selected = radios.find((radio) => radio.checked);
+                return { value: selected ? selected.value : "", other: other.value };
+              };
+            } else if (q.type === "multi_choice") {
+              const group = make("div", "vol-options");
+              const options = [];
+              (q.options || []).concat(q.allowOther ? ["__other__"] : []).forEach((option) => {
+                const line = make("label", "vol-opt");
+                const checkbox = make("input");
+                checkbox.type = "checkbox";
+                checkbox.value = option;
+                const labelText = option === "__other__" ? "Other" : option;
+                line.append(checkbox, document.createTextNode(" " + labelText));
+                group.appendChild(line);
+                const other = make("input");
+                other.type = "text";
+                other.placeholder = "Please specify";
+                other.hidden = true;
+                checkbox.addEventListener("change", () => { other.hidden = !checkbox.checked || option !== "__other__"; });
+                group.appendChild(other);
+                const level = q.proficiency ? make("select") : null;
+                if (level) {
+                  level.appendChild(new Option("Select proficiency", ""));
+                  (q.levels || []).forEach((item) => level.appendChild(new Option(item, item)));
+                  level.hidden = true;
+                  checkbox.addEventListener("change", () => { level.hidden = !checkbox.checked; });
+                  group.appendChild(level);
+                }
+                options.push({ option, checkbox, other, level });
+              });
+              wrapper.appendChild(group);
+              answerControl.focus = options[0] && options[0].checkbox;
+              answerControl.value = () => options.filter((item) => item.checkbox.checked).map((item) => ({
+                label: item.option,
+                other: item.other.value,
+                level: item.level ? item.level.value : "",
+              }));
+            }
+            controls.set(q.id, answerControl);
+            return wrapper;
+          }
+          configuredForm.sections.forEach((section, index) => {
+            const card = make("div", "vol-card");
+            card.appendChild(make("span", "vol-step", "Section " + (index + 1) + " of " + configuredForm.sections.length));
+            card.appendChild(make("h2", "", section.title));
+            if (section.description) card.appendChild(make("p", "vol-hint", section.description));
+            configuredForm.questions.filter((q) => q.sectionId === section.id).forEach((q) => card.appendChild(fieldQuestion(q)));
+            form.appendChild(card);
+          });
+          const actions = make("div", "vol-card vol-actions");
+          const button = make("button", "vol-btn");
+          button.id = "submitBtn";
+          button.type = "submit";
+          button.dataset.defaultLabel = configuredForm.submitLabel || "Submit application";
+          const label = make("span", "vol-btn-label", button.dataset.defaultLabel);
+          const spinner = make("span", "vol-spinner");
+          spinner.setAttribute("aria-hidden", "true");
+          button.append(label, spinner);
+          actions.appendChild(button);
+          form.appendChild(actions);
+
+          async function submitConfigured() {
+            const errors = [];
+            const raws = new Map();
+            configuredForm.questions.forEach((q) => {
+              const control = controls.get(q.id);
+              const raw = control.value();
+              raws.set(q.id, raw);
+              const message = Store.checkAnswer(q, raw);
+              if (message) errors.push({ el: control.focus, msg: message });
+            });
+            if (errors.length) {
+              showErrors(errors);
+              return;
+            }
+            showErrors([]);
+            setSubmitLoading(button, true);
+            const answers = configuredForm.questions.map((q) => ({
+              qid: q.id,
+              label: q.label,
+              section: configuredForm.sections.find((section) => section.id === q.sectionId).title,
+              type: q.type,
+              value: Store.storeValue(q, raws.get(q.id)),
+            }));
+            const applicant = {};
+            configuredForm.questions.forEach((q) => {
+              if (q.use) applicant[q.use] = Store.storeValue(q, raws.get(q.id));
+            });
+            if (!applicant.name) applicant.name = "Volunteer applicant";
+            if (!applicant.email) {
+              showErrors([{ el: button, msg: "Add an email question and set it to Applicant email before accepting applications." }]);
+              setSubmitLoading(button, false);
+              return;
+            }
+            const files = {};
+            configuredForm.questions.forEach((q) => {
+              if (q.type === "file" && raws.get(q.id)) files[q.id] = raws.get(q.id);
+            });
+            try {
+              const result = await Store.addSubmission({
+                id: Store.uid("vol_"),
+                submittedAt: new Date().toISOString(),
+                applicant,
+                answers,
+              }, files);
+              $("copyBox").value = answers.map((answer) =>
+                answer.label + ": " + (Store.displayValue(answer) || "Not provided"),
+              ).join("\n");
+              $("copyMsg").textContent = result.notificationSent === false
+                ? "Your application was received, but the notification email could not be sent. Please contact diradigitalera@gmail.com to let us know."
+                : "";
+              form.hidden = true;
+              $("donePanel").hidden = false;
+              $("donePanel").scrollIntoView({ behavior: "smooth", block: "start" });
+              $("donePanel").focus();
+            } catch (error) {
+              showErrors([{ el: button, msg: "We could not submit your application: " + error.message }]);
+              setSubmitLoading(button, false);
+            }
+          }
+          form.dataset.configured = "true";
+          form._submitConfigured = submitConfigured;
+        }
+
+        form.hidden = true;
+        formLoadPromise = Store.getForm().then((config) => {
+          renderConfiguredForm(config);
+          form.hidden = false;
+        }).catch((error) => {
+          form.hidden = false;
+          showErrors([{ el: $("submitBtn"), msg: "The application form could not be loaded: " + error.message }]);
+          throw error;
+        });
+        formLoadPromise.catch(() => {});
+
+        form.addEventListener("submit", async function (e) {
           e.preventDefault();
+          try {
+            await formLoadPromise;
+          } catch (error) {
+            return;
+          }
+          if (form._submitConfigured) {
+            await form._submitConfigured();
+            return;
+          }
           const errs = validate();
           showErrors(errs);
           if (errs.length) return;
+          const submit = $("submitBtn");
+          setSubmitLoading(submit, true);
+          const file = $("cv").files[0] || null;
+          try {
+            const files = file ? { cv: file } : {};
+            await Store.addSubmission(createSubmission(file), files);
+          } catch (error) {
+            showErrors([{ el: $("submitBtn"), msg: "We could not submit your application: " + error.message }]);
+            setSubmitLoading(submit, false);
+            return;
+          }
           const text = buildText();
-          const subject = "Volunteer Application: " + val("fullName");
-          lastMailto =
-            "mailto:" +
-            MAIL +
-            "?subject=" +
-            encodeURIComponent(subject) +
-            "&body=" +
-            encodeURIComponent(text);
           $("copyBox").value = text;
           $("copyMsg").textContent = "";
-          $("reopenMail").href = lastMailto;
-          const f = $("cv").files[0];
           const n = $("cvNotice");
-          if (f) {
-            n.textContent =
-              "Remember to attach your CV (" +
-              f.name +
-              ") to the email before you press Send.";
-            n.hidden = false;
-          } else {
-            n.hidden = true;
-          }
+          n.hidden = true;
           form.hidden = true;
           $("donePanel").hidden = false;
           $("donePanel").scrollIntoView({ behavior: "smooth", block: "start" });
           $("donePanel").focus();
-          window.location.href = lastMailto;
         });
         $("backBtn").addEventListener("click", () => {
           $("donePanel").hidden = true;
           form.hidden = false;
+          setSubmitLoading($("submitBtn"), false);
           form.scrollIntoView({ behavior: "smooth" });
         });
         $("copyBtn").addEventListener("click", async () => {
@@ -1738,13 +2015,12 @@
           const msg = $("copyMsg");
           try {
             await navigator.clipboard.writeText(box.value);
-            msg.textContent = "Copied. Paste it into an email to " + MAIL + ".";
+            msg.textContent = "Your answers have been copied.";
           } catch (err) {
             box.select();
             try {
               document.execCommand("copy");
-              msg.textContent =
-                "Copied. Paste it into an email to " + MAIL + ".";
+              msg.textContent = "Your answers have been copied.";
             } catch (e2) {
               msg.textContent = "Select the text above and copy it manually.";
             }

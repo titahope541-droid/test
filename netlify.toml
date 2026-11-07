@@ -10,7 +10,7 @@
 
 [functions]
   node_bundler = "esbuild"
-  included_files = ["article.html", "articles.html"]
+  included_files = ["article.html", "articles.html", "data/DSIP-Concept-Note-2027.docx"]
 
 [[headers]]
   for = "/*"
@@ -94,6 +94,12 @@
   from = "/tools/*"
   to = "/404.html"
   status = 404
+  force = true
+
+[[redirects]]
+  from = "/data/DSIP-Concept-Note-2027.docx"
+  to = "/.netlify/functions/server?__route=/data/DSIP-Concept-Note-2027.docx"
+  status = 200
   force = true
 
 [[redirects]]

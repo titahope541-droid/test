@@ -53,6 +53,9 @@ const MONGODB_URI = (process.env.MONGODB_URI || '').trim();
 const CLOUDINARY_CLOUD_NAME = (process.env.CLOUDINARY_CLOUD_NAME || '').trim();
 const CLOUDINARY_API_KEY = (process.env.CLOUDINARY_API_KEY || '').trim();
 const CLOUDINARY_API_SECRET = (process.env.CLOUDINARY_API_SECRET || '').trim();
+const RESEND_API_KEY = (process.env.RESEND_API_KEY || '').trim();
+const RESEND_FROM_EMAIL = (process.env.RESEND_FROM_EMAIL || '').trim();
+const VOLUNTEER_NOTIFICATION_EMAIL = 'diradigitalera@gmail.com';
 const FAPSHI_API_USER = (process.env.FAPSHI_API_USER || '').trim();
 const FAPSHI_API_KEY = (process.env.FAPSHI_API_KEY || '').trim();
 const FAPSHI_ENVIRONMENT = (process.env.FAPSHI_ENVIRONMENT || 'sandbox').trim().toLowerCase();
@@ -85,6 +88,9 @@ if (!IS_NETLIFY) {
 }
 let mongoClient;
 let articleCollection;
+let volunteerFormCollection;
+let volunteerSubmissionCollection;
+let volunteerFileCollection;
 
 const IMG_RE = /^\/uploads\/[a-f0-9]{24}\.(jpg|png|webp)$/;
 const ARTICLE_IMAGE_RE = /^!\[([^\]\r\n]*)\]\(([^)\s]+)\)$/gm;
@@ -399,6 +405,9 @@ function json(res, status, obj) {
   send(res, status, JSON.stringify(obj), { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' });
 }
 function readBody(req, limit) {
+  return readBuffer(req, limit).then(buffer => buffer.toString('utf8'));
+}
+function readBuffer(req, limit) {
   return new Promise((resolve, reject) => {
     let size = 0, over = false; const chunks = [];
     req.on('data', c => {
@@ -411,7 +420,7 @@ function readBody(req, limit) {
       }
       chunks.push(c);
     });
-    req.on('end', () => { if (!over) resolve(Buffer.concat(chunks).toString('utf8')); });
+    req.on('end', () => { if (!over) resolve(Buffer.concat(chunks)); });
     req.on('error', reject);
   });
 }
@@ -427,6 +436,74 @@ async function readJson(req, limit) {
   const text = await readBody(req, limit);
   try { return JSON.parse(text || '{}'); } catch (e) { throw Object.assign(new Error('Invalid JSON'), { status: 400 }); }
 }
+function verifySameOrigin(req) {
+  const origin = req.headers.origin;
+  if (!origin) return;
+  let host = '';
+  try { host = new URL(origin).host; } catch (e) { /* rejected below */ }
+  if (!host || host !== req.headers.host) throw Object.assign(new Error('Cross-origin request refused'), { status: 403 });
+}
+async function readMultipart(req, limit) {
+  verifySameOrigin(req);
+  const contentType = String(req.headers['content-type'] || '');
+  const boundaryMatch = /(?:^|;)\s*boundary=(?:"([^"]+)"|([^;]+))/i.exec(contentType);
+  if (!/^multipart\/form-data(?:;|$)/i.test(contentType) || !boundaryMatch) {
+    throw Object.assign(new Error('Expected a multipart form submission.'), { status: 415 });
+  }
+  const boundary = boundaryMatch[1] || boundaryMatch[2].trim();
+  if (!boundary || boundary.length > 200 || /[\r\n]/.test(boundary)) {
+    throw Object.assign(new Error('Invalid multipart boundary.'), { status: 400 });
+  }
+  const body = await readBuffer(req, limit);
+  const marker = Buffer.from('--' + boundary);
+  const separator = Buffer.from('\r\n\r\n');
+  const fields = new Map();
+  const files = new Map();
+  let cursor = 0;
+  let closed = false;
+  while (true) {
+    const start = body.indexOf(marker, cursor);
+    if (start < 0) break;
+    let partStart = start + marker.length;
+    if (body.slice(partStart, partStart + 2).toString() === '--') { closed = true; break; }
+    if (body.slice(partStart, partStart + 2).toString() !== '\r\n') {
+      throw Object.assign(new Error('Invalid multipart data.'), { status: 400 });
+    }
+    partStart += 2;
+    const headerEnd = body.indexOf(separator, partStart);
+    if (headerEnd < 0) throw Object.assign(new Error('Invalid multipart headers.'), { status: 400 });
+    const headers = body.slice(partStart, headerEnd).toString('utf8');
+    const disposition = /^content-disposition:\s*form-data;([^\r\n]*)/im.exec(headers);
+    const nameMatch = disposition && /\bname="([^"]*)"/i.exec(disposition[1]);
+    const filenameMatch = disposition && /\bfilename="([^"]*)"/i.exec(disposition[1]);
+    if (!nameMatch || !nameMatch[1]) throw Object.assign(new Error('Invalid multipart field.'), { status: 400 });
+    const name = nameMatch[1];
+    if (fields.has(name) || files.has(name)) throw Object.assign(new Error('Duplicate multipart field.'), { status: 400 });
+    const dataStart = headerEnd + separator.length;
+    const partMarker = Buffer.concat([Buffer.from('\r\n'), marker]);
+    let next = body.indexOf(partMarker, dataStart);
+    while (next >= 0) {
+      const suffix = body.slice(next + partMarker.length, next + partMarker.length + 2).toString();
+      if (suffix === '--' || suffix === '\r\n') break;
+      next = body.indexOf(partMarker, next + partMarker.length);
+    }
+    if (next < 0) throw Object.assign(new Error('Incomplete multipart field.'), { status: 400 });
+    const value = body.slice(dataStart, next);
+    if (filenameMatch) {
+      const typeMatch = /^content-type:\s*([^\r\n]+)/im.exec(headers);
+      files.set(name, {
+        name: filenameMatch[1],
+        type: typeMatch ? typeMatch[1].trim().toLowerCase() : 'application/octet-stream',
+        data: value
+      });
+    } else {
+      fields.set(name, value.toString('utf8'));
+    }
+    cursor = next + 2;
+  }
+  if (!closed) throw Object.assign(new Error('Incomplete multipart submission.'), { status: 400 });
+  return { fields, files };
+}
 
 /* ------------------------------------------------------------------ templates */
 const tplCache = new Map();
@@ -441,18 +518,27 @@ async function template(name) {
 }
 const fill = (tpl, map) => tpl.replace(/\{\{([A-Z_]+)\}\}/g, (m, k) => (map[k] !== undefined ? map[k] : ''));
 
-function headMeta(o) {
+function publicSiteOrigin(req) {
+  return SITE_URL ? new URL(SITE_URL).origin : getPublicSiteUrl(req);
+}
+
+function headMeta(o, siteOrigin) {
   const t = esc(o.title), d = esc(o.description);
+  const pageUrl = new URL(o.path, siteOrigin).toString();
+  const imageUrl = new URL(o.image || '/assets/logo.jpg', siteOrigin).toString();
+  const imageAlt = esc(o.imageAlt || 'DIRA Foundation');
   let h = '<meta name="description" content="' + d + '">\n';
   h += '    <meta property="og:type" content="' + (o.article ? 'article' : 'website') + '">\n';
   h += '    <meta property="og:title" content="' + t + '">\n    <meta property="og:description" content="' + d + '">\n';
-  h += '    <meta name="twitter:card" content="' + (o.image ? 'summary_large_image' : 'summary') + '">\n';
+  h += '    <meta name="twitter:card" content="summary_large_image">\n';
   h += '    <meta name="twitter:title" content="' + t + '">\n    <meta name="twitter:description" content="' + d + '">\n';
-  const imageUrl = o.image && (/^https:\/\//i.test(o.image) ? o.image : SITE_URL ? SITE_URL + o.image : '');
-  if (SITE_URL) {
-    h += '    <link rel="canonical" href="' + esc(SITE_URL + o.path) + '">\n    <meta property="og:url" content="' + esc(SITE_URL + o.path) + '">\n';
-  }
-  if (imageUrl) h += '    <meta property="og:image" content="' + esc(imageUrl) + '">\n    <meta name="twitter:image" content="' + esc(imageUrl) + '">\n';
+  h += '    <link rel="canonical" href="' + esc(pageUrl) + '">\n';
+  h += '    <meta property="og:url" content="' + esc(pageUrl) + '">\n';
+  h += '    <meta property="og:image" content="' + esc(imageUrl) + '">\n';
+  h += '    <meta property="og:image:secure_url" content="' + esc(imageUrl) + '">\n';
+  h += '    <meta property="og:image:alt" content="' + imageAlt + '">\n';
+  h += '    <meta name="twitter:image" content="' + esc(imageUrl) + '">\n';
+  h += '    <meta name="twitter:image:alt" content="' + imageAlt + '">\n';
   h += '    <meta name="robots" content="' + (o.noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large') + '">\n';
   return h;
 }
@@ -495,9 +581,10 @@ async function renderList(req, res, url) {
 
   const title = 'Articles' + (page > 1 ? ' (page ' + page + ')' : '') + ' | DIRA Foundation';
   const description = 'News, updates and stories from DIRA Foundation, a non-profit association in Northwest Cameroon.';
+  const siteOrigin = publicSiteOrigin(req);
   const html = fill(await template('articles.html'), {
     TITLE: esc(title),
-    HEAD_META: headMeta({ title, description, path: '/articles' + (page > 1 ? '?page=' + page : '') }),
+    HEAD_META: headMeta({ title, description, path: '/articles' + (page > 1 ? '?page=' + page : '') }, siteOrigin),
     ARTICLE_LIST: list, PAGINATION: pager
   });
   send(res, 200, html, { 'Content-Type': MIME['.html'], 'Cache-Control': 'no-cache' });
@@ -510,23 +597,28 @@ async function renderArticle(req, res, slug) {
 
   const title = a.title + ' | DIRA Foundation';
   const description = excerpt(a, 155);
+  const siteOrigin = publicSiteOrigin(req);
   const ld = {
     '@context': 'https://schema.org', '@type': 'Article', headline: a.title, description,
     datePublished: a.publishedAt || a.createdAt, dateModified: a.updatedAt || a.createdAt,
     author: a.author === 'DIRA Foundation' ? { '@type': 'Organization', name: 'DIRA Foundation' } : { '@type': 'Person', name: a.author },
     publisher: { '@type': 'Organization', name: 'DIRA Foundation' }
   };
-  if (SITE_URL) {
-    ld.mainEntityOfPage = SITE_URL + '/articles/' + a.slug;
-    if (a.coverImage) ld.image = /^https:\/\//i.test(a.coverImage) ? a.coverImage : SITE_URL + a.coverImage;
-  } else if (a.coverImage && /^https:\/\//i.test(a.coverImage)) {
-    ld.image = a.coverImage;
-  }
+  ld.mainEntityOfPage = siteOrigin + '/articles/' + a.slug;
+  if (a.coverImage) ld.image = new URL(a.coverImage, siteOrigin).toString();
   const cover = a.coverImage
     ? '<img class="art-cover" src="' + esc(a.coverImage) + '" alt="' + esc(a.coverAlt || '') + '">' : '';
   const html = fill(await template('article.html'), {
     TITLE: esc(title),
-    HEAD_META: headMeta({ title, description, path: '/articles/' + a.slug, image: a.coverImage, article: true, noindex: preview }) +
+    HEAD_META: headMeta({
+      title,
+      description,
+      path: '/articles/' + a.slug,
+      image: a.coverImage,
+      imageAlt: a.coverAlt,
+      article: true,
+      noindex: preview
+    }, siteOrigin) +
       (preview ? '' : '    <script type="application/ld+json">' + JSON.stringify(ld).replace(/</g, '\\u003c') + '</script>\n'),
     ARTICLE_TITLE: esc(a.title),
     ARTICLE_META: '<time datetime="' + esc(a.publishedAt || a.createdAt) + '">' + esc(fmtDate(a.publishedAt || a.createdAt)) + '</time> &middot; ' + esc(a.author),
@@ -586,7 +678,7 @@ async function renderSitemap(req, res) {
 
 function renderRobots(req, res) {
   const baseUrl = getPublicSiteUrl(req);
-  const text = 'User-agent: *\nAllow: /\nDisallow: /admin.html\nDisallow: /api/\n\nSitemap: ' + baseUrl + '/sitemap.xml\n';
+  const text = 'User-agent: *\nAllow: /\nDisallow: /admin.html\nDisallow: /volunteer-admin.html\nDisallow: /api/\n\nSitemap: ' + baseUrl + '/sitemap.xml\n';
   send(res, 200, text, { 'Content-Type': 'text/plain; charset=utf-8', 'Cache-Control': 'public, max-age=3600' });
 }
 
@@ -629,10 +721,364 @@ function validateArticle(b, existing) {
   return { value: { title, body, summary, author, coverAlt, coverImage, coverImagePublicId, published: !!b.published } };
 }
 
+const VOLUNTEER_TYPES = new Set([
+  'short_text', 'long_text', 'email', 'phone', 'date',
+  'single_choice', 'multi_choice', 'dropdown', 'file'
+]);
+function validateVolunteerForm(input) {
+  if (!input || typeof input !== 'object' || Array.isArray(input)) return { error: 'The volunteer form must be an object.' };
+  const validText = (value, max, required) =>
+    typeof value === 'string' && value.length <= max && (!required || !!value.trim());
+  if (!validText(input.title, 120, true) ||
+      !validText(input.subtitle || '', 160, false) ||
+      !validText(input.intro || '', 5000, false) ||
+      !validText(input.submitLabel || '', 80, false) ||
+      !validText(input.notifyEmail || '', 254, false)) {
+    return { error: 'Check the title, subtitle, introduction, submit label and notification email.' };
+  }
+  if (input.notifyEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(input.notifyEmail)) {
+    return { error: 'Enter a valid notification email address.' };
+  }
+  if (!Array.isArray(input.sections) || !input.sections.length || input.sections.length > 30 ||
+      !Array.isArray(input.questions) || !input.questions.length || input.questions.length > 100) {
+    return { error: 'The form needs between 1 and 30 sections and 1 and 100 questions.' };
+  }
+  const idPattern = /^[A-Za-z0-9_-]{1,80}$/;
+  const validId = value => idPattern.test(String(value || '')) &&
+    !['__proto__', 'constructor', 'prototype'].includes(String(value));
+  const sectionIds = new Set();
+  const sections = [];
+  for (const section of input.sections) {
+    if (!section || typeof section !== 'object' || !validId(section.id) ||
+        sectionIds.has(section.id) || !validText(section.title, 100, true) ||
+        !validText(section.description || '', 200, false)) {
+      return { error: 'A form section is invalid.' };
+    }
+    sectionIds.add(section.id);
+    sections.push({ id: section.id, title: section.title, description: section.description || '' });
+  }
+  const questionIds = new Set();
+  const questions = [];
+  for (const question of input.questions) {
+    if (!question || typeof question !== 'object' || !validId(question.id) ||
+        questionIds.has(question.id) || !VOLUNTEER_TYPES.has(question.type) ||
+        !sectionIds.has(question.sectionId) || !validText(question.label, 500, true)) {
+      return { error: 'A form question is invalid.' };
+    }
+    questionIds.add(question.id);
+    const q = { id: question.id, sectionId: question.sectionId, type: question.type, label: question.label, required: !!question.required };
+    for (const key of ['helpText', 'placeholder']) {
+      if (question[key] != null) {
+        const max = key === 'helpText' ? 500 : 200;
+        if (!validText(question[key], max, false)) return { error: 'Question ' + key + ' is invalid.' };
+        q[key] = question[key];
+      }
+    }
+    if (question.maxLength != null) {
+      if (!Number.isInteger(question.maxLength) || question.maxLength < 1 || question.maxLength > 10000) return { error: 'A question character limit is invalid.' };
+      q.maxLength = question.maxLength;
+    }
+    if (['name', 'email', 'phone'].includes(question.use)) q.use = question.use;
+    if (['any', 'past', 'future'].includes(question.dateRule)) q.dateRule = question.dateRule;
+    if (['single_choice', 'multi_choice', 'dropdown'].includes(question.type)) {
+      if (!Array.isArray(question.options) || question.options.length > 100 ||
+          question.options.some(option => typeof option !== 'string' || !option.trim() || option.length > 200)) {
+        return { error: 'The choices for a question are invalid.' };
+      }
+      q.options = question.options;
+      if (question.allowOther) q.allowOther = true;
+    }
+    if (question.type === 'multi_choice' && question.proficiency) {
+      if (!Array.isArray(question.levels) || !question.levels.length || question.levels.length > 20 ||
+          question.levels.some(level => typeof level !== 'string' || !level.trim() || level.length > 80)) {
+        return { error: 'The proficiency levels for a question are invalid.' };
+      }
+      q.proficiency = true;
+      q.levels = question.levels;
+    }
+    if (question.type === 'file') {
+      const allowed = ['.pdf', '.doc', '.docx', '.rtf'];
+      if (!Array.isArray(question.accept) || !question.accept.length ||
+          question.accept.some(ext => !allowed.includes(String(ext).toLowerCase()))) {
+        return { error: 'The allowed file types for a question are invalid.' };
+      }
+      if (question.maxMB != null && (!Number.isFinite(question.maxMB) || question.maxMB < 1 || question.maxMB > 4)) {
+        return { error: 'Volunteer file uploads cannot exceed 4 MB per file.' };
+      }
+      q.accept = question.accept.map(ext => String(ext).toLowerCase());
+      q.maxMB = question.maxMB || 4;
+    }
+    questions.push(q);
+  }
+  return {
+    value: {
+      version: 1, title: input.title, subtitle: input.subtitle || '',
+      intro: input.intro || '', submitLabel: input.submitLabel || 'Submit application',
+      notifyEmail: input.notifyEmail || '', sections, questions
+    }
+  };
+}
+function safeVolunteerFilename(name) {
+  return path.basename(String(name || '').replace(/\\/g, '/'))
+    .replace(/[\u0000-\u001f\u007f"]/g, '_').slice(0, 160) || 'volunteer-file';
+}
+function volunteerFileType(file) {
+  const name = safeVolunteerFilename(file.name);
+  const ext = path.extname(name).toLowerCase();
+  const b = file.data;
+  if (!b.length || b.length > 4 * 1024 * 1024) return null;
+  if (ext === '.pdf' && b.slice(0, 5).toString() === '%PDF-') return { name, type: 'application/pdf' };
+  if (ext === '.rtf' && /^\{\\rtf[0-9]/.test(b.slice(0, 16).toString('ascii'))) return { name, type: 'application/rtf' };
+  if (ext === '.doc' && b.slice(0, 8).equals(Buffer.from([0xd0, 0xcf, 0x11, 0xe0, 0xa1, 0xb1, 0x1a, 0xe1]))) {
+    return { name, type: 'application/msword' };
+  }
+  if (ext === '.docx' && b.length > 4 && b.slice(0, 4).equals(Buffer.from([0x50, 0x4b, 0x03, 0x04]))) {
+    return { name, type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' };
+  }
+  return null;
+}
+function validateVolunteerSubmission(input) {
+  if (!input || typeof input !== 'object' || Array.isArray(input) ||
+      !input.applicant || typeof input.applicant !== 'object' || Array.isArray(input.applicant) ||
+      !Array.isArray(input.answers) || input.answers.length > 100) {
+    return { error: 'The volunteer application is incomplete or invalid.' };
+  }
+  const applicant = {
+    name: String(input.applicant.name || '').trim(),
+    email: String(input.applicant.email || '').trim().toLowerCase(),
+    phone: String(input.applicant.phone || '').trim()
+  };
+  if (!applicant.name || applicant.name.length > 120 ||
+      !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(applicant.email) || applicant.email.length > 254 ||
+      applicant.phone.length > 30 || (applicant.phone && !/^[+0-9 ()\-]{6,30}$/.test(applicant.phone))) {
+    return { error: 'Check the applicant name, email address and phone number.' };
+  }
+  const seen = new Set();
+  const answers = [];
+  for (const answer of input.answers) {
+    if (!answer || typeof answer !== 'object' || !/^[A-Za-z0-9_-]{1,80}$/.test(String(answer.qid || '')) ||
+        seen.has(answer.qid) || !VOLUNTEER_TYPES.has(answer.type) ||
+        typeof answer.label !== 'string' || answer.label.length > 500 ||
+        typeof answer.section !== 'string' || answer.section.length > 120) {
+      return { error: 'An application answer is invalid.' };
+    }
+    seen.add(answer.qid);
+    const value = answer.value == null ? '' : answer.value;
+    if (['short_text', 'long_text', 'email', 'phone', 'date'].includes(answer.type) &&
+        (typeof value !== 'string' || value.length > 10000)) return { error: 'An application answer is invalid or too long.' };
+    if (['single_choice', 'dropdown'].includes(answer.type) &&
+        (typeof value !== 'string' || value.length > 500)) return { error: 'A choice answer is invalid.' };
+    if (answer.type === 'multi_choice' &&
+        (!Array.isArray(value) || value.length > 100 || value.some(item =>
+          !item || typeof item !== 'object' || typeof item.label !== 'string' || item.label.length > 300 ||
+          (item.level != null && (typeof item.level !== 'string' || item.level.length > 80))))) {
+      return { error: 'A multiple-choice answer is invalid.' };
+    }
+    if (answer.type === 'file' && value !== '' && value !== null &&
+        (!value || typeof value !== 'object' || typeof value.name !== 'string' ||
+          !Number.isInteger(value.size) || value.size < 0 || value.size > 4 * 1024 * 1024 ||
+          typeof value.type !== 'string' || value.type.length > 150)) {
+      return { error: 'A file answer is invalid.' };
+    }
+    if (JSON.stringify(value).length > 12000) return { error: 'An application answer is too long.' };
+    answers.push({
+      qid: answer.qid, label: answer.label, section: answer.section,
+      type: answer.type, value
+    });
+  }
+  return { value: { applicant, answers } };
+}
+function seenFileQuestion(answers, qid) {
+  return answers.some(answer => answer.qid === qid && answer.type === 'file');
+}
+function validateSubmissionForForm(answers, form, uploadedFiles) {
+  const submitted = new Map(answers.map(answer => [answer.qid, answer]));
+  if (submitted.size !== form.questions.length) return 'The application does not match the current form.';
+  for (const question of form.questions) {
+    const answer = submitted.get(question.id);
+    if (!answer || answer.type !== question.type || answer.label !== question.label) {
+      return 'The application does not match the current form.';
+    }
+    const value = answer.value;
+    if (question.required) {
+      const empty = question.type === 'file'
+        ? !uploadedFiles.has(question.id)
+        : question.type === 'multi_choice'
+          ? !Array.isArray(value) || !value.length
+          : typeof value !== 'string' || !value.trim();
+      if (empty) return 'Answer "' + question.label + '".';
+    }
+    if (['short_text', 'long_text', 'email', 'phone', 'date'].includes(question.type) && value) {
+      const maxLength = question.maxLength || (question.type === 'long_text' ? 5000 : 300);
+      if (value.length > maxLength) return 'The answer to "' + question.label + '" is too long.';
+      if (question.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value)) {
+        return 'Enter a valid email address for "' + question.label + '".';
+      }
+      if (question.type === 'phone' && !/^[+0-9 ()\-]{6,30}$/.test(value)) {
+        return 'Enter a valid phone number for "' + question.label + '".';
+      }
+      if (question.type === 'date' &&
+          (!/^\d{4}-\d{2}-\d{2}$/.test(value) || isNaN(Date.parse(value)) ||
+            (question.dateRule === 'past' && value > new Date().toISOString().slice(0, 10)) ||
+            (question.dateRule === 'future' && value < new Date().toISOString().slice(0, 10)))) {
+        return 'Enter a valid date for "' + question.label + '".';
+      }
+    }
+    if (question.type === 'file' && uploadedFiles.has(question.id)) {
+      const extension = path.extname(value.name).toLowerCase();
+      if (!question.accept.includes(extension) || value.size > (question.maxMB || 4) * 1024 * 1024) {
+        return 'Upload an allowed file type within the size limit for "' + question.label + '".';
+      }
+    }
+    if (['single_choice', 'dropdown'].includes(question.type) && value) {
+      const valid = question.options.includes(value) ||
+        (question.allowOther && value.startsWith('Other: ') && value.length > 7);
+      if (!valid) return 'Choose a valid answer for "' + question.label + '".';
+    }
+    if (question.type === 'multi_choice') {
+      for (const item of value) {
+        const valid = question.options.includes(item.label) ||
+          (question.allowOther && item.label.startsWith('Other: ') && item.label.length > 7);
+        if (!valid || (question.proficiency && !question.levels.includes(item.level))) {
+          return 'Choose valid answers for "' + question.label + '".';
+        }
+      }
+    }
+  }
+  return '';
+}
+
+async function sendVolunteerNotification(submission) {
+  if (!RESEND_API_KEY || !RESEND_FROM_EMAIL) {
+    console.error('[error] Volunteer application was saved, but Resend is not configured. Set RESEND_API_KEY and RESEND_FROM_EMAIL.');
+    return { sent: false };
+  }
+  const senderMatch = RESEND_FROM_EMAIL.match(/<([^<>]+)>/);
+  const senderAddress = senderMatch ? senderMatch[1] : RESEND_FROM_EMAIL;
+  if (!/^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/.test(senderAddress)) {
+    console.error('[error] Volunteer application was saved, but RESEND_FROM_EMAIL must be a full email address verified with Resend.');
+    return { sent: false };
+  }
+  const answers = submission.answers.map(answer => {
+    let value;
+    if (answer.type === 'file') value = answer.value && answer.value.name ? 'Uploaded: ' + answer.value.name : 'Not provided';
+    else if (answer.type === 'multi_choice') {
+      value = (answer.value || []).map(item => item.level ? item.label + ' (' + item.level + ')' : item.label).join('; ');
+    } else value = String(answer.value == null ? '' : answer.value);
+    return answer.section + '\n' + answer.label + ': ' + (value || 'Not provided');
+  }).join('\n\n').slice(0, 40000);
+  const applicantName = submission.applicant.name.replace(/[\u0000-\u001f\u007f]/g, ' ').trim().slice(0, 120);
+  let response;
+  try {
+    response = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        Authorization: 'Bearer ' + RESEND_API_KEY,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        from: RESEND_FROM_EMAIL,
+        to: [VOLUNTEER_NOTIFICATION_EMAIL],
+        reply_to: submission.applicant.email,
+        subject: 'Volunteer application: ' + applicantName,
+        text: [
+          'A new volunteer application was submitted to the DIRA Foundation website.',
+          '',
+          'Applicant: ' + submission.applicant.name,
+          'Email: ' + submission.applicant.email,
+          'Phone: ' + (submission.applicant.phone || 'Not provided'),
+          'Submitted: ' + submission.submittedAt,
+          '',
+          answers,
+          '',
+          'Uploaded files, if any, are available in the volunteer administration page.'
+        ].join('\n')
+      }),
+      signal: AbortSignal.timeout(10000)
+    });
+  } catch (error) {
+    console.error('[error] Volunteer application was saved, but the Resend request failed:', error.message);
+    return { sent: false };
+  }
+  if (!response.ok) {
+    let resendError;
+    try { resendError = await response.json(); } catch (error) { resendError = null; }
+    const detail = resendError && typeof resendError.message === 'string'
+      ? ' ' + resendError.message.replace(/[\u0000-\u001f\u007f]/g, ' ').slice(0, 500)
+      : '';
+    console.error('[error] Volunteer application was saved, but Resend returned HTTP ' + response.status + '.' + detail);
+    return { sent: false };
+  }
+  return { sent: true };
+}
+
 async function handleApi(req, res, url) {
   const route = url.pathname;
   const m = req.method;
   res.setHeader('Cache-Control', 'no-store');
+
+  if (route === '/api/volunteer-form' && m === 'GET') {
+    const saved = await volunteerFormCollection.findOne({ _id: 'current' }, { projection: { _id: 0, form: 1 } });
+    return json(res, 200, saved ? saved.form : {});
+  }
+  if (route === '/api/volunteer-submissions' && m === 'POST') {
+    const multipart = await readMultipart(req, Math.floor(4.25 * 1024 * 1024));
+    let input;
+    try { input = JSON.parse(multipart.fields.get('data') || ''); }
+    catch (e) { return json(res, 400, { error: 'The volunteer application data is invalid.' }); }
+    const validated = validateVolunteerSubmission(input);
+    if (validated.error) return json(res, 400, { error: validated.error });
+    if (multipart.files.size > 10) return json(res, 400, { error: 'Too many files were uploaded.' });
+    const id = crypto.randomBytes(16).toString('hex');
+    const files = {};
+    const fileDocs = [];
+    for (const [field, file] of multipart.files) {
+      const match = /^file_([A-Za-z0-9_-]{1,80})$/.exec(field);
+      if (!match || !seenFileQuestion(validated.value.answers, match[1])) {
+        return json(res, 400, { error: 'An uploaded file does not match an application question.' });
+      }
+      const details = volunteerFileType(file);
+      if (!details) return json(res, 400, { error: 'Upload a valid PDF, Word or RTF file no larger than 4 MB.' });
+      const qid = match[1];
+      const metadata = { name: details.name, size: file.data.length, type: details.type };
+      files[qid] = metadata;
+      validated.value.answers.find(answer => answer.qid === qid).value = metadata;
+      fileDocs.push({ submissionId: id, qid, ...metadata, data: file.data });
+    }
+    for (const answer of validated.value.answers) {
+      if (answer.type === 'file' && !files[answer.qid]) answer.value = '';
+    }
+    const savedForm = await volunteerFormCollection.findOne({ _id: 'current' }, { projection: { _id: 0, form: 1 } });
+    if (savedForm) {
+      const formError = validateSubmissionForForm(validated.value.answers, savedForm.form, new Set(Object.keys(files)));
+      if (formError) return json(res, 400, { error: formError });
+    }
+    const submission = {
+      id, submittedAt: new Date().toISOString(),
+      applicant: validated.value.applicant, answers: validated.value.answers, files
+    };
+    try {
+      if (fileDocs.length) await volunteerFileCollection.insertMany(fileDocs, { ordered: true });
+      await volunteerSubmissionCollection.insertOne(submission);
+    } catch (error) {
+      await volunteerFileCollection.deleteMany({ submissionId: id }).catch(() => {});
+      throw error;
+    }
+    const notification = await sendVolunteerNotification(submission);
+    try {
+      await volunteerSubmissionCollection.updateOne(
+        { id },
+        { $set: { emailNotificationSent: notification.sent } }
+      );
+    } catch (error) {
+      console.error('[error] Volunteer application was saved, but its email notification status could not be recorded:', error.message);
+    }
+    return json(res, 201, {
+      id,
+      submittedAt: submission.submittedAt,
+      notificationSent: notification.sent
+    });
+  }
 
   if (route === '/api/articles' && m === 'GET') {
     const requestedLimit = parseInt(url.searchParams.get('limit'), 10);
@@ -744,6 +1190,64 @@ async function handleApi(req, res, url) {
   // everything below needs a valid session
   if (!isAdmin(req)) return json(res, 401, { error: 'Please sign in.' });
 
+  if (route === '/api/volunteer-form' && m === 'PUT') {
+    const form = validateVolunteerForm(await readJson(req, 200 * 1024));
+    if (form.error) return json(res, 400, { error: form.error });
+    const updatedAt = new Date().toISOString();
+    await volunteerFormCollection.updateOne(
+      { _id: 'current' },
+      { $set: { form: form.value, updatedAt } },
+      { upsert: true }
+    );
+    return json(res, 200, Object.assign({}, form.value, { updatedAt }));
+  }
+  if (route === '/api/volunteer-submissions' && m === 'GET') {
+    const submissions = await volunteerSubmissionCollection.find({}, { projection: { _id: 0 } })
+      .sort({ submittedAt: -1 }).toArray();
+    return json(res, 200, { submissions });
+  }
+  if (route === '/api/volunteer-submissions' && m === 'DELETE') {
+    verifySameOrigin(req);
+    await volunteerFileCollection.deleteMany({});
+    await volunteerSubmissionCollection.deleteMany({});
+    return json(res, 200, { ok: true });
+  }
+  let volunteerMatch = route.match(/^\/api\/volunteer-submissions\/([a-f0-9]{32})$/);
+  if (volunteerMatch && m === 'DELETE') {
+    verifySameOrigin(req);
+    const id = volunteerMatch[1];
+    const deleted = await volunteerSubmissionCollection.deleteOne({ id });
+    if (!deleted.deletedCount) return json(res, 404, { error: 'Registration not found.' });
+    await volunteerFileCollection.deleteMany({ submissionId: id });
+    return json(res, 200, { ok: true });
+  }
+  volunteerMatch = route.match(/^\/api\/volunteer-submissions\/([a-f0-9]{32})\/files\/([A-Za-z0-9_-]{1,80})$/);
+  if (volunteerMatch && m === 'GET') {
+    const file = await volunteerFileCollection.findOne(
+      { submissionId: volunteerMatch[1], qid: volunteerMatch[2] },
+      { projection: { _id: 0, name: 1, type: 1, data: 1 } }
+    );
+    if (!file) return json(res, 404, { error: 'The uploaded file was not found.' });
+    const filename = safeVolunteerFilename(file.name).replace(/["\\]/g, '_');
+    let fileData;
+    if (Buffer.isBuffer(file.data)) fileData = file.data;
+    else if (file.data && file.data.buffer) {
+      const buffer = Buffer.from(file.data.buffer);
+      const length = Number.isInteger(file.data.position) ? file.data.position : buffer.length;
+      fileData = buffer.subarray(0, length);
+    } else {
+      fileData = Buffer.from(file.data || []);
+    }
+    res.writeHead(200, baseHeaders({
+      'Content-Type': file.type,
+      'Content-Disposition': 'attachment; filename="' + filename + '"',
+      'Content-Length': fileData.length,
+      'X-Content-Type-Options': 'nosniff',
+      'Cache-Control': 'no-store'
+    }));
+    return res.end(fileData);
+  }
+
   if (route === '/api/admin/articles' && m === 'GET') {
     const list = await articleCollection.find({}).sort({ createdAt: -1 }).toArray();
     return json(res, 200, { articles: list });
@@ -834,10 +1338,21 @@ async function serveStatic(req, res, pathname) {
   if (parts[0] === 'uploads') headers['Cache-Control'] = 'public, max-age=2592000, immutable';
   else if (ext === '.html') headers['Cache-Control'] = parts[0] === 'admin.html' ? 'no-store' : 'no-cache';
   else headers['Cache-Control'] = 'public, max-age=3600';
-  if (parts[0] === 'admin.html') headers['X-Frame-Options'] = 'DENY';
+  if (parts[0] === 'admin.html' || parts[0] === 'volunteer-admin.html' || parts[0] === 'volunteer-login.html') headers['X-Frame-Options'] = 'DENY';
   res.writeHead(200, baseHeaders(headers));
   if (req.method === 'HEAD') return res.end();
   fs.createReadStream(file).pipe(res);
+}
+
+async function serveConceptNote(req, res) {
+  const file = await fsp.readFile(path.join(ROOT, 'data', 'DSIP-Concept-Note-2027.docx'));
+  res.writeHead(200, baseHeaders({
+    'Content-Type': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    'Content-Disposition': 'attachment; filename="02_Concept_Note_DSIP.docx"',
+    'Content-Length': file.length,
+    'Cache-Control': 'public, max-age=3600'
+  }));
+  res.end(req.method === 'HEAD' ? undefined : file);
 }
 
 /* ------------------------------------------------------------------ router */
@@ -857,6 +1372,7 @@ const server = http.createServer(async (req, res) => {
     if (p === '/admin') { res.writeHead(302, { Location: '/admin.html' }); return res.end(); }
     if (p === '/sitemap.xml') return await renderSitemap(req, res);
     if (p === '/robots.txt') return renderRobots(req, res);
+    if (p === '/data/DSIP-Concept-Note-2027.docx') return await serveConceptNote(req, res);
     return await serveStatic(req, res, p);
   } catch (e) {
     const status = e.status || 500;
@@ -882,10 +1398,17 @@ async function initializeBackend() {
   }
   mongoClient = new MongoClient(MONGODB_URI);
   await mongoClient.connect();
-  articleCollection = mongoClient.db().collection('articles');
+  const db = mongoClient.db();
+  articleCollection = db.collection('articles');
+  volunteerFormCollection = db.collection('volunteer_forms');
+  volunteerSubmissionCollection = db.collection('volunteer_submissions');
+  volunteerFileCollection = db.collection('volunteer_files');
   await articleCollection.createIndex({ id: 1 }, { unique: true });
   await articleCollection.createIndex({ slug: 1 }, { unique: true });
   await articleCollection.createIndex({ published: 1, publishedAt: -1 });
+  await volunteerSubmissionCollection.createIndex({ id: 1 }, { unique: true });
+  await volunteerSubmissionCollection.createIndex({ submittedAt: -1 });
+  await volunteerFileCollection.createIndex({ submissionId: 1, qid: 1 }, { unique: true });
   await importLegacyArticles();
   await cleanLocalOrphans();
 }
@@ -928,13 +1451,20 @@ if (require.main === module) {
   }
 } else {
   const serverless = require('serverless-http');
-  const serverlessHandler = serverless(server);
+  const serverlessHandler = serverless(server, {
+    binary: [
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      'application/pdf',
+      'application/msword',
+      'application/rtf'
+    ]
+  });
   module.exports.handler = async (event, context) => {
     const routedPath = event.queryStringParameters && event.queryStringParameters.__route;
-    if (!routedPath || !/^\/(?:api\/|articles(?:\/|$)|sitemap\.xml$|robots\.txt$)/.test(routedPath)) {
+    if (!routedPath || !/^\/(?:api\/|articles(?:\/|$)|sitemap\.xml$|robots\.txt$|data\/DSIP-Concept-Note-2027\.docx$)/.test(routedPath)) {
       return { statusCode: 404, headers: { 'Content-Type': 'text/plain; charset=utf-8' }, body: 'Not found' };
     }
-    if (routedPath !== '/robots.txt') await ensureBackend();
+    if (routedPath !== '/robots.txt' && routedPath !== '/data/DSIP-Concept-Note-2027.docx') await ensureBackend();
     const queryStringParameters = Object.assign({}, event.queryStringParameters);
     delete queryStringParameters.__route;
     event = Object.assign({}, event, {

@@ -1,0 +1,2713 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Volunteer Registration Admin | DIRA Foundation</title>
+    <meta
+      name="description"
+      content="Manage the volunteer application form and review registrations."
+    />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="theme-color" content="#6a0dad" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="DIRA Foundation" />
+    <meta property="og:locale" content="en" />
+    <meta
+      property="og:title"
+      content="Volunteer Registration Admin | DIRA Foundation"
+    />
+    <meta
+      property="og:description"
+      content="About DIRA Foundation, a non-profit association in Northwest Cameroon: its mission, objectives, scope, governance and relationship with DIRA Group."
+    />
+    <meta name="twitter:card" content="summary" />
+    <meta
+      name="twitter:title"
+      content="Volunteer Registration Admin | DIRA Foundation"
+    />
+    <meta
+      name="twitter:description"
+      content="About DIRA Foundation, a non-profit association in Northwest Cameroon: its mission, objectives, scope, governance and relationship with DIRA Group."
+    />
+    <!-- seo-domain:start -->
+    <!-- seo-domain:end -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+
+    <link rel="icon" type="image/png" href="logo.png" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unicons.iconscout.com/release/v4.0.8/css/line.css"
+    />
+    <style>
+      /* Base Styles */
+      :root {
+          --primary-purple: #6a0dad;
+          --light-purple: #8a2be2;
+          --dark-purple: #4b0082;
+          --accent-purple: #9370db;
+          --white: #ffffff;
+          --light-gray: #f8f9fa;
+          --medium-gray: #e9ecef;
+          --dark-gray: #333333;
+          --text-gray: #6c757d;
+      }
+
+      * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      body {
+          background-color: var(--white);
+          color: var(--dark-gray);
+          line-height: 1.6;
+          overflow-x: hidden;
+      }
+
+      .container {
+          width: 100%;
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: 0 20px;
+      }
+
+      .section-title {
+          font-size: 2.5rem;
+          text-align: center;
+          margin-bottom: 20px;
+          color: var(--dark-gray);
+          position: relative;
+      }
+
+      .section-title:after {
+          content: '';
+          position: absolute;
+          bottom: -10px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 80px;
+          height: 4px;
+          background: var(--primary-purple);
+          border-radius: 2px;
+      }
+
+      .section-subtitle {
+          text-align: center;
+          font-size: 1.2rem;
+          color: var(--text-gray);
+          max-width: 700px;
+          margin: 0 auto 50px;
+      }
+
+      /* Header Styles */
+      header {
+          background-color: var(--white);
+          box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+          position: fixed;
+          width: 100%;
+          top: 0;
+          z-index: 1000;
+          transition: all 0.3s ease;
+      }
+
+      .header-container {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 15px 0;
+      }
+
+      .logo {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+      }
+
+      .logo-icon {
+          font-size: 28px;
+          color: var(--primary-purple);
+      }
+
+      .logo-text {
+          font-size: 24px;
+          font-weight: 700;
+          color: var(--primary-purple);
+      }
+
+      .logo-text span {
+          color: var(--dark-gray);
+      }
+
+      nav ul {
+          display: flex;
+          list-style: none;
+      }
+
+      nav ul li {
+          margin-left: 30px;
+      }
+
+      nav ul li a {
+          text-decoration: none;
+          color: var(--dark-gray);
+          font-weight: 500;
+          transition: color 0.3s;
+          position: relative;
+      }
+
+      nav ul li a:after {
+          content: '';
+          position: absolute;
+          bottom: -5px;
+          left: 0;
+          width: 0;
+          height: 2px;
+          background: var(--primary-purple);
+          transition: width 0.3s;
+      }
+
+      nav ul li a:hover {
+          color: var(--primary-purple);
+      }
+
+      nav ul li a.active:not(.nav-cta) {
+          color: var(--primary-purple);
+          font-weight: 700;
+      }
+
+      nav ul li a.active:not(.nav-cta):after {
+          width: 100%;
+      }
+
+      nav ul li a.nav-cta.active {
+          background: var(--dark-purple);
+          box-shadow: 0 0 0 2px rgba(106, 13, 173, 0.2);
+      }
+
+      nav ul li a:hover:after {
+          width: 100%;
+      }
+
+      .nav-cta {
+          background: var(--primary-purple);
+          color: white;
+          padding: 8px 20px;
+          border-radius: 30px;
+          transition: all 0.3s;
+      }
+
+      .nav-cta:hover {
+          background: var(--dark-purple);
+          transform: translateY(-2px);
+      }
+
+      .nav-cta:hover:after {
+          width: 0;
+      }
+
+      .mobile-menu-btn {
+          display: none;
+          font-size: 24px;
+          cursor: pointer;
+          color: var(--primary-purple);
+          background: none;
+          border: none;
+      }
+
+      /* Mobile Menu */
+      .mobile-menu {
+          position: fixed;
+          top: 0;
+          right: -100%;
+          width: 80%;
+          max-width: 300px;
+          height: 100vh;
+          background: var(--white);
+          box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+          z-index: 1001;
+          transition: right 0.4s ease;
+          padding: 80px 30px 30px;
+          overflow-y: auto;
+      }
+
+      .mobile-menu.active {
+          right: 0;
+      }
+
+      .mobile-menu ul {
+          list-style: none;
+      }
+
+      .mobile-menu ul li {
+          margin-bottom: 20px;
+      }
+
+      .mobile-menu ul li a {
+          text-decoration: none;
+          color: var(--dark-gray);
+          font-size: 1.1rem;
+          font-weight: 500;
+          display: block;
+          padding: 10px 0;
+          border-bottom: 1px solid var(--medium-gray);
+          transition: color 0.3s;
+      }
+
+      .mobile-menu ul li a:hover {
+          color: var(--primary-purple);
+      }
+
+      .mobile-menu ul li a.active {
+          color: var(--primary-purple);
+          font-weight: 700;
+          border-bottom-color: var(--primary-purple);
+      }
+
+      .mobile-menu-close {
+          position: absolute;
+          top: 20px;
+          right: 20px;
+          font-size: 24px;
+          background: none;
+          border: none;
+          color: var(--dark-gray);
+          cursor: pointer;
+      }
+
+      .overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(0, 0, 0, 0.5);
+          z-index: 999;
+          opacity: 0;
+          visibility: hidden;
+          transition: all 0.3s;
+      }
+
+      .overlay.active {
+          opacity: 1;
+          visibility: visible;
+      }
+
+      /* Page Header */
+      .page-header {
+          padding: 180px 0 80px;
+          background: linear-gradient(135deg, var(--primary-purple) 0%, var(--dark-purple) 100%);
+          color: white;
+          text-align: center;
+      }
+
+      .page-title {
+          font-size: 3.5rem;
+          margin-bottom: 20px;
+          font-weight: 700;
+      }
+
+      .page-subtitle {
+          font-size: 1.3rem;
+          max-width: 700px;
+          margin: 0 auto;
+          opacity: 0.9;
+      }
+
+      /* Our Story Section */
+
+
+
+
+
+
+
+      /* Mission Vision Section */
+
+
+
+
+
+
+
+      /* Values Section */
+
+
+
+
+
+
+
+      /* Leadership Section */
+
+
+
+
+
+
+
+
+
+
+      /* Gallery Grid */
+
+
+
+
+      /*Video*/
+
+
+
+      /* CTA Section */
+      .cta-section {
+          padding: 100px 0;
+          background: linear-gradient(135deg, var(--primary-purple), var(--dark-purple));
+          color: white;
+          text-align: center;
+      }
+
+      .cta-title {
+          font-size: 2.5rem;
+          margin-bottom: 20px;
+      }
+
+      .cta-desc {
+          font-size: 1.2rem;
+          max-width: 700px;
+          margin: 0 auto 40px;
+          opacity: 0.9;
+      }
+
+      .cta-buttons-centered {
+          display: flex;
+          justify-content: center;
+          gap: 20px;
+      }
+
+      .btn {
+          padding: 14px 32px;
+          border-radius: 30px;
+          font-weight: 600;
+          text-decoration: none;
+          transition: all 0.3s ease;
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+      }
+
+      .btn-light {
+          background: white;
+          color: var(--primary-purple);
+      }
+
+      .btn-light:hover {
+          background: var(--light-gray);
+          transform: translateY(-3px);
+          box-shadow: 0 8px 20px rgba(255, 255, 255, 0.2);
+      }
+
+      .btn-outline-light {
+          background: transparent;
+          color: white;
+          border: 2px solid white;
+      }
+
+      .btn-outline-light:hover {
+          background: white;
+          color: var(--primary-purple);
+          transform: translateY(-3px);
+          box-shadow: 0 8px 20px rgba(255, 255, 255, 0.2);
+      }
+
+      /* Footer */
+      footer {
+          background-color: var(--dark-gray);
+          color: var(--white);
+          padding: 70px 0 30px;
+      }
+
+      .footer-container {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+          gap: 40px;
+          margin-bottom: 50px;
+      }
+
+      .footer-col h3 {
+          font-size: 1.3rem;
+          margin-bottom: 25px;
+          position: relative;
+          padding-bottom: 10px;
+      }
+
+      .footer-col h3:after {
+          content: '';
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 40px;
+          height: 3px;
+          background: var(--primary-purple);
+      }
+
+      .footer-col p {
+          margin-bottom: 20px;
+          opacity: 0.8;
+      }
+
+      .footer-links {
+          list-style: none;
+      }
+
+      .footer-links li {
+          margin-bottom: 12px;
+      }
+
+      .footer-links a {
+          color: var(--white);
+          text-decoration: none;
+          opacity: 0.8;
+          transition: opacity 0.3s, padding-left 0.3s;
+      }
+
+      .footer-links a:hover {
+          opacity: 1;
+          padding-left: 5px;
+      }
+
+      .social-links {
+          display: flex;
+          gap: 15px;
+          margin-top: 20px;
+      }
+
+      .social-links a {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 40px;
+          height: 40px;
+          background: rgba(255, 255, 255, 0.1);
+          border-radius: 50%;
+          color: white;
+          text-decoration: none;
+          transition: all 0.3s;
+      }
+
+      .social-links a:hover {
+          background: var(--primary-purple);
+          transform: translateY(-3px);
+      }
+
+      .copyright {
+          text-align: center;
+          padding-top: 30px;
+          border-top: 1px solid rgba(255, 255, 255, 0.1);
+          font-size: 0.9rem;
+          opacity: 0.7;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 992px) {
+
+          .story-container,
+
+
+      }
+
+      @media (max-width: 768px) {
+          .section-title {
+              font-size: 2rem;
+          }
+
+          .page-title {
+              font-size: 2.5rem;
+          }
+
+          .page-subtitle {
+              font-size: 1.1rem;
+          }
+
+          nav ul {
+              display: none;
+          }
+
+          .mobile-menu-btn {
+              display: block;
+          }
+
+          .cta-buttons-centered {
+              flex-direction: column;
+              align-items: center;
+          }
+
+          .btn {
+              width: 220px;
+              text-align: center;
+              justify-content: center;
+          }
+
+          .values-container,
+      }
+
+      @media (max-width: 480px) {
+          .page-title {
+              font-size: 2rem;
+          }
+
+          .section-title {
+              font-size: 1.8rem;
+          }
+
+          .cta-title {
+              font-size: 2rem;
+          }
+
+      }
+
+      /* ---- Foundation repositioning additions ---- */
+      .skip-link { position: absolute; left: -999px; top: 0; background: #fff; color: var(--primary-purple); padding: 10px 16px; z-index: 3000; font-weight: 600; }
+      .skip-link:focus { left: 10px; top: 10px; }
+      .fd-section { padding: 90px 0; background: var(--white); }
+      .fd-section.alt { background: var(--light-gray); }
+      .fd-lead { max-width: 820px; margin: 0 auto 36px; text-align: center; color: var(--text-gray); font-size: 1.08rem; line-height: 1.7; }
+      .fd-prose { max-width: 860px; margin: 0 auto; color: var(--text-gray); line-height: 1.75; }
+      .fd-prose p { margin-bottom: 16px; }
+      .fd-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr)); gap: 28px; }
+      .fd-card { background: var(--white); border: 1px solid var(--medium-gray); border-radius: 10px; padding: 28px; box-shadow: 0 5px 15px rgba(0,0,0,.05); }
+      .fd-card h3 { color: var(--dark-gray); font-size: 1.25rem; margin: 14px 0 10px; }
+      .fd-card p { color: var(--text-gray); line-height: 1.65; }
+      .fd-icon { width: 54px; height: 54px; border-radius: 12px; background: linear-gradient(135deg, var(--primary-purple), var(--light-purple)); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; }
+      .fd-tag { display: inline-block; font-size: .75rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--primary-purple); background: #f1e8fa; border-radius: 20px; padding: 4px 12px; }
+      .fd-list { margin: 12px 0 0 22px; color: var(--text-gray); line-height: 1.65; }
+      .fd-list li { margin-bottom: 10px; }
+      .fd-two { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: 40px; align-items: start; }
+      .fd-btn { display: inline-block; padding: 12px 26px; border-radius: 30px; background: var(--primary-purple); color: #fff; text-decoration: none; font-weight: 600; margin: 6px 6px 0 0; }
+      .fd-btn:hover { background: var(--dark-purple); }
+      .fd-btn.outline { background: transparent; color: var(--primary-purple); border: 2px solid var(--primary-purple); padding: 10px 24px; }
+      .fd-center { text-align: center; margin-top: 30px; }
+      .mobile-menu-btn, .mobile-menu-close { min-width: 44px; min-height: 44px; }
+      @media (max-width: 768px) {
+          .fd-section { padding: 60px 0; }
+      }
+
+      /* ---- Volunteer admin ---- */
+      .page-header { padding-top: 130px; padding-bottom: 50px; }
+      .vadm { max-width: 1120px; margin: 0 auto; }
+      .vadm-banner { background: #fff7e0; border: 1px solid #f0d58a; color: #6b5200; border-radius: 10px; padding: 14px 18px; margin-bottom: 22px; line-height: 1.6; font-size: .95rem; }
+      .vadm-banner.api { background: #e8f6ee; border-color: #b7e1c7; color: #1e6b3a; }
+      .vadm-tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--medium-gray); margin-bottom: 26px; flex-wrap: wrap; }
+      .vadm-tab { background: none; border: 0; padding: 12px 22px; font: inherit; font-weight: 600; color: var(--text-gray); cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -2px; }
+      .vadm-tab[aria-selected="true"] { color: var(--primary-purple); border-bottom-color: var(--primary-purple); }
+      .vadm-tab .count { display: inline-block; background: #f1e8fa; color: var(--primary-purple); border-radius: 20px; padding: 1px 10px; font-size: .8rem; margin-left: 6px; }
+      .vadm-card { background: var(--white); border: 1px solid var(--medium-gray); border-radius: 12px; padding: 26px; box-shadow: 0 5px 15px rgba(0,0,0,.05); margin-bottom: 24px; }
+      .vadm-card h2 { font-size: 1.3rem; color: var(--dark-gray); margin-bottom: 16px; }
+      .vadm-bar { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; background: var(--white); border: 1px solid var(--medium-gray); border-radius: 12px; padding: 14px 18px; margin-bottom: 24px; position: sticky; top: 76px; z-index: 20; box-shadow: 0 5px 15px rgba(0,0,0,.06); }
+      .vadm-bar .spacer { flex: 1; }
+      .vadm-dirty { font-size: .85rem; font-weight: 700; color: #b9770e; background: #fff7e0; border-radius: 20px; padding: 4px 12px; }
+      .vadm-btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 30px; border: 2px solid var(--primary-purple); background: var(--primary-purple); color: #fff; font: inherit; font-weight: 600; font-size: .92rem; cursor: pointer; text-decoration: none; }
+      .vadm-btn:hover:not(:disabled) { background: var(--dark-purple); border-color: var(--dark-purple); }
+      .vadm-btn:disabled { opacity: .45; cursor: not-allowed; }
+      .vadm-btn.outline { background: transparent; color: var(--primary-purple); }
+      .vadm-btn.outline:hover:not(:disabled) { background: #f1e8fa; color: var(--primary-purple); }
+      .vadm-btn.danger { background: transparent; border-color: #c0392b; color: #c0392b; }
+      .vadm-btn.danger:hover:not(:disabled) { background: #fdecea; color: #c0392b; border-color: #c0392b; }
+      .vadm-btn.sm { padding: 6px 14px; font-size: .85rem; }
+      .vadm-btn.icon { padding: 6px 10px; }
+      .vadm-field { margin-bottom: 16px; }
+      .vadm-field > label { display: block; font-weight: 600; font-size: .92rem; color: var(--dark-gray); margin-bottom: 6px; }
+      .vadm-field > label.vadm-check { display: flex; }
+      .vadm-field input[type=text], .vadm-field input[type=email], .vadm-field input[type=number], .vadm-field textarea, .vadm-field select, .vadm-input { width: 100%; padding: 10px 12px; border: 1px solid var(--medium-gray); border-radius: 8px; font: inherit; color: var(--dark-gray); background: #fff; }
+      .vadm-field textarea { min-height: 120px; resize: vertical; line-height: 1.55; }
+      .vadm-field input:focus, .vadm-field textarea:focus, .vadm-field select:focus, .vadm-input:focus { outline: 2px solid var(--light-purple); border-color: var(--light-purple); }
+      .vadm-hint { font-size: .82rem; color: var(--text-gray); margin-top: 5px; line-height: 1.5; }
+      .vadm-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+      .vadm-check { display: flex; align-items: center; gap: 10px; font-weight: 600; color: var(--dark-gray); cursor: pointer; }
+      .vadm-check input { width: 18px; height: 18px; accent-color: var(--primary-purple); }
+      .vadm-section { background: #faf7fd; border: 1px solid #e4d8f3; border-radius: 14px; padding: 20px; margin-bottom: 22px; }
+      .vadm-section-head { display: grid; grid-template-columns: 1fr auto; gap: 10px 14px; align-items: start; margin-bottom: 14px; }
+      .vadm-section-head .title { font-weight: 700; font-size: 1.05rem; }
+      .vadm-section-tools { display: flex; gap: 6px; }
+      .vadm-qlist { min-height: 40px; display: grid; gap: 10px; border-radius: 10px; padding: 2px; }
+      .vadm-qlist.over { outline: 2px dashed var(--primary-purple); background: #f3ecfb; }
+      .vadm-q { display: grid; grid-template-columns: 26px 1fr auto; gap: 12px; align-items: start; background: var(--white); border: 1px solid var(--medium-gray); border-radius: 10px; padding: 12px 14px; }
+      .vadm-q.dragging { opacity: .4; }
+      .vadm-q.over { border-color: var(--primary-purple); box-shadow: 0 -3px 0 var(--primary-purple); }
+      .vadm-handle { cursor: grab; color: #a99bc0; padding-top: 3px; text-align: center; user-select: none; }
+      .vadm-q-label { font-weight: 600; color: var(--dark-gray); line-height: 1.4; overflow-wrap: anywhere; }
+      .vadm-q-meta { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+      .vadm-chip { font-size: .72rem; font-weight: 700; letter-spacing: .03em; text-transform: uppercase; border-radius: 20px; padding: 3px 10px; background: #f1e8fa; color: var(--primary-purple); }
+      .vadm-chip.req { background: #fdecea; color: #a93226; }
+      .vadm-chip.use { background: #e8f6ee; color: #1e6b3a; }
+      .vadm-chip.plain { background: #eef0f3; color: #566; text-transform: none; font-weight: 500; letter-spacing: 0; }
+      .vadm-q-tools { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+      .vadm-empty { text-align: center; color: var(--text-gray); padding: 28px 10px; border: 2px dashed var(--medium-gray); border-radius: 10px; }
+      .vadm-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
+      .vadm-stat { background: var(--white); border: 1px solid var(--medium-gray); border-radius: 12px; padding: 20px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,.05); }
+      .vadm-stat b { display: block; font-size: 2rem; color: var(--primary-purple); line-height: 1.1; }
+      .vadm-stat span { color: var(--text-gray); font-size: .9rem; }
+      .vadm-tools { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 12px; margin-bottom: 14px; }
+      .vadm-table { width: 100%; border-collapse: collapse; }
+      .vadm-table th { text-align: left; font-size: .78rem; text-transform: uppercase; letter-spacing: .05em; color: var(--text-gray); padding: 10px 12px; border-bottom: 2px solid var(--medium-gray); }
+      .vadm-table td { padding: 14px 12px; border-bottom: 1px solid var(--medium-gray); vertical-align: middle; color: var(--dark-gray); }
+      .vadm-table .who b { display: block; }
+      .vadm-table .who small { color: var(--text-gray); }
+      .vadm-table .acts { display: flex; gap: 6px; flex-wrap: wrap; }
+      .vadm-pager { display: flex; justify-content: center; align-items: center; gap: 16px; margin-top: 18px; color: var(--text-gray); }
+      .vadm-modal { position: fixed; inset: 0; background: rgba(20,5,40,.55); z-index: 2000; display: flex; align-items: flex-start; justify-content: center; padding: 40px 16px; overflow-y: auto; }
+      .vadm-modal[hidden] { display: none; }
+      .vadm-dialog { background: var(--white); border-radius: 14px; width: 100%; max-width: 760px; padding: 28px; box-shadow: 0 25px 60px rgba(0,0,0,.35); position: relative; }
+      .vadm-dialog.wide { max-width: 980px; }
+      .vadm-dialog h2 { font-size: 1.35rem; color: var(--dark-gray); margin-bottom: 16px; padding-right: 40px; }
+      .vadm-x { position: absolute; top: 14px; right: 14px; background: none; border: 0; font-size: 1.3rem; cursor: pointer; color: var(--text-gray); width: 40px; height: 40px; border-radius: 50%; }
+      .vadm-x:hover { background: #f1e8fa; }
+      .vadm-opt-row { display: grid; grid-template-columns: 1fr auto; gap: 8px; margin-bottom: 8px; }
+      .vadm-opt-row .tools { display: flex; gap: 4px; }
+      .vadm-err { background: #fdecea; color: #922b21; border: 1px solid #f5b7b1; border-radius: 8px; padding: 10px 14px; margin-bottom: 14px; font-size: .92rem; }
+      .vadm-detail h3 { font-size: .8rem; letter-spacing: .08em; text-transform: uppercase; color: var(--primary-purple); margin: 22px 0 8px; }
+      .vadm-detail dl { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: 8px 18px; }
+      .vadm-detail dt { color: var(--text-gray); font-size: .9rem; line-height: 1.45; }
+      .vadm-detail dd { color: var(--dark-gray); font-weight: 500; overflow-wrap: anywhere; white-space: pre-wrap; }
+      .vadm-cvbox { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; background: #f6f0fb; border-radius: 10px; padding: 12px 16px; margin: 6px 0; }
+      .vadm-viewer { width: 100%; height: 70vh; border: 1px solid var(--medium-gray); border-radius: 8px; background: #f6f3fa; }
+      .vadm-toast { position: fixed; left: 50%; bottom: 28px; transform: translate(-50%, 30px); background: #2b1650; color: #fff; padding: 12px 22px; border-radius: 30px; box-shadow: 0 10px 30px rgba(0,0,0,.35); opacity: 0; pointer-events: none; transition: opacity .25s, transform .25s; z-index: 3000; max-width: 90vw; text-align: center; }
+      .vadm-toast.show { opacity: 1; transform: translate(-50%, 0); }
+      .vadm-toast.err { background: #922b21; }
+      [hidden] { display: none !important; }
+      @media (max-width: 900px) { .vadm-tools { grid-template-columns: 1fr; } .vadm-grid2 { grid-template-columns: 1fr; } .vadm-stats { grid-template-columns: 1fr; } .vadm-bar { position: static; } }
+      @media (max-width: 768px) {
+          .vadm-card { padding: 18px 14px; } .vadm-section { padding: 14px 10px; }
+          .vadm-q { grid-template-columns: 1fr; } .vadm-handle { display: none; } .vadm-q-tools { justify-content: flex-start; }
+          .vadm-table thead { display: none; } .vadm-table, .vadm-table tbody, .vadm-table tr, .vadm-table td { display: block; width: 100%; }
+          .vadm-table tr { border: 1px solid var(--medium-gray); border-radius: 10px; padding: 8px 12px; margin-bottom: 12px; }
+          .vadm-table td { border: 0; padding: 5px 0; }
+          .vadm-table td[data-label]::before { content: attr(data-label) ": "; font-weight: 600; color: var(--text-gray); font-size: .8rem; }
+          .vadm-dialog { padding: 20px 16px; } .vadm-detail dl { grid-template-columns: 1fr; gap: 2px; } .vadm-detail dd { margin-bottom: 10px; }
+      }
+    </style>
+    <link rel="stylesheet" href="/site-chrome.css" />
+  </head>
+
+  <body>
+    <a class="skip-link" href="#main">Skip to main content</a>
+    <!-- Header -->
+    <header>
+      <div class="container header-container">
+        <a class="logo" href="index.html" aria-label="DIRA Foundation home">
+          <img src="assets/logo.jpg" alt="DIRA Foundation logo" width="48" height="48" />
+          <span class="logo-text">DIRA<br /><span>Foundation</span></span>
+        </a>
+        <nav aria-label="Main navigation">
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="work.html">Our Work</a></li>
+            <li><a href="articles.html">Articles</a></li>
+            <li><a href="partner.html">Partners</a></li>
+            <li><a href="involve.html" class="active" aria-current="page">Get Involved</a></li>
+            <li><a href="contact.html" class="nav-cta">Contact</a></li>
+          </ul>
+        </nav>
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open mobile menu">
+          <i class="fas fa-bars" aria-hidden="true"></i>
+        </button>
+      </div>
+    </header>
+
+    <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+      <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close mobile menu">
+        <i class="fas fa-times" aria-hidden="true"></i>
+      </button>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="work.html">Our Work</a></li>
+        <li><a href="articles.html">Articles</a></li>
+        <li><a href="partner.html">Partners</a></li>
+        <li><a href="involve.html" class="active" aria-current="page">Get Involved</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+
+    <main id="main">
+      <section class="page-header">
+        <div class="container">
+          <h1 class="page-title">Volunteer Registration Admin</h1>
+          <p class="page-subtitle">
+            Edit the application form and review who has registered.
+          </p>
+        </div>
+      </section>
+
+      <section class="fd-section">
+        <div class="container vadm">
+          <div id="modeBanner" class="vadm-banner" hidden></div>
+
+          <div class="vadm-tabs" id="adminTabs" role="tablist" aria-label="Admin sections" hidden>
+            <button
+              class="vadm-tab"
+              role="tab"
+              id="tabForm"
+              aria-controls="panelForm"
+              aria-selected="true"
+            >
+              Form questions
+            </button>
+            <button
+              class="vadm-tab"
+              role="tab"
+              id="tabRegs"
+              aria-controls="panelRegs"
+              aria-selected="false"
+            >
+              Registrations <span class="count" id="regCount">0</span>
+            </button>
+          </div>
+
+          <!-- ============ Form builder ============ -->
+          <div id="panelForm" role="tabpanel" aria-labelledby="tabForm" hidden>
+            <div class="vadm-bar">
+              <button class="vadm-btn" id="saveBtn" disabled>
+                <i class="fas fa-floppy-disk" aria-hidden="true"></i> Save
+                changes
+              </button>
+              <button class="vadm-btn outline" id="discardBtn" disabled>
+                Discard changes
+              </button>
+              <span class="vadm-dirty" id="dirtyBadge" hidden
+                >Unsaved changes</span
+              >
+              <span class="spacer"></span>
+              <a
+                class="vadm-btn outline sm"
+                id="previewBtn"
+                href="volunteer.html"
+                target="_blank"
+                rel="noopener"
+                >Preview form</a
+              >
+              <button class="vadm-btn outline sm" id="exportFormBtn">
+                Export
+              </button>
+              <button class="vadm-btn outline sm" id="importFormBtn">
+                Import
+              </button>
+              <button class="vadm-btn danger sm" id="resetFormBtn">
+                Reset to default
+              </button>
+              <button class="vadm-btn outline sm" id="adminLogoutBtn" type="button">Sign out</button>
+              <input
+                type="file"
+                id="importFormFile"
+                accept="application/json,.json"
+                hidden
+              />
+            </div>
+
+            <div class="vadm-card">
+              <h2>Form details</h2>
+              <div class="vadm-grid2">
+                <div class="vadm-field">
+                  <label for="fTitle">Page title</label
+                  ><input type="text" id="fTitle" maxlength="120" />
+                </div>
+                <div class="vadm-field">
+                  <label for="fSubtitle">Subtitle</label
+                  ><input type="text" id="fSubtitle" maxlength="160" />
+                </div>
+              </div>
+              <div class="vadm-field">
+                <label for="fIntro">Introduction text</label>
+                <textarea id="fIntro"></textarea>
+                <p class="vadm-hint">
+                  A blank line starts a new paragraph. You can use **bold**,
+                  *italic* and [link text](https://address) or
+                  [email](mailto:address).
+                </p>
+              </div>
+              <div class="vadm-grid2">
+                <div class="vadm-field">
+                  <label for="fSubmit">Submit button text</label
+                  ><input type="text" id="fSubmit" maxlength="60" />
+                </div>
+                <div class="vadm-field">
+                  <label for="fNotify"
+                    >Email address that receives applications</label
+                  ><input type="email" id="fNotify" maxlength="160" />
+                  <p class="vadm-hint">
+                    Used when the form sends answers by email.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <p class="vadm-hint" style="margin: 0 0 14px">
+              Editing a question changes the form for new applicants only.
+              Registrations that already exist keep the wording they were
+              answered with. Drag a question by its handle to move it, or use
+              the arrow buttons.
+            </p>
+            <div id="sections"></div>
+            <button class="vadm-btn outline" id="addSectionBtn">
+              <i class="fas fa-plus" aria-hidden="true"></i> Add section
+            </button>
+          </div>
+
+          <!-- ============ Registrations ============ -->
+          <div id="panelRegs" role="tabpanel" aria-labelledby="tabRegs" hidden>
+            <div class="vadm-stats">
+              <div class="vadm-stat">
+                <b id="stTotal">0</b><span>Total registrations</span>
+              </div>
+              <div class="vadm-stat">
+                <b id="stCv">0</b><span>With a CV</span>
+              </div>
+              <div class="vadm-stat">
+                <b id="stWeek">0</b><span>In the last 7 days</span>
+              </div>
+            </div>
+            <div class="vadm-card">
+              <div class="vadm-tools">
+                <div class="vadm-field" style="margin: 0">
+                  <label for="rSearch">Search</label
+                  ><input
+                    type="text"
+                    id="rSearch"
+                    placeholder="Name, email, role, location or any answer"
+                  />
+                </div>
+                <div class="vadm-field" style="margin: 0">
+                  <label for="rFilter">Show</label
+                  ><select id="rFilter">
+                    <option value="all">All registrations</option>
+                    <option value="cv">With a CV</option>
+                    <option value="nocv">Without a CV</option>
+                  </select>
+                </div>
+                <div class="vadm-field" style="margin: 0">
+                  <label for="rSort">Sort by</label
+                  ><select id="rSort">
+                    <option value="new">Newest first</option>
+                    <option value="old">Oldest first</option>
+                    <option value="name">Name (A to Z)</option>
+                  </select>
+                </div>
+              </div>
+              <div
+                class="vadm-bar"
+                style="position: static; box-shadow: none; margin: 14px 0"
+              >
+                <span
+                  id="rCountLine"
+                  style="color: var(--text-gray); font-size: 0.92rem"
+                ></span>
+                <span class="spacer"></span>
+                <button class="vadm-btn outline sm" id="refreshBtn">
+                  Refresh
+                </button>
+                <button class="vadm-btn outline sm" id="csvBtn">
+                  Export CSV
+                </button>
+                <button class="vadm-btn outline sm" id="jsonBtn">
+                  Export JSON
+                </button>
+                <button class="vadm-btn danger sm" id="clearBtn">
+                  Delete all
+                </button>
+              </div>
+              <p class="vadm-empty" id="rEmpty" hidden></p>
+              <table class="vadm-table" id="rTable" hidden>
+                <thead>
+                  <tr>
+                    <th>Applicant</th>
+                    <th>Areas</th>
+                    <th>Submitted</th>
+                    <th>CV</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="rBody"></tbody>
+              </table>
+              <div class="vadm-pager" id="rPager" hidden>
+                <button class="vadm-btn outline sm" id="prevBtn">
+                  Previous</button
+                ><span id="pageInfo"></span
+                ><button class="vadm-btn outline sm" id="nextBtn">Next</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Question editor -->
+      <div class="vadm-modal" id="qModal" hidden>
+        <div
+          class="vadm-dialog"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="qModalTitle"
+        >
+          <button class="vadm-x" id="qClose" aria-label="Close">&times;</button>
+          <h2 id="qModalTitle">Edit question</h2>
+          <div class="vadm-err" id="qErr" role="alert" hidden></div>
+          <div id="qBody"></div>
+          <div
+            class="vadm-bar"
+            style="position: static; box-shadow: none; margin: 18px 0 0"
+          >
+            <button class="vadm-btn" id="qSave">Save question</button>
+            <button class="vadm-btn outline" id="qCancel">Cancel</button>
+            <span class="spacer"></span>
+            <button class="vadm-btn danger" id="qDelete">
+              Delete question
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Registration detail -->
+      <div class="vadm-modal" id="dModal" hidden>
+        <div
+          class="vadm-dialog wide"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="dTitle"
+        >
+          <button class="vadm-x" id="dClose" aria-label="Close">&times;</button>
+          <h2 id="dTitle">Registration</h2>
+          <div class="vadm-detail" id="dBody"></div>
+        </div>
+      </div>
+
+      <!-- CV viewer -->
+      <div class="vadm-modal" id="cvModal" hidden>
+        <div
+          class="vadm-dialog wide"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="cvTitle"
+        >
+          <button class="vadm-x" id="cvClose" aria-label="Close">
+            &times;
+          </button>
+          <h2 id="cvTitle">CV</h2>
+          <div id="cvBody"></div>
+        </div>
+      </div>
+
+      <div class="vadm-toast" id="toast" role="status" aria-live="polite"></div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+      <div class="container">
+        <div class="footer-container">
+          <div class="footer-col">
+            <h3>DIRA Foundation</h3>
+            <p>
+              A non-profit association based in Bamenda, North West Region of
+              Cameroon, working with communities and institutions on education,
+              opportunity, research, health awareness and community development.
+            </p>
+            <div class="social-links">
+              <a
+                href="https://www.linkedin.com/company/dira-digital-era/"
+                aria-label="DIRA Foundation on LinkedIn"
+                target="_blank"
+                rel="noopener noreferrer"
+                ><i class="fab fa-linkedin-in" aria-hidden="true"></i
+              ></a>
+              <a
+                href="https://x.com/diradigitalera/"
+                aria-label="DIRA Foundation on X"
+                target="_blank"
+                rel="noopener noreferrer"
+                ><i class="fab fa-twitter" aria-hidden="true"></i
+              ></a>
+              <a
+                href="https://www.instagram.com/digital_era_dira/"
+                aria-label="DIRA Foundation on Instagram"
+                target="_blank"
+                rel="noopener noreferrer"
+                ><i class="fab fa-instagram" aria-hidden="true"></i
+              ></a>
+              <a
+                href="https://www.tiktok.com/@digital.era.dira"
+                aria-label="DIRA Foundation on TikTok"
+                target="_blank"
+                rel="noopener noreferrer"
+                ><i class="fab fa-tiktok" aria-hidden="true"></i
+              ></a>
+            </div>
+          </div>
+
+          <div class="footer-col">
+            <h3>Quick Links</h3>
+            <ul class="footer-links">
+              <li><a href="index.html">Home</a></li>
+              <li><a href="about.html">About Us</a></li>
+              <li><a href="work.html">Our Work</a></li>
+              <li><a href="articles.html">Articles</a></li>
+              <li><a href="partner.html">Partners</a></li>
+              <li><a href="involve.html">Get Involved</a></li>
+              <li><a href="contact.html">Contact</a></li>
+              <li><a href="terms-privacy.html">Terms &amp; Privacy</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-col">
+            <h3>Take Part</h3>
+            <ul class="footer-links">
+              <li><a href="involve.html">Volunteer</a></li>
+              <li>
+                <a href="partner.html#collaborate">Propose a collaboration</a>
+              </li>
+              <li>
+                <a href="involve.html#donation">Support the foundation</a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="footer-col">
+            <h3>Contact Us</h3>
+            <p>
+              <i class="fas fa-map-marker-alt" aria-hidden="true"></i> North
+              West Region, Bamenda
+            </p>
+            <p>
+              <i class="fas fa-envelope" aria-hidden="true"></i>
+              <a href="mailto:Foundation@diracmr.com" style="color: inherit"
+                >Foundation@diracmr.com</a
+              >
+            </p>
+            <p>
+              <i class="fas fa-phone" aria-hidden="true"></i>
+              <a href="tel:+237682366472" style="color: inherit"
+                >+237 6 82 36 64 72</a
+              >
+            </p>
+          </div>
+        </div>
+
+        <div class="copyright">
+          &copy; 2026 DIRA Foundation. All rights reserved.<br />Built by DIRA
+          SAS
+        </div>
+      </div>
+    </footer>
+
+    <script>window.DIRA_VOLUNTEER_API = "/api";</script>
+    <script src="volunteer-store.js"></script>
+    <script>
+      // Mobile Menu Functionality
+      const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+      const mobileMenu = document.getElementById("mobileMenu");
+      const mobileMenuClose = document.getElementById("mobileMenuClose");
+      const overlay = document.getElementById("overlay");
+
+      function openMobileMenu() {
+        mobileMenu.classList.add("active");
+        overlay.classList.add("active");
+        document.body.style.overflow = "hidden";
+      }
+
+      function closeMobileMenu() {
+        mobileMenu.classList.remove("active");
+        overlay.classList.remove("active");
+        document.body.style.overflow = "auto";
+      }
+
+      mobileMenuBtn.addEventListener("click", openMobileMenu);
+      mobileMenuClose.addEventListener("click", closeMobileMenu);
+      overlay.addEventListener("click", closeMobileMenu);
+
+      // Close menu when clicking on a link
+      const mobileMenuLinks = document.querySelectorAll(".mobile-menu a");
+      mobileMenuLinks.forEach((link) => {
+        link.addEventListener("click", closeMobileMenu);
+      });
+
+      // Header scroll effect
+      window.addEventListener("scroll", function () {
+        const header = document.querySelector("header");
+        if (window.scrollY > 50) {
+          header.style.padding = "5px 0";
+          header.style.boxShadow = "0 5px 20px rgba(0, 0, 0, 0.1)";
+        } else {
+          header.style.padding = "15px 0";
+          header.style.boxShadow = "0 2px 15px rgba(0, 0, 0, 0.1)";
+        }
+      });
+
+      // ---------- Volunteer admin ----------
+      (function () {
+        const Store = window.DiraVolunteer;
+        const $ = (id) => document.getElementById(id);
+        function el(tag, attrs, ...kids) {
+          const e = document.createElement(tag);
+          Object.entries(attrs || {}).forEach(([k, v]) => {
+            if (v === false || v == null) return;
+            if (k === "class") e.className = v;
+            else if (k === "text") e.textContent = v;
+            else if (k.startsWith("on")) e.addEventListener(k.slice(2), v);
+            else e.setAttribute(k, v === true ? "" : v);
+          });
+          kids.forEach((k) => {
+            if (k != null && k !== false)
+              e.appendChild(
+                typeof k === "string" ? document.createTextNode(k) : k,
+              );
+          });
+          return e;
+        }
+        let form = null,
+          savedJson = "",
+          subs = [],
+          page = 1;
+        const PER = 20;
+        const TYPE_LABEL = Store.TYPES;
+
+        /* ---------------- shared ui ---------------- */
+        let toastTimer = 0;
+        function toast(msg, isErr) {
+          const t = $("toast");
+          t.textContent = msg;
+          t.className = "vadm-toast show" + (isErr ? " err" : "");
+          clearTimeout(toastTimer);
+          toastTimer = setTimeout(
+            () => {
+              t.className = "vadm-toast" + (isErr ? " err" : "");
+            },
+            isErr ? 6000 : 3200,
+          );
+        }
+        let lastFocus = null;
+        function openModal(id) {
+          lastFocus = document.activeElement;
+          const m = $(id);
+          m.hidden = false;
+          document.body.style.overflow = "hidden";
+          const f = m.querySelector(
+            "input:not([type=hidden]),textarea,select,button.vadm-x",
+          );
+          if (f) f.focus();
+        }
+        function closeModal(id) {
+          $(id).hidden = true;
+          if (
+            document.querySelectorAll(".vadm-modal:not([hidden])").length === 0
+          )
+            document.body.style.overflow = "";
+          if (lastFocus && lastFocus.focus) lastFocus.focus();
+        }
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape") {
+            const open = Array.from(
+              document.querySelectorAll(".vadm-modal:not([hidden])"),
+            ).pop();
+            if (open) {
+              if (open.id === "cvModal") closeCv();
+              else closeModal(open.id);
+            }
+          }
+        });
+        ["qModal", "dModal", "cvModal"].forEach((id) =>
+          $(id).addEventListener("mousedown", (e) => {
+            if (e.target === $(id)) {
+              if (id === "cvModal") closeCv();
+              else closeModal(id);
+            }
+          }),
+        );
+        $("qClose").onclick = () => closeModal("qModal");
+        $("qCancel").onclick = () => closeModal("qModal");
+        $("dClose").onclick = () => closeModal("dModal");
+        $("cvClose").onclick = () => closeCv();
+        function download(name, mime, data) {
+          const b =
+            data instanceof Blob ? data : new Blob([data], { type: mime });
+          const u = URL.createObjectURL(b);
+          const a = el("a", { href: u, download: name });
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          setTimeout(() => URL.revokeObjectURL(u), 4000);
+        }
+        const fmtDate = (iso) => {
+          try {
+            return new Date(iso).toLocaleString("en-GB", {
+              day: "numeric",
+              month: "short",
+              year: "numeric",
+              hour: "2-digit",
+              minute: "2-digit",
+            });
+          } catch (e) {
+            return "";
+          }
+        };
+        const fmtSize = (n) =>
+          n > 1048576
+            ? (n / 1048576).toFixed(1) + " MB"
+            : Math.max(1, Math.round(n / 1024)) + " KB";
+
+        /* ---------------- tabs ---------------- */
+        function selectTab(which) {
+          const f = which === "form";
+          $("tabForm").setAttribute("aria-selected", f);
+          $("tabRegs").setAttribute("aria-selected", !f);
+          $("panelForm").hidden = !f;
+          $("panelRegs").hidden = f;
+          if (!f) loadRegs();
+        }
+        $("tabForm").onclick = () => selectTab("form");
+        $("tabRegs").onclick = () => selectTab("regs");
+
+        /* ---------------- form builder ---------------- */
+        const isDirty = () => form && JSON.stringify(form) !== savedJson;
+        function updateDirty() {
+          const d = isDirty();
+          $("saveBtn").disabled = !d;
+          $("discardBtn").disabled = !d;
+          $("dirtyBadge").hidden = !d;
+        }
+        window.addEventListener("beforeunload", (e) => {
+          if (isDirty()) {
+            e.preventDefault();
+            e.returnValue = "";
+          }
+        });
+
+        function bindDetails() {
+          const map = {
+            fTitle: "title",
+            fSubtitle: "subtitle",
+            fIntro: "intro",
+            fSubmit: "submitLabel",
+            fNotify: "notifyEmail",
+          };
+          Object.entries(map).forEach(([id, key]) => {
+            $(id).value = form[key] || "";
+            $(id).oninput = () => {
+              form[key] = $(id).value;
+              updateDirty();
+            };
+          });
+        }
+        const qsOf = (sid) => form.questions.filter((q) => q.sectionId === sid);
+
+        function renderSections() {
+          const host = $("sections");
+          host.textContent = "";
+          form.sections.forEach((s, si) => {
+            const qs = qsOf(s.id);
+            const title = el("input", {
+              type: "text",
+              class: "vadm-input title",
+              value: s.title,
+              maxlength: "100",
+              "aria-label": "Section title",
+            });
+            title.oninput = () => {
+              s.title = title.value;
+              updateDirty();
+            };
+            const desc = el("input", {
+              type: "text",
+              class: "vadm-input",
+              value: s.description || "",
+              maxlength: "200",
+              placeholder:
+                "Optional short description shown under the section title",
+              "aria-label": "Section description",
+            });
+            desc.oninput = () => {
+              s.description = desc.value;
+              updateDirty();
+            };
+            const tools = el(
+              "div",
+              { class: "vadm-section-tools" },
+              el(
+                "button",
+                {
+                  class: "vadm-btn outline sm icon",
+                  title: "Move section up",
+                  "aria-label": "Move section up",
+                  disabled: si === 0,
+                  onclick: () => moveSection(si, -1),
+                },
+                "\u2191",
+              ),
+              el(
+                "button",
+                {
+                  class: "vadm-btn outline sm icon",
+                  title: "Move section down",
+                  "aria-label": "Move section down",
+                  disabled: si === form.sections.length - 1,
+                  onclick: () => moveSection(si, 1),
+                },
+                "\u2193",
+              ),
+              el(
+                "button",
+                {
+                  class: "vadm-btn danger sm",
+                  disabled: form.sections.length === 1,
+                  onclick: () => deleteSection(s),
+                },
+                "Delete section",
+              ),
+            );
+            const list = el("div", {
+              class: "vadm-qlist",
+              "data-section": s.id,
+            });
+            wireDropList(list, s.id);
+            if (!qs.length)
+              list.appendChild(
+                el("div", {
+                  class: "vadm-empty",
+                  text: "No questions in this section yet.",
+                }),
+              );
+            qs.forEach((q, qi) =>
+              list.appendChild(questionCard(q, qi, qs.length)),
+            );
+            host.appendChild(
+              el(
+                "div",
+                { class: "vadm-section" },
+                el(
+                  "div",
+                  { class: "vadm-section-head" },
+                  el(
+                    "div",
+                    {},
+                    el("span", {
+                      class: "vadm-chip plain",
+                      text: "Section " + (si + 1),
+                    }),
+                    title,
+                  ),
+                  tools,
+                ),
+                desc,
+                el("div", { style: "height:14px" }),
+                list,
+                el(
+                  "div",
+                  { style: "margin-top:14px" },
+                  el(
+                    "button",
+                    {
+                      class: "vadm-btn outline sm",
+                      onclick: () => openEditor(null, s.id),
+                    },
+                    "+ Add question",
+                  ),
+                ),
+              ),
+            );
+          });
+          updateDirty();
+        }
+
+        function questionCard(q, qi, n) {
+          const chips = el(
+            "div",
+            { class: "vadm-q-meta" },
+            el("span", { class: "vadm-chip", text: TYPE_LABEL[q.type] }),
+          );
+          if (q.required)
+            chips.appendChild(
+              el("span", { class: "vadm-chip req", text: "Required" }),
+            );
+          if (q.use)
+            chips.appendChild(
+              el("span", {
+                class: "vadm-chip use",
+                text: "Applicant " + q.use,
+              }),
+            );
+          if (q.proficiency)
+            chips.appendChild(
+              el("span", {
+                class: "vadm-chip plain",
+                text: "Asks for a level",
+              }),
+            );
+          if (q.allowOther)
+            chips.appendChild(
+              el("span", { class: "vadm-chip plain", text: 'Has "Other"' }),
+            );
+          if (q.options && q.options.length)
+            chips.appendChild(
+              el("span", {
+                class: "vadm-chip plain",
+                text:
+                  q.options.length +
+                  " options: " +
+                  q.options.slice(0, 3).join(", ") +
+                  (q.options.length > 3 ? "..." : ""),
+              }),
+            );
+          if (q.type === "file")
+            chips.appendChild(
+              el("span", {
+                class: "vadm-chip plain",
+                text:
+                  (q.accept || []).join(" ") +
+                  " up to " +
+                  (q.maxMB || 4) +
+                  " MB",
+              }),
+            );
+          const card = el(
+            "div",
+            { class: "vadm-q", draggable: "true", "data-id": q.id },
+            el(
+              "div",
+              {
+                class: "vadm-handle",
+                "aria-hidden": "true",
+                title: "Drag to move",
+              },
+              "\u22EE\u22EE",
+            ),
+            el(
+              "div",
+              {},
+              el("div", { class: "vadm-q-label", text: q.label }),
+              chips,
+            ),
+            el(
+              "div",
+              { class: "vadm-q-tools" },
+              el(
+                "button",
+                {
+                  class: "vadm-btn outline sm",
+                  onclick: () => openEditor(q.id),
+                },
+                "Edit",
+              ),
+              el(
+                "button",
+                {
+                  class: "vadm-btn outline sm",
+                  onclick: () => duplicateQuestion(q.id),
+                },
+                "Duplicate",
+              ),
+              el(
+                "button",
+                {
+                  class: "vadm-btn outline sm icon",
+                  "aria-label": "Move question up",
+                  title: "Move up",
+                  disabled: qi === 0,
+                  onclick: () => stepQuestion(q.id, -1),
+                },
+                "\u2191",
+              ),
+              el(
+                "button",
+                {
+                  class: "vadm-btn outline sm icon",
+                  "aria-label": "Move question down",
+                  title: "Move down",
+                  disabled: qi === n - 1,
+                  onclick: () => stepQuestion(q.id, 1),
+                },
+                "\u2193",
+              ),
+              el(
+                "button",
+                {
+                  class: "vadm-btn danger sm",
+                  onclick: () => deleteQuestion(q.id),
+                },
+                "Delete",
+              ),
+            ),
+          );
+          card.addEventListener("dragstart", (e) => {
+            e.dataTransfer.setData("text/plain", q.id);
+            e.dataTransfer.effectAllowed = "move";
+            card.classList.add("dragging");
+          });
+          card.addEventListener("dragend", () => {
+            card.classList.remove("dragging");
+            document
+              .querySelectorAll(".over")
+              .forEach((x) => x.classList.remove("over"));
+          });
+          card.addEventListener("dragover", (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            card.classList.add("over");
+          });
+          card.addEventListener("dragleave", () =>
+            card.classList.remove("over"),
+          );
+          card.addEventListener("drop", (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const id = e.dataTransfer.getData("text/plain");
+            moveBefore(id, q.id, q.sectionId);
+          });
+          return card;
+        }
+        function wireDropList(list, sid) {
+          list.addEventListener("dragover", (e) => {
+            e.preventDefault();
+            list.classList.add("over");
+          });
+          list.addEventListener("dragleave", (e) => {
+            if (e.target === list) list.classList.remove("over");
+          });
+          list.addEventListener("drop", (e) => {
+            e.preventDefault();
+            list.classList.remove("over");
+            moveBefore(e.dataTransfer.getData("text/plain"), null, sid);
+          });
+        }
+        function moveBefore(dragId, beforeId, sid) {
+          if (!dragId || dragId === beforeId) {
+            renderSections();
+            return;
+          }
+          const i = form.questions.findIndex((q) => q.id === dragId);
+          if (i < 0) return;
+          const [q] = form.questions.splice(i, 1);
+          q.sectionId = sid;
+          if (beforeId) {
+            const j = form.questions.findIndex((x) => x.id === beforeId);
+            form.questions.splice(j, 0, q);
+          } else {
+            let last = -1;
+            form.questions.forEach((x, k) => {
+              if (x.sectionId === sid) last = k;
+            });
+            form.questions.splice(last + 1, 0, q);
+          }
+          renderSections();
+        }
+        function stepQuestion(id, dir) {
+          const q = form.questions.find((x) => x.id === id);
+          const sibs = qsOf(q.sectionId);
+          const k = sibs.findIndex((x) => x.id === id);
+          const other = sibs[k + dir];
+          if (!other) return;
+          const a = form.questions.indexOf(q),
+            b = form.questions.indexOf(other);
+          form.questions[a] = other;
+          form.questions[b] = q;
+          renderSections();
+        }
+        function duplicateQuestion(id) {
+          const i = form.questions.findIndex((x) => x.id === id);
+          const c = Store.clone(form.questions[i]);
+          c.id = "q_" + Store.uid("");
+          c.label = c.label + " (copy)";
+          delete c.use;
+          form.questions.splice(i + 1, 0, c);
+          renderSections();
+          toast("Question duplicated.");
+        }
+        function deleteQuestion(id) {
+          const q = form.questions.find((x) => x.id === id);
+          if (
+            !confirm(
+              "Delete this question?\n\n" +
+                q.label +
+                "\n\nExisting registrations keep their answers to it.",
+            )
+          )
+            return;
+          form.questions = form.questions.filter((x) => x.id !== id);
+          renderSections();
+          closeModal("qModal");
+        }
+        function moveSection(i, dir) {
+          const j = i + dir;
+          if (j < 0 || j >= form.sections.length) return;
+          const t = form.sections[i];
+          form.sections[i] = form.sections[j];
+          form.sections[j] = t;
+          renderSections();
+        }
+        function deleteSection(s) {
+          const n = qsOf(s.id).length;
+          if (
+            !confirm(
+              'Delete the section "' +
+                s.title +
+                '"' +
+                (n ? " and its " + n + " question" + (n > 1 ? "s" : "") : "") +
+                "?",
+            )
+          )
+            return;
+          form.sections = form.sections.filter((x) => x.id !== s.id);
+          form.questions = form.questions.filter((q) => q.sectionId !== s.id);
+          renderSections();
+        }
+        $("addSectionBtn").onclick = () => {
+          form.sections.push({
+            id: "s_" + Store.uid(""),
+            title: "New section",
+            description: "",
+          });
+          renderSections();
+          const t = document.querySelectorAll("#sections .vadm-section .title");
+          t[t.length - 1].focus();
+          t[t.length - 1].select();
+        };
+
+        /* ---------------- question editor ---------------- */
+        let draft = null,
+          editingId = null;
+        function openEditor(id, sectionId) {
+          editingId = id;
+          draft = id
+            ? Store.clone(form.questions.find((q) => q.id === id))
+            : {
+                id: "q_" + Store.uid(""),
+                sectionId,
+                type: "short_text",
+                label: "",
+                required: false,
+                maxLength: 300,
+              };
+          $("qModalTitle").textContent = id ? "Edit question" : "Add question";
+          $("qDelete").hidden = !id;
+          $("qErr").hidden = true;
+          renderEditor();
+          openModal("qModal");
+        }
+        function field(label, control, hint) {
+          return el(
+            "div",
+            { class: "vadm-field" },
+            el("label", {}, label),
+            control,
+            hint ? el("p", { class: "vadm-hint", text: hint }) : null,
+          );
+        }
+        function renderEditor() {
+          const body = $("qBody");
+          body.textContent = "";
+          const label = el("textarea", {
+            id: "eLabel",
+            style: "min-height:70px",
+            maxlength: "400",
+          });
+          label.value = draft.label;
+          label.oninput = () => {
+            draft.label = label.value;
+          };
+          body.appendChild(
+            el(
+              "div",
+              { class: "vadm-field" },
+              el("label", { for: "eLabel" }, "Question"),
+              label,
+            ),
+          );
+          const help = el("input", {
+            type: "text",
+            id: "eHelp",
+            maxlength: "300",
+            value: draft.helpText || "",
+          });
+          help.oninput = () => {
+            draft.helpText = help.value;
+          };
+          body.appendChild(
+            el(
+              "div",
+              { class: "vadm-field" },
+              el("label", { for: "eHelp" }, "Help text (optional)"),
+              help,
+            ),
+          );
+          const type = el("select", { id: "eType" });
+          Object.entries(TYPE_LABEL).forEach(([k, v]) =>
+            type.appendChild(el("option", { value: k, text: v })),
+          );
+          type.value = draft.type;
+          type.onchange = () => changeType(type.value);
+          const sec = el("select", { id: "eSection" });
+          form.sections.forEach((s) =>
+            sec.appendChild(el("option", { value: s.id, text: s.title })),
+          );
+          sec.value = draft.sectionId;
+          sec.onchange = () => {
+            draft.sectionId = sec.value;
+          };
+          body.appendChild(
+            el(
+              "div",
+              { class: "vadm-grid2" },
+              el(
+                "div",
+                { class: "vadm-field" },
+                el("label", { for: "eType" }, "Answer type"),
+                type,
+              ),
+              el(
+                "div",
+                { class: "vadm-field" },
+                el("label", { for: "eSection" }, "Section"),
+                sec,
+              ),
+            ),
+          );
+          const req = el("input", { type: "checkbox", id: "eReq" });
+          req.checked = !!draft.required;
+          req.onchange = () => {
+            draft.required = req.checked;
+          };
+          body.appendChild(
+            el(
+              "div",
+              { class: "vadm-field" },
+              el(
+                "label",
+                { class: "vadm-check" },
+                req,
+                "Required: applicants must answer this question",
+              ),
+            ),
+          );
+          const dyn = el("div", { id: "eDyn" });
+          body.appendChild(dyn);
+          renderDyn(dyn);
+        }
+        function changeType(t) {
+          draft.type = t;
+          if (Store.CHOICE_TYPES.indexOf(t) !== -1) {
+            draft.options =
+              draft.options && draft.options.length
+                ? draft.options
+                : ["Option 1", "Option 2"];
+            if (t !== "multi_choice") {
+              draft.proficiency = false;
+            }
+          }
+          if (t === "file") {
+            draft.accept = draft.accept || [".pdf", ".doc", ".docx", ".rtf"];
+            draft.maxMB = draft.maxMB || 4;
+          }
+          if (Store.TEXT_TYPES.indexOf(t) === -1) delete draft.use;
+          if (t === "multi_choice" && draft.proficiency && !draft.levels)
+            draft.levels = ["Beginner", "Intermediate", "Advanced"];
+          renderDyn($("eDyn"));
+        }
+        function renderDyn(dyn) {
+          dyn.textContent = "";
+          const t = draft.type;
+          if (Store.TEXT_TYPES.indexOf(t) !== -1) {
+            const ph = el("input", {
+              type: "text",
+              maxlength: "120",
+              value: draft.placeholder || "",
+            });
+            ph.oninput = () => {
+              draft.placeholder = ph.value;
+            };
+            const mx = el("input", {
+              type: "number",
+              min: "1",
+              max: "10000",
+              value: draft.maxLength || (t === "long_text" ? 2000 : 300),
+            });
+            mx.oninput = () => {
+              draft.maxLength = parseInt(mx.value, 10) || undefined;
+            };
+            dyn.appendChild(
+              el(
+                "div",
+                { class: "vadm-grid2" },
+                field("Placeholder (optional)", ph),
+                field("Maximum characters", mx),
+              ),
+            );
+            if (t !== "long_text") {
+              const use = el(
+                "select",
+                {},
+                el("option", { value: "", text: "Not used" }),
+                el("option", { value: "name", text: "Applicant name" }),
+                el("option", { value: "email", text: "Applicant email" }),
+                el("option", { value: "phone", text: "Applicant phone" }),
+              );
+              use.value = draft.use || "";
+              use.onchange = () => {
+                if (use.value) draft.use = use.value;
+                else delete draft.use;
+              };
+              dyn.appendChild(
+                field(
+                  "Show this answer in the registrations list as",
+                  use,
+                  "Choose which answers identify an applicant in the registrations table.",
+                ),
+              );
+            }
+          }
+          if (t === "date") {
+            const r = el(
+              "select",
+              {},
+              el("option", { value: "any", text: "Any date" }),
+              el("option", {
+                value: "past",
+                text: "Past dates only (for example, date of birth)",
+              }),
+            );
+            r.value = draft.dateRule || "any";
+            r.onchange = () => {
+              draft.dateRule = r.value;
+            };
+            dyn.appendChild(field("Allowed dates", r));
+          }
+          if (Store.CHOICE_TYPES.indexOf(t) !== -1) {
+            const list = el("div", { id: "eOpts" });
+            const redraw = () => {
+              list.textContent = "";
+              draft.options.forEach((o, i) => {
+                const inp = el("input", {
+                  type: "text",
+                  class: "vadm-input",
+                  value: o,
+                  maxlength: "150",
+                  "aria-label": "Option " + (i + 1),
+                });
+                inp.oninput = () => {
+                  draft.options[i] = inp.value;
+                };
+                list.appendChild(
+                  el(
+                    "div",
+                    { class: "vadm-opt-row" },
+                    inp,
+                    el(
+                      "div",
+                      { class: "tools" },
+                      el(
+                        "button",
+                        {
+                          class: "vadm-btn outline sm icon",
+                          type: "button",
+                          "aria-label": "Move option up",
+                          disabled: i === 0,
+                          onclick: () => {
+                            [draft.options[i - 1], draft.options[i]] = [
+                              draft.options[i],
+                              draft.options[i - 1],
+                            ];
+                            redraw();
+                          },
+                        },
+                        "\u2191",
+                      ),
+                      el(
+                        "button",
+                        {
+                          class: "vadm-btn outline sm icon",
+                          type: "button",
+                          "aria-label": "Move option down",
+                          disabled: i === draft.options.length - 1,
+                          onclick: () => {
+                            [draft.options[i + 1], draft.options[i]] = [
+                              draft.options[i],
+                              draft.options[i + 1],
+                            ];
+                            redraw();
+                          },
+                        },
+                        "\u2193",
+                      ),
+                      el(
+                        "button",
+                        {
+                          class: "vadm-btn danger sm icon",
+                          type: "button",
+                          "aria-label": "Remove option",
+                          onclick: () => {
+                            draft.options.splice(i, 1);
+                            redraw();
+                          },
+                        },
+                        "\u00D7",
+                      ),
+                    ),
+                  ),
+                );
+              });
+            };
+            redraw();
+            dyn.appendChild(
+              el(
+                "div",
+                { class: "vadm-field" },
+                el("label", {}, "Answer options"),
+                list,
+                el(
+                  "button",
+                  {
+                    class: "vadm-btn outline sm",
+                    type: "button",
+                    onclick: () => {
+                      draft.options.push("");
+                      redraw();
+                      const ins = list.querySelectorAll("input");
+                      ins[ins.length - 1].focus();
+                    },
+                  },
+                  "+ Add option",
+                ),
+              ),
+            );
+            const oth = el("input", { type: "checkbox" });
+            oth.checked = !!draft.allowOther;
+            oth.onchange = () => {
+              draft.allowOther = oth.checked;
+            };
+            dyn.appendChild(
+              el(
+                "div",
+                { class: "vadm-field" },
+                el(
+                  "label",
+                  { class: "vadm-check" },
+                  oth,
+                  'Add an "Other" choice with a text box',
+                ),
+              ),
+            );
+            if (t === "multi_choice") {
+              const pr = el("input", { type: "checkbox" });
+              pr.checked = !!draft.proficiency;
+              const lv = el("input", {
+                type: "text",
+                value: (
+                  draft.levels || ["Beginner", "Intermediate", "Advanced"]
+                ).join(", "),
+              });
+              lv.oninput = () => {
+                draft.levels = lv.value
+                  .split(",")
+                  .map((x) => x.trim())
+                  .filter(Boolean);
+              };
+              const lvf = field("Levels (separated by commas)", lv);
+              lvf.hidden = !pr.checked;
+              pr.onchange = () => {
+                draft.proficiency = pr.checked;
+                if (pr.checked && !draft.levels)
+                  draft.levels = ["Beginner", "Intermediate", "Advanced"];
+                lvf.hidden = !pr.checked;
+              };
+              dyn.appendChild(
+                el(
+                  "div",
+                  { class: "vadm-field" },
+                  el(
+                    "label",
+                    { class: "vadm-check" },
+                    pr,
+                    "Ask for a level for each choice selected",
+                  ),
+                ),
+              );
+              dyn.appendChild(lvf);
+            }
+          }
+          if (t === "file") {
+            const ac = el("input", {
+              type: "text",
+              value: (draft.accept || []).join(", "),
+            });
+            ac.oninput = () => {
+              draft.accept = ac.value
+                .split(",")
+                .map((x) => x.trim().toLowerCase())
+                .filter(Boolean)
+                .map((x) => (x.startsWith(".") ? x : "." + x));
+            };
+            const mb = el("input", {
+              type: "number",
+              min: "1",
+              max: "4",
+              value: draft.maxMB || 4,
+            });
+            mb.oninput = () => {
+              draft.maxMB = Math.min(
+                4,
+                Math.max(1, parseInt(mb.value, 10) || 10),
+              );
+            };
+            dyn.appendChild(
+              el(
+                "div",
+                { class: "vadm-grid2" },
+                field(
+                  "Allowed file types",
+                  ac,
+                  "For example: .pdf, .doc, .docx, .rtf",
+                ),
+                field("Maximum size (MB)", mb),
+              ),
+            );
+          }
+        }
+        $("qSave").onclick = () => {
+          const err = $("qErr");
+          const fail = (m) => {
+            err.textContent = m;
+            err.hidden = false;
+            err.scrollIntoView({ block: "nearest" });
+          };
+          draft.label = (draft.label || "").trim();
+          if (!draft.label) return fail("Write the question text.");
+          if (Store.CHOICE_TYPES.indexOf(draft.type) !== -1) {
+            draft.options = (draft.options || [])
+              .map((o) => String(o).trim())
+              .filter(Boolean);
+            if (!draft.options.length)
+              return fail("Add at least one answer option.");
+            if (
+              new Set(draft.options.map((o) => o.toLowerCase())).size !==
+              draft.options.length
+            )
+              return fail("Answer options must be different from each other.");
+            if (
+              draft.type === "multi_choice" &&
+              draft.proficiency &&
+              !(draft.levels && draft.levels.length)
+            )
+              return fail("Add at least one level, for example Beginner.");
+          } else {
+            delete draft.options;
+            delete draft.allowOther;
+            delete draft.proficiency;
+            delete draft.levels;
+          }
+          if (draft.type !== "multi_choice") {
+            delete draft.proficiency;
+            delete draft.levels;
+          }
+          if (draft.type === "file") {
+            if (!draft.accept || !draft.accept.length)
+              return fail("Add at least one allowed file type.");
+          } else {
+            delete draft.accept;
+            delete draft.maxMB;
+          }
+          if (Store.TEXT_TYPES.indexOf(draft.type) === -1) delete draft.use;
+          else if (draft.use)
+            form.questions.forEach((q) => {
+              if (q.id !== draft.id && q.use === draft.use) delete q.use;
+            });
+          if (draft.type === "date") {
+            draft.dateRule = draft.dateRule || "any";
+          } else delete draft.dateRule;
+          if (Store.TEXT_TYPES.indexOf(draft.type) === -1) {
+            delete draft.placeholder;
+            delete draft.maxLength;
+          }
+          if (!draft.helpText) delete draft.helpText;
+          if (editingId) {
+            const i = form.questions.findIndex((q) => q.id === editingId);
+            const old = form.questions[i];
+            if (old.sectionId !== draft.sectionId) {
+              form.questions.splice(i, 1);
+              let last = -1;
+              form.questions.forEach((x, k) => {
+                if (x.sectionId === draft.sectionId) last = k;
+              });
+              form.questions.splice(last + 1, 0, draft);
+            } else form.questions[i] = draft;
+          } else {
+            let last = -1;
+            form.questions.forEach((x, k) => {
+              if (x.sectionId === draft.sectionId) last = k;
+            });
+            form.questions.splice(last + 1, 0, draft);
+          }
+          closeModal("qModal");
+          renderSections();
+          toast("Question updated. Remember to save your changes.");
+        };
+        $("qDelete").onclick = () => {
+          if (editingId) deleteQuestion(editingId);
+        };
+
+        /* ---------------- builder actions ---------------- */
+        $("saveBtn").onclick = async () => {
+          const mail = (form.notifyEmail || "").trim();
+          if (!(form.title || "").trim())
+            return toast("The page title cannot be empty.", true);
+          if (mail && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(mail))
+            return toast(
+              "Enter a valid email address for received applications.",
+              true,
+            );
+          if (!form.questions.length)
+            return toast("Add at least one question before saving.", true);
+          $("saveBtn").disabled = true;
+          try {
+            form = await Store.saveForm(form);
+            savedJson = JSON.stringify(form);
+            bindDetails();
+            renderSections();
+            toast("Saved. The volunteer form now uses these questions.");
+          } catch (e) {
+            toast("Could not save: " + e.message, true);
+            updateDirty();
+          }
+        };
+        $("discardBtn").onclick = async () => {
+          if (!confirm("Discard all unsaved changes?")) return;
+          await loadForm();
+          toast("Changes discarded.");
+        };
+        $("previewBtn").onclick = (e) => {
+          if (
+            isDirty() &&
+            !confirm(
+              "You have unsaved changes. The preview shows the last saved version. Open it anyway?",
+            )
+          )
+            e.preventDefault();
+        };
+        $("exportFormBtn").onclick = () =>
+          download(
+            "volunteer-form.json",
+            "application/json",
+            JSON.stringify(form, null, 2),
+          );
+        $("importFormBtn").onclick = () => $("importFormFile").click();
+        $("importFormFile").onchange = async () => {
+          const f = $("importFormFile").files[0];
+          $("importFormFile").value = "";
+          if (!f) return;
+          try {
+            const j = JSON.parse(await f.text());
+            if (!j || !Array.isArray(j.questions) || !Array.isArray(j.sections))
+              throw new Error("This file is not a volunteer form export.");
+            if (
+              !confirm(
+                "Replace the form being edited with the imported one? You can still discard it before saving.",
+              )
+            )
+              return;
+            form = Store.normalizeForm(j);
+            bindDetails();
+            renderSections();
+            toast("Imported. Review it, then save.");
+          } catch (e) {
+            toast("Import failed: " + e.message, true);
+          }
+        };
+        $("resetFormBtn").onclick = async () => {
+          if (
+            !confirm(
+              "Reset the form to the original DIRA questions? Your edited questions will be lost. Existing registrations are not affected.",
+            )
+          )
+            return;
+          try {
+            form = await Store.resetForm();
+            savedJson = JSON.stringify(form);
+            bindDetails();
+            renderSections();
+            toast("Form reset to the default questions.");
+          } catch (e) {
+            toast("Reset failed: " + e.message, true);
+          }
+        };
+        async function loadForm() {
+          form = await Store.getForm();
+          savedJson = JSON.stringify(form);
+          bindDetails();
+          renderSections();
+        }
+
+        /* ---------------- registrations ---------------- */
+        const applicant = (s) => ({
+          name: (s.applicant && s.applicant.name) || "(no name)",
+          email: (s.applicant && s.applicant.email) || "",
+          phone: (s.applicant && s.applicant.phone) || "",
+        });
+        const fileEntries = (s) => Object.entries(s.files || {});
+        const hasCv = (s) => fileEntries(s).length > 0;
+        const areasOf = (s) => {
+          const a = (s.answers || []).find((x) => x.type === "multi_choice");
+          return a ? (a.value || []).map((v) => v.label) : [];
+        };
+        const haystack = (s) =>
+          (
+            (s.applicant ? Object.values(s.applicant).join(" ") : "") +
+            " " +
+            (s.answers || []).map((a) => Store.displayValue(a)).join(" ")
+          ).toLowerCase();
+
+        async function loadRegs() {
+          try {
+            subs = await Store.listSubmissions();
+          } catch (e) {
+            toast("Could not load registrations: " + e.message, true);
+            subs = [];
+          }
+          $("regCount").textContent = subs.length;
+          renderRegs();
+        }
+        function filtered() {
+          const q = $("rSearch").value.trim().toLowerCase(),
+            f = $("rFilter").value,
+            so = $("rSort").value;
+          let list = subs.filter(
+            (s) =>
+              (!q || haystack(s).indexOf(q) !== -1) &&
+              (f === "all" || (f === "cv") === hasCv(s)),
+          );
+          list.sort((a, b) =>
+            so === "name"
+              ? applicant(a).name.localeCompare(applicant(b).name)
+              : so === "old"
+                ? String(a.submittedAt).localeCompare(String(b.submittedAt))
+                : String(b.submittedAt).localeCompare(String(a.submittedAt)),
+          );
+          return list;
+        }
+        function renderRegs() {
+          const week = Date.now() - 7 * 86400000;
+          $("stTotal").textContent = subs.length;
+          $("stCv").textContent = subs.filter(hasCv).length;
+          $("stWeek").textContent = subs.filter(
+            (s) => Date.parse(s.submittedAt) >= week,
+          ).length;
+          const list = filtered();
+          const pages = Math.max(1, Math.ceil(list.length / PER));
+          if (page > pages) page = pages;
+          const slice = list.slice((page - 1) * PER, page * PER);
+          $("rCountLine").textContent =
+            list.length +
+            (list.length === 1 ? " registration" : " registrations") +
+            (list.length !== subs.length ? " (of " + subs.length + ")" : "");
+          $("rEmpty").hidden = list.length > 0;
+          $("rTable").hidden = list.length === 0;
+          $("rPager").hidden = pages <= 1;
+          $("rEmpty").textContent = subs.length
+            ? "No registrations match your search."
+            : "Nobody has registered yet. Registrations will appear here.";
+          $("pageInfo").textContent = "Page " + page + " of " + pages;
+          $("prevBtn").disabled = page <= 1;
+          $("nextBtn").disabled = page >= pages;
+          const body = $("rBody");
+          body.textContent = "";
+          slice.forEach((s) => {
+            const a = applicant(s);
+            const cvs = fileEntries(s);
+            const areas = el("td", { "data-label": "Areas" });
+            areasOf(s)
+              .slice(0, 3)
+              .forEach((x) =>
+                areas.appendChild(
+                  el("span", {
+                    class: "vadm-chip",
+                    style: "margin:0 4px 4px 0;display:inline-block",
+                    text: x,
+                  }),
+                ),
+              );
+            if (areasOf(s).length > 3)
+              areas.appendChild(
+                el("span", {
+                  class: "vadm-chip plain",
+                  text: "+" + (areasOf(s).length - 3),
+                }),
+              );
+            const acts = el(
+              "div",
+              { class: "acts" },
+              el(
+                "button",
+                {
+                  class: "vadm-btn outline sm",
+                  onclick: () => openDetail(s.id),
+                },
+                "View",
+              ),
+            );
+            cvs.forEach(([qid, m]) =>
+              acts.appendChild(
+                el(
+                  "button",
+                  { class: "vadm-btn sm", onclick: () => openCv(s.id, qid) },
+                  "View CV",
+                ),
+              ),
+            );
+            acts.appendChild(
+              el(
+                "button",
+                { class: "vadm-btn danger sm", onclick: () => removeOne(s.id) },
+                "Delete",
+              ),
+            );
+            body.appendChild(
+              el(
+                "tr",
+                {},
+                el(
+                  "td",
+                  { class: "who", "data-label": "Applicant" },
+                  el("b", { text: a.name }),
+                  el("small", {
+                    text: [a.email, a.phone].filter(Boolean).join(" | "),
+                  }),
+                ),
+                areas,
+                el("td", {
+                  "data-label": "Submitted",
+                  text: fmtDate(s.submittedAt),
+                }),
+                el(
+                  "td",
+                  { "data-label": "CV" },
+                  cvs.length
+                    ? el("span", { class: "vadm-chip use", text: "Uploaded" })
+                    : el("span", { class: "vadm-chip plain", text: "None" }),
+                ),
+                el("td", {}, acts),
+              ),
+            );
+          });
+        }
+        ["rSearch", "rFilter", "rSort"].forEach((id) =>
+          $(id).addEventListener("input", () => {
+            page = 1;
+            renderRegs();
+          }),
+        );
+        $("prevBtn").onclick = () => {
+          page--;
+          renderRegs();
+        };
+        $("nextBtn").onclick = () => {
+          page++;
+          renderRegs();
+        };
+        $("refreshBtn").onclick = async () => {
+          await loadRegs();
+          toast("Refreshed.");
+        };
+        $("csvBtn").onclick = () => {
+          if (!subs.length)
+            return toast("There are no registrations to export.", true);
+          download(
+            "volunteer-registrations.csv",
+            "text/csv;charset=utf-8",
+            Store.submissionsToCsv(filtered()),
+          );
+        };
+        $("jsonBtn").onclick = () => {
+          if (!subs.length)
+            return toast("There are no registrations to export.", true);
+          download(
+            "volunteer-registrations.json",
+            "application/json",
+            JSON.stringify(filtered(), null, 2),
+          );
+        };
+        async function removeOne(id) {
+          const s = subs.find((x) => x.id === id);
+          if (
+            !confirm(
+              "Delete the registration of " +
+                applicant(s).name +
+                "? Their CV is deleted too. This cannot be undone.",
+            )
+          )
+            return;
+          try {
+            await Store.removeSubmission(id);
+            await loadRegs();
+            closeModal("dModal");
+            toast("Registration deleted.");
+          } catch (e) {
+            toast("Could not delete: " + e.message, true);
+          }
+        }
+        $("clearBtn").onclick = async () => {
+          if (!subs.length)
+            return toast("There are no registrations to delete.", true);
+          if (
+            !confirm(
+              "Delete ALL " +
+                subs.length +
+                " registrations and their CVs? This cannot be undone.",
+            )
+          )
+            return;
+          try {
+            await Store.clearSubmissions();
+            await loadRegs();
+            toast("All registrations deleted.");
+          } catch (e) {
+            toast("Could not delete: " + e.message, true);
+          }
+        };
+
+        function openDetail(id) {
+          const s = subs.find((x) => x.id === id);
+          if (!s) return;
+          const a = applicant(s);
+          $("dTitle").textContent = a.name;
+          const body = $("dBody");
+          body.textContent = "";
+          body.appendChild(
+            el("p", {
+              class: "vadm-hint",
+              text: "Submitted " + fmtDate(s.submittedAt),
+            }),
+          );
+          let cur = null,
+            dl = null;
+          (s.answers || []).forEach((ans) => {
+            if (ans.section !== cur) {
+              cur = ans.section;
+              body.appendChild(el("h3", { text: cur }));
+              dl = el("dl");
+              body.appendChild(dl);
+            }
+            dl.appendChild(el("dt", { text: ans.label }));
+            const dd = el("dd");
+            if (ans.type === "file") {
+              if (ans.value && ans.value.name)
+                dd.appendChild(
+                  el(
+                    "div",
+                    { class: "vadm-cvbox" },
+                    el("span", {
+                      text:
+                        ans.value.name + " (" + fmtSize(ans.value.size) + ")",
+                    }),
+                    el(
+                      "span",
+                      { class: "acts", style: "display:flex;gap:6px" },
+                      el(
+                        "button",
+                        {
+                          class: "vadm-btn sm",
+                          onclick: () => openCv(s.id, ans.qid),
+                        },
+                        "View CV",
+                      ),
+                      el(
+                        "button",
+                        {
+                          class: "vadm-btn outline sm",
+                          onclick: () => downloadCv(s.id, ans.qid),
+                        },
+                        "Download",
+                      ),
+                    ),
+                  ),
+                );
+              else dd.textContent = "Not provided";
+            } else dd.textContent = Store.displayValue(ans) || "Not provided";
+            dl.appendChild(dd);
+          });
+          body.appendChild(
+            el(
+              "div",
+              { style: "margin-top:22px" },
+              el(
+                "button",
+                { class: "vadm-btn danger sm", onclick: () => removeOne(s.id) },
+                "Delete this registration",
+              ),
+            ),
+          );
+          openModal("dModal");
+        }
+
+        /* ---------------- CV viewer ---------------- */
+        let cvUrl = null;
+        function closeCv() {
+          if (cvUrl) {
+            URL.revokeObjectURL(cvUrl);
+            cvUrl = null;
+          }
+          $("cvBody").textContent = "";
+          closeModal("cvModal");
+        }
+        const isPdf = (name, blob) =>
+          /\.pdf$/i.test(name) || (blob && blob.type === "application/pdf");
+        async function fetchCv(sid, qid) {
+          const s = subs.find((x) => x.id === sid);
+          const meta = (s.files || {})[qid] || {};
+          const blob = await Store.getFile(sid, qid, meta);
+          return { blob, name: meta.name || "cv", s };
+        }
+        async function openCv(sid, qid) {
+          $("cvTitle").textContent =
+            "CV: " + applicant(subs.find((x) => x.id === sid)).name;
+          const body = $("cvBody");
+          body.textContent = "Loading...";
+          openModal("cvModal");
+          try {
+            const { blob, name } = await fetchCv(sid, qid);
+            const pdf = isPdf(name, blob);
+            const typed = pdf
+              ? new Blob([blob], { type: "application/pdf" })
+              : blob;
+            if (cvUrl) URL.revokeObjectURL(cvUrl);
+            cvUrl = URL.createObjectURL(typed);
+            body.textContent = "";
+            body.appendChild(
+              el(
+                "div",
+                { class: "vadm-cvbox" },
+                el("span", { text: name + " (" + fmtSize(blob.size) + ")" }),
+                el(
+                  "a",
+                  { class: "vadm-btn outline sm", href: cvUrl, download: name },
+                  "Download",
+                ),
+              ),
+            );
+            if (pdf) {
+              const obj = el(
+                "object",
+                {
+                  class: "vadm-viewer",
+                  data: cvUrl,
+                  type: "application/pdf",
+                  "aria-label": "CV preview",
+                },
+                el(
+                  "p",
+                  { style: "padding:20px" },
+                  "Your browser cannot show this PDF here. Use the Download button above.",
+                ),
+              );
+              body.appendChild(obj);
+            } else
+              body.appendChild(
+                el("p", {
+                  class: "vadm-hint",
+                  style: "margin-top:12px",
+                  text: "Word and RTF files cannot be previewed in the browser. Use Download to open this CV in your word processor.",
+                }),
+              );
+          } catch (e) {
+            body.textContent = "";
+            body.appendChild(
+              el("div", {
+                class: "vadm-err",
+                text: "Could not open the CV: " + e.message,
+              }),
+            );
+          }
+        }
+        async function downloadCv(sid, qid) {
+          try {
+            const { blob, name } = await fetchCv(sid, qid);
+            download(name, blob.type || "application/octet-stream", blob);
+          } catch (e) {
+            toast("Could not download: " + e.message, true);
+          }
+        }
+
+        /* ---------------- start ---------------- */
+        const banner = $("modeBanner");
+        function goToLogin(message) {
+          const loginUrl = new URL("/volunteer-login.html", location.origin);
+          loginUrl.searchParams.set("next", "/volunteer-admin.html");
+          if (message) loginUrl.searchParams.set("message", message);
+          location.replace(loginUrl);
+        }
+        async function showAdmin() {
+          $("adminTabs").hidden = true;
+          $("panelForm").hidden = true;
+          $("panelRegs").hidden = true;
+          $("adminTabs").hidden = false;
+          banner.hidden = false;
+          banner.className = "vadm-banner api";
+          banner.textContent = "Connected to the server. Form questions and registrations are shared across the site.";
+          selectTab("form");
+          try {
+            await loadForm();
+            const list = await Store.listSubmissions();
+            subs = list;
+            $("regCount").textContent = list.length;
+          } catch (e) {
+            toast("Could not load volunteer data: " + e.message, true);
+          }
+        }
+        async function checkAdminSession() {
+          if (Store.mode !== "api") {
+            banner.hidden = false;
+          banner.textContent =
+            "Browser storage mode: the questions and registrations shown here are stored in this browser on this device only. Registrations made on other devices will not appear until these pages are connected to a server (see volunteer-store.js). This page has no password of its own, so do not publish it publicly without protecting it.";
+            $("adminTabs").hidden = false;
+            selectTab("form");
+            try {
+              await loadForm();
+              const list = await Store.listSubmissions();
+              subs = list;
+              $("regCount").textContent = list.length;
+            } catch (e) {
+              toast("Could not load volunteer data: " + e.message, true);
+            }
+            return;
+          }
+          try {
+            const response = await fetch("/api/admin/session", { credentials: "same-origin" });
+            const session = await response.json();
+            if (!response.ok) throw new Error(session.error || "Could not check the administrator session.");
+            if (!session.configured) {
+              goToLogin("Admin login is not configured. Set ADMIN_EMAIL and ADMIN_PASSWORD on the server.");
+            } else if (session.authenticated) {
+              await showAdmin();
+            } else goToLogin();
+          } catch (e) {
+            goToLogin("Could not reach the server. " + e.message);
+          }
+        }
+        $("adminLogoutBtn").onclick = async () => {
+          try {
+            const response = await fetch("/api/admin/logout", { method: "POST", credentials: "same-origin", headers: { "Content-Type": "application/json" }, body: "{}" });
+            if (!response.ok) throw new Error("The server could not end the session.");
+          } catch (e) {
+            toast("Could not sign out: " + e.message, true);
+            return;
+          }
+          goToLogin("You have signed out.");
+        };
+        window.addEventListener("dira-volunteer-auth-required", () => goToLogin("Your administrator session has expired. Sign in again to continue."));
+        checkAdminSession();
+        document.addEventListener("visibilitychange", () => {
+          if (!document.hidden && !$("panelRegs").hidden) loadRegs();
+        });
+      })();
+    </script>
+  </body>
+</html>

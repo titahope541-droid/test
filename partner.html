@@ -383,6 +383,55 @@
         margin: 0 auto;
         line-height: 1.7;
       }
+      main#main > .page-header {
+        min-height: 390px;
+        justify-content: flex-start;
+        padding: 132px 24px 72px;
+        text-align: left;
+        background:
+          radial-gradient(
+            ellipse at 82% 18%,
+            rgba(165, 126, 190, 0.18) 0%,
+            transparent 38%
+          ),
+          linear-gradient(118deg, #211629 0%, #302039 58%, #24192d 100%);
+      }
+      main#main > .page-header .container {
+        max-width: 1120px;
+      }
+      main#main > .page-header .page-title {
+        max-width: 850px;
+        margin-bottom: 20px;
+        font-size: clamp(2.4rem, 5vw, 4.1rem);
+        line-height: 1.08;
+      }
+      main#main > .page-header .page-subtitle {
+        max-width: 590px;
+        margin: 0;
+        color: rgba(246, 241, 247, 0.78);
+        font-size: clamp(1.05rem, 1.6vw, 1.2rem);
+        line-height: 1.75;
+      }
+      main#main > .page-header .page-title::before {
+        content: "";
+        display: block;
+        width: 42px;
+        height: 2px;
+        margin-bottom: 24px;
+        background: #c5a6d9;
+      }
+      main#main > .page-header .glass-accent {
+        opacity: 0.45;
+      }
+      @media (max-width: 768px) {
+        main#main > .page-header {
+          min-height: 0;
+          padding: 116px 24px 62px;
+        }
+        main#main > .page-header .page-title {
+          font-size: clamp(2.1rem, 8vw, 3.2rem);
+        }
+      }
 
       /* Services Section */
       .services {
@@ -1051,34 +1100,108 @@
         color: var(--dark-gray);
       }
       .fd-partner {
-        display: flex;
-        gap: 28px;
+        display: grid;
+        grid-template-columns: 156px minmax(0, 1fr);
+        gap: clamp(28px, 5vw, 64px);
         align-items: center;
-        background: var(--white);
-        border: 1px solid var(--medium-gray);
-        border-radius: 10px;
-        padding: 28px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        padding: 38px clamp(8px, 2.5vw, 32px);
+        border: 0;
+        border-top: 1px solid #e7e1eb;
+        border-radius: 0;
+        background: transparent;
+        box-shadow: none;
+        transition: background-color 220ms ease;
       }
       .fd-partner > img {
-        width: 120px;
-        height: 120px;
+        width: 148px;
+        height: 148px;
+        padding: 16px;
+        border: 1px solid #ebe6ef;
+        border-radius: 12px;
+        background: var(--white);
         object-fit: contain;
-        flex: 0 0 120px;
+        grid-column: 1;
+        grid-row: 1;
+        transition: border-color 220ms ease, transform 220ms ease;
+      }
+      .fd-partner:hover {
+        background: rgba(255, 255, 255, 0.58);
+      }
+      .fd-partner:hover > img {
+        transform: translateY(-2px);
+        border-color: #d7c6e2;
+      }
+      .fd-partner > div {
+        grid-column: 2;
+        grid-row: 1;
+        max-width: 720px;
+      }
+      .fd-partner:nth-child(even) > img {
+        grid-column: 2;
+      }
+      .fd-partner:nth-child(even) > div {
+        grid-column: 1;
+      }
+      .fd-partner:nth-child(even) {
+        grid-template-columns: minmax(0, 1fr) 156px;
+      }
+      .fd-partner .fd-tag {
+        padding: 0;
+        border-radius: 0;
+        background: transparent;
+        color: #76508b;
+        font-size: 0.7rem;
+        letter-spacing: 0.11em;
       }
       .fd-partner h3 {
         color: var(--dark-gray);
-        font-size: 1.3rem;
-        margin: 10px 0;
+        font-size: clamp(1.3rem, 2vw, 1.7rem);
+        line-height: 1.3;
+        letter-spacing: -0.02em;
+        margin: 12px 0 10px;
       }
       .fd-partner p {
         color: var(--text-gray);
-        line-height: 1.65;
+        max-width: 660px;
+        font-size: 1.02rem;
+        line-height: 1.8;
       }
       .fd-partner.small > img {
-        width: 84px;
-        height: 84px;
-        flex-basis: 84px;
+        width: 128px;
+        height: 128px;
+        padding: 14px;
+      }
+      .fd-partner-list {
+        grid-template-columns: minmax(0, 1fr) !important;
+        gap: 0;
+      }
+      #institutions .section-title,
+      #organisations .section-title {
+        margin-bottom: 22px;
+        text-align: left;
+      }
+      #institutions .section-title:after,
+      #organisations .section-title:after {
+        left: 0;
+        transform: none;
+        width: 46px;
+        height: 3px;
+      }
+      #institutions .fd-lead,
+      #organisations .fd-lead {
+        max-width: 760px;
+        margin: 0 0 42px;
+        text-align: left;
+        font-size: 1.05rem;
+        line-height: 1.8;
+      }
+      #institutions.fd-section,
+      #organisations.fd-section {
+        padding-top: 100px;
+        padding-bottom: 100px;
+      }
+      #organisations .fd-partner:hover {
+        background: rgba(255, 255, 255, 0.7);
       }
       .fd-logos {
         display: flex;
@@ -1103,8 +1226,10 @@
         line-height: 1.35;
       }
       .logo-carousel-section {
-        padding: 38px 0;
-        background: var(--light-gray);
+        position: relative;
+        padding: 34px 0 40px;
+        border-bottom: 1px solid #eee9f1;
+        background: #fbfafc;
       }
       .logo-carousel-heading {
         display: flex;
@@ -1115,48 +1240,76 @@
       }
       .logo-carousel-heading h2 {
         color: var(--dark-gray);
-        font-size: 1.4rem;
+        font-size: 0.78rem;
+        font-weight: 650;
+        letter-spacing: 0.12em;
+        text-align: center;
+        text-transform: uppercase;
       }
       .logo-carousel {
         overflow: hidden;
+        -webkit-mask-image: linear-gradient(
+          90deg,
+          transparent,
+          #000 5%,
+          #000 95%,
+          transparent
+        );
+        mask-image: linear-gradient(
+          90deg,
+          transparent,
+          #000 5%,
+          #000 95%,
+          transparent
+        );
       }
       .logo-carousel-track {
         display: flex;
         width: max-content;
-        animation: partner-logo-scroll 30s linear infinite;
+        animation: partner-logo-scroll 42s linear infinite;
       }
-      .logo-carousel-section:hover .logo-carousel-track {
+      .logo-carousel-section:hover .logo-carousel-track,
+      .logo-carousel:focus-within .logo-carousel-track {
         animation-play-state: paused;
       }
       .logo-carousel-group {
         display: flex;
         flex: 0 0 auto;
-        gap: 20px;
-        padding-right: 20px;
+        gap: 14px;
+        padding-right: 14px;
       }
       .logo-carousel-item {
         display: flex;
-        flex: 0 0 190px;
+        flex: 0 0 168px;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        min-height: 150px;
-        padding: 16px;
-        border: 1px solid var(--medium-gray);
-        border-radius: 10px;
-        background: var(--white);
+        min-height: 130px;
+        padding: 14px 12px;
+        border: 1px solid #eee9f1;
+        border-radius: 9px;
+        background: rgba(255, 255, 255, 0.82);
         text-align: center;
+        transition:
+          border-color 200ms ease,
+          background-color 200ms ease,
+          transform 200ms ease;
+      }
+      .logo-carousel-item:hover {
+        transform: translateY(-2px);
+        border-color: #d8c8e2;
+        background: #fff;
       }
       .logo-carousel-item img {
-        width: 100px;
-        height: 90px;
+        width: 112px;
+        height: 70px;
         object-fit: contain;
       }
       .logo-carousel-item figcaption {
-        margin-top: 8px;
-        color: var(--text-gray);
-        font-size: 0.82rem;
-        line-height: 1.3;
+        margin-top: 7px;
+        color: #635b69;
+        font-size: 0.74rem;
+        line-height: 1.35;
       }
       @keyframes partner-logo-scroll {
         to {
@@ -1176,6 +1329,15 @@
           justify-content: center;
           width: 100%;
           padding: 0;
+        }
+        .fd-partner,
+        .fd-partner > img,
+        .logo-carousel-item {
+          transition: none;
+        }
+        .fd-partner:hover,
+        .logo-carousel-item:hover {
+          transform: none;
         }
       }
       .fd-list {
@@ -1238,21 +1400,52 @@
           padding: 60px 0;
         }
         .logo-carousel-item {
-          flex-basis: 165px;
-          min-height: 140px;
+          flex-basis: 154px;
+          min-height: 122px;
         }
         .fd-activity {
           grid-template-columns: 1fr;
         }
         .fd-partner {
-          flex-direction: column;
-          text-align: center;
+          grid-template-columns: 100px minmax(0, 1fr);
+          gap: 20px;
+          padding: 28px 4px;
+          text-align: left;
+        }
+        .fd-partner > img {
+          width: 96px;
+          height: 96px;
+          padding: 10px;
+        }
+        .fd-partner.small > img {
+          width: 96px;
+          height: 96px;
+          padding: 10px;
+        }
+        .fd-partner:nth-child(even) > img {
+          grid-column: 1;
+        }
+        .fd-partner:nth-child(even) > div {
+          grid-column: 2;
+        }
+        .fd-partner:nth-child(even) {
+          grid-template-columns: 100px minmax(0, 1fr);
+        }
+        #institutions.fd-section,
+        #organisations.fd-section {
+          padding-top: 68px;
+          padding-bottom: 68px;
+        }
+        #institutions .fd-lead,
+        #organisations .fd-lead {
+          margin-bottom: 28px;
         }
         .fd-photo {
           height: 280px;
         }
       }
     </style>
+    <link rel="stylesheet" href="/site-chrome.css" />
   </head>
 
   <body>
@@ -1260,52 +1453,37 @@
     <!-- Header -->
     <header>
       <div class="container header-container">
-        <div class="logo">
-          <img
-            src="./assets/logo.jpg"
-            style="width: 3em; height: 3em; border-radius: 50%"
-            alt="DIRA Foundation logo"
-            width="48"
-            height="48"
-          />
-          <div class="logo-text" style="line-height: 20px">
-            DIRA<br /><span>Foundation</span>
-          </div>
-        </div>
-        <nav>
+        <a class="logo" href="index.html" aria-label="DIRA Foundation home">
+          <img src="assets/logo.jpg" alt="DIRA Foundation logo" width="48" height="48" />
+          <span class="logo-text">DIRA<br /><span>Foundation</span></span>
+        </a>
+        <nav aria-label="Main navigation">
           <ul>
             <li><a href="index.html">Home</a></li>
             <li><a href="about.html">About Us</a></li>
             <li><a href="work.html">Our Work</a></li>
             <li><a href="articles.html">Articles</a></li>
-            <li>
-              <a href="partner.html" class="active" aria-current="page"
-                >Partners</a
-              >
-            </li>
+            <li><a href="partner.html" class="active" aria-current="page">Partners</a></li>
             <li><a href="involve.html">Get Involved</a></li>
             <li><a href="contact.html" class="nav-cta">Contact</a></li>
           </ul>
         </nav>
-        <button class="mobile-menu-btn" id="mobileMenuBtn">
-          <i class="fas fa-bars"></i>
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open mobile menu">
+          <i class="fas fa-bars" aria-hidden="true"></i>
         </button>
       </div>
     </header>
 
-    <!-- Mobile Menu -->
-    <div class="mobile-menu" id="mobileMenu">
-      <button class="mobile-menu-close" id="mobileMenuClose">
-        <i class="fas fa-times"></i>
+    <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+      <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close mobile menu">
+        <i class="fas fa-times" aria-hidden="true"></i>
       </button>
       <ul>
         <li><a href="index.html">Home</a></li>
         <li><a href="about.html">About Us</a></li>
         <li><a href="work.html">Our Work</a></li>
         <li><a href="articles.html">Articles</a></li>
-        <li>
-          <a href="partner.html" class="active" aria-current="page">Partners</a>
-        </li>
+        <li><a href="partner.html" class="active" aria-current="page">Partners</a></li>
         <li><a href="involve.html">Get Involved</a></li>
         <li><a href="contact.html">Contact</a></li>
       </ul>
@@ -1331,7 +1509,9 @@
 
       <section class="logo-carousel-section" aria-labelledby="partner-logos-title">
         <div class="container">
-          
+          <div class="logo-carousel-heading">
+            <h2 id="partner-logos-title">Organisations we work with</h2>
+          </div>
           <div class="logo-carousel" role="region" aria-label="Partner logos">
             <div class="logo-carousel-track">
               <div class="logo-carousel-group" role="list">
@@ -1443,13 +1623,7 @@
             the DIRA Foundation team has engaged with in the Northwest Region.
           </p>
           <div
-            class="fd-grid"
-            style="
-              grid-template-columns: repeat(
-                auto-fit,
-                minmax(min(380px, 100%), 1fr)
-              );
-            "
+            class="fd-grid fd-partner-list"
           >
             <article class="fd-partner">
               <img
@@ -1501,13 +1675,7 @@
             Organisations the foundation collaborates with at community level.
           </p>
           <div
-            class="fd-grid"
-            style="
-              grid-template-columns: repeat(
-                auto-fit,
-                minmax(min(340px, 100%), 1fr)
-              );
-            "
+            class="fd-grid fd-partner-list"
           >
             <article class="fd-partner small">
               <img
@@ -1905,7 +2073,6 @@
               <li>
                 <a href="involve.html#donation">Support the foundation</a>
               </li>
-              <li><a href="about.html#governance">Governance</a></li>
             </ul>
           </div>
 
@@ -1931,7 +2098,8 @@
         </div>
 
         <div class="copyright">
-          &copy; 2026 DIRA Foundation. All rights reserved.
+          &copy; 2026 DIRA Foundation. All rights reserved.<br />Built by DIRA
+          SAS
         </div>
       </div>
     </footer>

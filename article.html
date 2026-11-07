@@ -646,48 +646,47 @@
         .art-back { display: inline-block; margin-top: 30px; color: var(--primary-purple); font-weight: 600; text-decoration: none; }
         .art-draft { background: #fff7e0; border: 1px solid #f0d58a; color: #7a5b00; padding: 12px 16px; border-radius: 8px; margin-bottom: 24px; }
     </style>
-</head>
+    <link rel="stylesheet" href="/site-chrome.css" />
+  </head>
 
 <body>
     <a class="skip-link" href="#main">Skip to main content</a>
     <header>
-        <div class="container header-container">
-            <a class="logo" href="../index.html" style="text-decoration:none;">
-                <img src="../assets/logo.jpg" style="width: 3em; height: 3em; border-radius: 50%;" alt="DIRA Foundation logo" width="48" height="48">
-                <div class="logo-text" style="line-height: 20px;">
-                    DIRA<br><span>Foundation</span>
-                </div>
-            </a>
-            <nav aria-label="Main">
-                <ul>
-                    <li><a href="../index.html">Home</a></li>
-                    <li><a href="../about.html">About Us</a></li>
-                    <li><a href="../work.html">Our Work</a></li>
-                    <li><a href="../articles.html" class="active" aria-current="page">Articles</a></li>
-                    <li><a href="../partner.html">Partners</a></li>
-                    <li><a href="../involve.html">Get Involved</a></li>
-                    <li><a href="../contact.html" class="nav-cta">Contact</a></li>
-                </ul>
-            </nav>
-            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open menu">
-                <i class="fas fa-bars" aria-hidden="true"></i>
-            </button>
-        </div>
-    </header>
-
-    <div class="mobile-menu" id="mobileMenu">
-        <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close menu">
-            <i class="fas fa-times" aria-hidden="true"></i>
-        </button>
-        <ul>
+      <div class="container header-container">
+        <a class="logo" href="../index.html" aria-label="DIRA Foundation home">
+          <img src="../assets/logo.jpg" alt="DIRA Foundation logo" width="48" height="48" />
+          <span class="logo-text">DIRA<br /><span>Foundation</span></span>
+        </a>
+        <nav aria-label="Main navigation">
+          <ul>
             <li><a href="../index.html">Home</a></li>
             <li><a href="../about.html">About Us</a></li>
             <li><a href="../work.html">Our Work</a></li>
             <li><a href="../articles.html" class="active" aria-current="page">Articles</a></li>
             <li><a href="../partner.html">Partners</a></li>
             <li><a href="../involve.html">Get Involved</a></li>
-            <li><a href="../contact.html">Contact</a></li>
-        </ul>
+            <li><a href="../contact.html" class="nav-cta">Contact</a></li>
+          </ul>
+        </nav>
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open mobile menu">
+          <i class="fas fa-bars" aria-hidden="true"></i>
+        </button>
+      </div>
+    </header>
+
+    <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+      <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close mobile menu">
+        <i class="fas fa-times" aria-hidden="true"></i>
+      </button>
+      <ul>
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="../about.html">About Us</a></li>
+        <li><a href="../work.html">Our Work</a></li>
+        <li><a href="../articles.html" class="active" aria-current="page">Articles</a></li>
+        <li><a href="../partner.html">Partners</a></li>
+        <li><a href="../involve.html">Get Involved</a></li>
+        <li><a href="../contact.html">Contact</a></li>
+      </ul>
     </div>
 
     <div class="overlay" id="overlay"></div>
@@ -722,55 +721,100 @@
     </main>
 
     <footer>
-        <div class="container">
-            <div class="footer-container">
-                <div class="footer-col">
-                    <h3>DIRA Foundation</h3>
-                    <p>A non-profit association based in Bamenda, North West Region of Cameroon, working with communities and institutions on education, opportunity, research, health awareness and community development.</p>
-                    <div class="social-links">
-                        <a href="https://www.linkedin.com/company/dira-digital-era/" aria-label="DIRA Foundation on LinkedIn" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a>
-                        <a href="https://x.com/diradigitalera/" aria-label="DIRA Foundation on X" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter" aria-hidden="true"></i></a>
-                        <a href="https://www.instagram.com/digital_era_dira/" aria-label="DIRA Foundation on Instagram" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram" aria-hidden="true"></i></a>
-                        <a href="https://www.tiktok.com/@digital.era.dira" aria-label="DIRA Foundation on TikTok" target="_blank" rel="noopener noreferrer"><i class="fab fa-tiktok" aria-hidden="true"></i></a>
-                    </div>
-                </div>
-
-                <div class="footer-col">
-                    <h3>Quick Links</h3>
-                    <ul class="footer-links">
-                        <li><a href="../index.html">Home</a></li>
-                        <li><a href="../about.html">About Us</a></li>
-                        <li><a href="../work.html">Our Work</a></li>
-                        <li><a href="../articles.html">Articles</a></li>
-                        <li><a href="../partner.html">Partners</a></li>
-                        <li><a href="../involve.html">Get Involved</a></li>
-                        <li><a href="../contact.html">Contact</a></li>
-                        <li><a href="../terms-privacy.html">Terms &amp; Privacy</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-col">
-                    <h3>Take Part</h3>
-                    <ul class="footer-links">
-                        <li><a href="../involve.html">Volunteer</a></li>
-                        <li><a href="../partner.html#collaborate">Propose a collaboration</a></li>
-                        <li><a href="../involve.html#donation">Support the foundation</a></li>
-                        <li><a href="../about.html#status">Legal Status</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-col">
-                    <h3>Contact Us</h3>
-                    <p><i class="fas fa-map-marker-alt" aria-hidden="true"></i> North West Region, Bamenda</p>
-                    <p><i class="fas fa-envelope" aria-hidden="true"></i> <a href="mailto:Foundation@diracmr.com" style="color:inherit;">Foundation@diracmr.com</a></p>
-                    <p><i class="fas fa-phone" aria-hidden="true"></i> <a href="tel:+237682366472" style="color:inherit;">+237 6 82 36 64 72</a></p>
-                </div>
+      <div class="container">
+        <div class="footer-container">
+          <div class="footer-col">
+            <h3>DIRA Foundation</h3>
+            <p>
+              A non-profit association based in Bamenda, North West Region of
+              Cameroon, working with communities and institutions on education,
+              opportunity, research, health awareness and community development.
+            </p>
+            <div class="social-links">
+              <a
+                href="https://www.linkedin.com/company/dira-digital-era/"
+                aria-label="DIRA Foundation on LinkedIn"
+                target="_blank"
+                rel="noopener noreferrer"
+                ><i class="fab fa-linkedin-in" aria-hidden="true"></i
+              ></a>
+              <a
+                href="https://x.com/diradigitalera/"
+                aria-label="DIRA Foundation on X"
+                target="_blank"
+                rel="noopener noreferrer"
+                ><i class="fab fa-twitter" aria-hidden="true"></i
+              ></a>
+              <a
+                href="https://www.instagram.com/digital_era_dira/"
+                aria-label="DIRA Foundation on Instagram"
+                target="_blank"
+                rel="noopener noreferrer"
+                ><i class="fab fa-instagram" aria-hidden="true"></i
+              ></a>
+              <a
+                href="https://www.tiktok.com/@digital.era.dira"
+                aria-label="DIRA Foundation on TikTok"
+                target="_blank"
+                rel="noopener noreferrer"
+                ><i class="fab fa-tiktok" aria-hidden="true"></i
+              ></a>
             </div>
+          </div>
 
-            <div class="copyright">
-                &copy; 2026 DIRA Foundation. All rights reserved.
-            </div>
+          <div class="footer-col">
+            <h3>Quick Links</h3>
+            <ul class="footer-links">
+              <li><a href="../index.html">Home</a></li>
+              <li><a href="../about.html">About Us</a></li>
+              <li><a href="../work.html">Our Work</a></li>
+              <li><a href="../articles.html">Articles</a></li>
+              <li><a href="../partner.html">Partners</a></li>
+              <li><a href="../involve.html">Get Involved</a></li>
+              <li><a href="../contact.html">Contact</a></li>
+              <li><a href="../terms-privacy.html">Terms &amp; Privacy</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-col">
+            <h3>Take Part</h3>
+            <ul class="footer-links">
+              <li><a href="../involve.html">Volunteer</a></li>
+              <li>
+                <a href="../partner.html#collaborate">Propose a collaboration</a>
+              </li>
+              <li>
+                <a href="../involve.html#donation">Support the foundation</a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="footer-col">
+            <h3>Contact Us</h3>
+            <p>
+              <i class="fas fa-map-marker-alt" aria-hidden="true"></i> North
+              West Region, Bamenda
+            </p>
+            <p>
+              <i class="fas fa-envelope" aria-hidden="true"></i>
+              <a href="mailto:Foundation@diracmr.com" style="color: inherit"
+                >Foundation@diracmr.com</a
+              >
+            </p>
+            <p>
+              <i class="fas fa-phone" aria-hidden="true"></i>
+              <a href="tel:+237682366472" style="color: inherit"
+                >+237 6 82 36 64 72</a
+              >
+            </p>
+          </div>
         </div>
+
+        <div class="copyright">
+          &copy; 2026 DIRA Foundation. All rights reserved.<br />Built by DIRA
+          SAS
+        </div>
+      </div>
     </footer>
 
     <script>

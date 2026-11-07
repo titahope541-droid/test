@@ -1135,7 +1135,11 @@
         justify-content: center;
         color: #fff;
         font-size: 2rem;
-        background: linear-gradient(135deg, var(--primary-purple), var(--light-purple));
+        background: linear-gradient(
+          135deg,
+          var(--primary-purple),
+          var(--light-purple)
+        );
       }
       .home-article-content {
         display: flex;
@@ -1189,7 +1193,12 @@
         position: absolute;
         inset: 0;
         transform: translateX(-100%);
-        background: linear-gradient(90deg, transparent, rgba(255,255,255,.65), transparent);
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.65),
+          transparent
+        );
         animation: article-skeleton-shimmer 1.4s infinite;
         content: "";
       }
@@ -1215,7 +1224,9 @@
         margin-bottom: 20px;
       }
       @keyframes article-skeleton-shimmer {
-        100% { transform: translateX(100%); }
+        100% {
+          transform: translateX(100%);
+        }
       }
       .home-articles-message {
         color: var(--text-gray);
@@ -1280,7 +1291,11 @@
         justify-content: center;
         gap: 16px;
         padding: 32px;
-        background: linear-gradient(135deg, var(--primary-purple), var(--dark-purple));
+        background: linear-gradient(
+          135deg,
+          var(--primary-purple),
+          var(--dark-purple)
+        );
         color: #fff;
         text-align: center;
       }
@@ -1498,6 +1513,7 @@
         }
       }
     </style>
+    <link rel="stylesheet" href="/site-chrome.css" />
   </head>
 
   <body>
@@ -1505,19 +1521,11 @@
     <!-- Header -->
     <header>
       <div class="container header-container">
-        <div class="logo">
-          <img
-            src="./assets/logo.jpg"
-            style="width: 3em; height: 3em; border-radius: 50%;"
-            alt="DIRA Foundation logo"
-            width="48"
-            height="48"
-          />
-          <div class="logo-text" style="line-height: 20px;">
-            DIRA<br><span>Foundation</span>
-          </div>
-        </div>
-        <nav>
+        <a class="logo" href="index.html" aria-label="DIRA Foundation home">
+          <img src="assets/logo.jpg" alt="DIRA Foundation logo" width="48" height="48" />
+          <span class="logo-text">DIRA<br /><span>Foundation</span></span>
+        </a>
+        <nav aria-label="Main navigation">
           <ul>
             <li><a href="index.html" class="active" aria-current="page">Home</a></li>
             <li><a href="about.html">About Us</a></li>
@@ -1528,23 +1536,14 @@
             <li><a href="contact.html" class="nav-cta">Contact</a></li>
           </ul>
         </nav>
-        <button
-          class="mobile-menu-btn"
-          id="mobileMenuBtn"
-          aria-label="Open mobile menu"
-        >
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open mobile menu">
           <i class="fas fa-bars" aria-hidden="true"></i>
         </button>
       </div>
     </header>
 
-    <!-- Mobile Menu -->
     <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
-      <button
-        class="mobile-menu-close"
-        id="mobileMenuClose"
-        aria-label="Close mobile menu"
-      >
+      <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close mobile menu">
         <i class="fas fa-times" aria-hidden="true"></i>
       </button>
       <ul>
@@ -1619,8 +1618,6 @@
                 Explore Our Work
               </a>
             </div>
-
-            
           </div>
 
           <div class="hero-visual">
@@ -1701,9 +1698,9 @@
               income and assets are used only for its own objectives.
             </p>
             <p>
-              Technology is one part of what we do. Alongside it, our
-              constitution commits us to education, enterprise support,
-              research, health awareness and collaboration with institutions.
+              Technology is one part of what we do. Alongside it, we are
+              commited to to education, enterprise support, research, health
+              awareness and collaboration with institutions.
             </p>
           </div>
           <div class="fd-center">
@@ -1720,27 +1717,42 @@
             Supporting local businesses and entrepreneurs to build for growth.
           </p>
           <article class="featured-programme">
-            <div class="featured-programme-visual" aria-hidden="true" style="padding: 0; border-radius: 0; overflow: hidden;">
+            <div
+              class="featured-programme-visual"
+              aria-hidden="true"
+              style="padding: 0; border-radius: 0; overflow: hidden"
+            >
               <img
                 src="./images/IMG_6595.jpg"
                 alt="DIRA Startup Incubator Programme"
-                style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px">
+                style="
+                  width: 100%;
+                  height: 100%;
+                  object-fit: cover;
+                  border-radius: 10px;
+                "
+              />
             </div>
             <div class="featured-programme-content">
               <span class="fd-tag">Planned for 2027</span>
               <h3>DIRA Startup Incubator Program</h3>
               <p>
-                DIRA Foundation plans to support youth- and women-led
-                businesses and cooperatives across the North West Region with
-                registration, business records, mentoring and practical
-                training in business, finance, sales, technology and AI.
+                DIRA Foundation plans to support youth- and women-led businesses
+                and cooperatives across the North West Region with registration,
+                business records, mentoring and practical training in business,
+                finance, sales, technology and AI.
               </p>
-              <div class="featured-programme-highlights" aria-label="Programme targets">
+              <div
+                class="featured-programme-highlights"
+                aria-label="Programme targets"
+              >
                 <span><strong>30+</strong> enterprises supported</span>
                 <span><strong>500</strong> people trained</span>
                 <span><strong>40%</strong> minimum women participants</span>
               </div>
-              <a class="fd-btn" href="startup-incubator.html">Explore the programme</a>
+              <a class="fd-btn" href="startup-incubator.html"
+                >Explore the programme</a
+              >
             </div>
           </article>
         </div>
@@ -1768,11 +1780,10 @@
               <div class="fd-icon">
                 <i class="fas fa-calendar-check" aria-hidden="true"></i>
               </div>
-              <h3>Events and knowledge sharing</h3>
+              <h3>Workshops, awareness and project showcases</h3>
               <p>
-                Conferences, exhibitions, hackathons and bootcamps that promote
-                innovation, entrepreneurship and digital inclusion, including
-                DIRA Tech Fest.
+                Capacity-building workshops, large-scale awareness campaigns
+                and events that showcase projects and their impact.
               </p>
             </div>
             <div class="fd-card">
@@ -1860,7 +1871,8 @@
         <div class="container">
           <h2 class="section-title">Programmes and Activities</h2>
           <p class="fd-lead">
-            Events and partnerships supporting innovation and community development.
+            Events and partnerships supporting innovation and community
+            development.
           </p>
           <article class="fd-activity">
             <img
@@ -1874,14 +1886,12 @@
               <span class="fd-tag">Programme &middot; Ongoing</span>
               <h3>Supporting JERSI-NW with CRRI</h3>
               <p>
-                DIRA Foundation is partnering with CRRI's North West
-                Regional Delegation to promote the 9th JERSI-NW Open Day of
-                Excellence for Scientific Research and Innovation, taking place
-                in Bamenda from 10 to 12 November 2026.
+                DIRA Foundation is partnering with CRRI's North West Regional
+                Delegation to promote the 9th JERSI-NW Open Day of Excellence
+                for Scientific Research and Innovation, taking place in Bamenda
+                from 10 to 12 November 2026.
               </p>
-              <a class="fd-btn outline" href="work.html#jersi-nw"
-                >Read more</a
-              >
+              <a class="fd-btn outline" href="work.html#jersi-nw">Read more</a>
             </div>
           </article>
           <article class="fd-activity">
@@ -1919,10 +1929,10 @@
               <span class="fd-tag">Institutional engagement</span>
               <h3>Engagement with regional institutions</h3>
               <p>
-                DIRA Foundation team members have visited the North West Regional Assembly
-                and the North West Regional Delegation of CRRI, as part of
-                building working relationships with institutions in the region
-                where the foundation is based.
+                DIRA Foundation team members have visited the North West
+                Regional Assembly and the North West Regional Delegation of
+                CRRI, as part of building working relationships with
+                institutions in the region where the foundation is based.
               </p>
               <a class="fd-btn outline" href="partner.html">See institutions</a>
             </div>
@@ -1948,7 +1958,7 @@
                 height="100"
                 loading="lazy"
                 alt="CRRI logo"
-                style="border-radius: 50%;"
+                style="border-radius: 50%"
               />
               <figcaption>CRRI, North West Regional Delegation</figcaption>
             </figure>
@@ -1959,7 +1969,7 @@
                 height="100"
                 loading="lazy"
                 alt="North West Regional Assembly logo"
-                style="border-radius: 50%;"
+                style="border-radius: 50%"
               />
               <figcaption>North West Regional Assembly</figcaption>
             </figure>
@@ -1970,7 +1980,7 @@
                 height="100"
                 loading="lazy"
                 alt="Global Community Rescue logo"
-                style="border-radius: 50%;"
+                style="border-radius: 50%"
               />
               <figcaption>Global Community Rescue (GCR)</figcaption>
             </figure>
@@ -1981,7 +1991,7 @@
                 height="100"
                 loading="lazy"
                 alt="ASWEDO logo"
-                style="border-radius: 50%;"
+                style="border-radius: 50%"
               />
               <figcaption>ASWEDO</figcaption>
             </figure>
@@ -1992,7 +2002,7 @@
                 height="100"
                 loading="lazy"
                 alt="Biomedical Engineering Women's Community Cameroon logo"
-                style="border-radius: 50%;"
+                style="border-radius: 50%"
               />
               <figcaption>
                 Biomedical Engineering Women's Community Cameroon
@@ -2018,7 +2028,8 @@
               </div>
               <h3>Volunteer</h3>
               <p>
-                Give your time and skills to outreach, health and wellbeing, enterprise support and programme delivery.
+                Give your time and skills to outreach, health and wellbeing,
+                enterprise support and programme delivery.
               </p>
               <a class="fd-btn outline" href="involve.html#volunteer"
                 >Volunteer</a
@@ -2059,42 +2070,81 @@
       <section class="fd-section alt" id="latest-articles">
         <div class="container">
           <h2 class="section-title">Latest Articles</h2>
-          <p class="fd-lead">
-            News, updates and stories from DIRA Foundation.
-          </p>
-          <div class="home-article-grid" id="home-article-grid" aria-label="Latest articles" aria-busy="true">
+          <p class="fd-lead">News, updates and stories from DIRA Foundation.</p>
+          <div
+            class="home-article-grid"
+            id="home-article-grid"
+            aria-label="Latest articles"
+            aria-busy="true"
+          >
             <article class="home-article-card" aria-hidden="true">
               <div class="home-article-media home-article-skeleton"></div>
               <div class="home-article-content">
-                <span class="home-article-skeleton home-article-skeleton-line short"></span>
-                <span class="home-article-skeleton home-article-skeleton-line title"></span>
-                <span class="home-article-skeleton home-article-skeleton-line copy"></span>
-                <span class="home-article-skeleton home-article-skeleton-line copy last"></span>
-                <span class="home-article-skeleton home-article-skeleton-line short"></span>
+                <span
+                  class="home-article-skeleton home-article-skeleton-line short"
+                ></span>
+                <span
+                  class="home-article-skeleton home-article-skeleton-line title"
+                ></span>
+                <span
+                  class="home-article-skeleton home-article-skeleton-line copy"
+                ></span>
+                <span
+                  class="home-article-skeleton home-article-skeleton-line copy last"
+                ></span>
+                <span
+                  class="home-article-skeleton home-article-skeleton-line short"
+                ></span>
               </div>
             </article>
             <article class="home-article-card" aria-hidden="true">
               <div class="home-article-media home-article-skeleton"></div>
               <div class="home-article-content">
-                <span class="home-article-skeleton home-article-skeleton-line short"></span>
-                <span class="home-article-skeleton home-article-skeleton-line title"></span>
-                <span class="home-article-skeleton home-article-skeleton-line copy"></span>
-                <span class="home-article-skeleton home-article-skeleton-line copy last"></span>
-                <span class="home-article-skeleton home-article-skeleton-line short"></span>
+                <span
+                  class="home-article-skeleton home-article-skeleton-line short"
+                ></span>
+                <span
+                  class="home-article-skeleton home-article-skeleton-line title"
+                ></span>
+                <span
+                  class="home-article-skeleton home-article-skeleton-line copy"
+                ></span>
+                <span
+                  class="home-article-skeleton home-article-skeleton-line copy last"
+                ></span>
+                <span
+                  class="home-article-skeleton home-article-skeleton-line short"
+                ></span>
               </div>
             </article>
             <article class="home-article-card" aria-hidden="true">
               <div class="home-article-media home-article-skeleton"></div>
               <div class="home-article-content">
-                <span class="home-article-skeleton home-article-skeleton-line short"></span>
-                <span class="home-article-skeleton home-article-skeleton-line title"></span>
-                <span class="home-article-skeleton home-article-skeleton-line copy"></span>
-                <span class="home-article-skeleton home-article-skeleton-line copy last"></span>
-                <span class="home-article-skeleton home-article-skeleton-line short"></span>
+                <span
+                  class="home-article-skeleton home-article-skeleton-line short"
+                ></span>
+                <span
+                  class="home-article-skeleton home-article-skeleton-line title"
+                ></span>
+                <span
+                  class="home-article-skeleton home-article-skeleton-line copy"
+                ></span>
+                <span
+                  class="home-article-skeleton home-article-skeleton-line copy last"
+                ></span>
+                <span
+                  class="home-article-skeleton home-article-skeleton-line short"
+                ></span>
               </div>
             </article>
           </div>
-          <p class="home-articles-message" id="home-articles-status" role="status" aria-live="polite" hidden></p>
+          <p
+            class="home-articles-message"
+            id="home-articles-status"
+            role="status"
+            aria-live="polite"
+            hidden
+          ></p>
           <div class="fd-center">
             <a class="fd-btn" href="articles.html">View all articles</a>
           </div>
@@ -2131,8 +2181,7 @@
             <h3>DIRA Foundation</h3>
             <p>
               A non-profit association based in Bamenda, North West Region of
-              Cameroon,
-              working with communities and institutions on education,
+              Cameroon, working with communities and institutions on education,
               opportunity, research, health awareness and community development.
             </p>
             <div class="social-links">
@@ -2191,7 +2240,6 @@
               <li>
                 <a href="involve.html#donation">Support the foundation</a>
               </li>
-              <li><a href="about.html#governance">Governance</a></li>
             </ul>
           </div>
 
@@ -2217,7 +2265,8 @@
         </div>
 
         <div class="copyright">
-          &copy; 2026 DIRA Foundation. All rights reserved.
+          &copy; 2026 DIRA Foundation. All rights reserved.<br />Built by DIRA
+          SAS
         </div>
       </div>
     </footer>
@@ -2289,12 +2338,16 @@
           });
           if (!response.ok) throw new Error("Articles request failed.");
           const data = await response.json();
-          if (!Array.isArray(data.articles)) throw new Error("Invalid articles response.");
+          if (!Array.isArray(data.articles))
+            throw new Error("Invalid articles response.");
 
           grid.replaceChildren();
-          const articles = data.articles.filter((article) =>
-            article && typeof article.title === "string" &&
-            typeof article.slug === "string" && /^[a-z0-9-]+$/.test(article.slug)
+          const articles = data.articles.filter(
+            (article) =>
+              article &&
+              typeof article.title === "string" &&
+              typeof article.slug === "string" &&
+              /^[a-z0-9-]+$/.test(article.slug),
           );
           if (!articles.length) {
             showMessage("No published articles yet.");
@@ -2304,18 +2357,24 @@
           articles.forEach((article) => {
             const card = makeElement("article", "home-article-card");
             const href = "/articles/" + encodeURIComponent(article.slug);
-            const imageUrl = typeof article.coverImage === "string" &&
-              (/^\/uploads\/[a-f0-9]{24}\.(?:jpg|png|webp)$/.test(article.coverImage) ||
-                /^https:\/\/res\.cloudinary\.com\/[a-z0-9_-]+\/image\/upload\//i.test(article.coverImage))
-              ? article.coverImage
-              : "";
+            const imageUrl =
+              typeof article.coverImage === "string" &&
+              (/^\/uploads\/[a-f0-9]{24}\.(?:jpg|png|webp)$/.test(
+                article.coverImage,
+              ) ||
+                /^https:\/\/res\.cloudinary\.com\/[a-z0-9_-]+\/image\/upload\//i.test(
+                  article.coverImage,
+                ))
+                ? article.coverImage
+                : "";
             if (imageUrl) {
               const media = makeElement("a", "home-article-media");
               media.href = href;
               media.setAttribute("aria-label", "Read " + article.title);
               const image = makeElement("img", "home-article-media");
               image.src = imageUrl;
-              image.alt = typeof article.coverAlt === "string" ? article.coverAlt : "";
+              image.alt =
+                typeof article.coverAlt === "string" ? article.coverAlt : "";
               image.loading = "lazy";
               media.append(image);
               card.append(media);
@@ -2333,16 +2392,21 @@
             const meta = makeElement("p", "home-article-meta");
             const date = new Date(article.publishedAt);
             if (article.publishedAt && !Number.isNaN(date.getTime())) {
-              const time = makeElement("time", "", new Intl.DateTimeFormat("en-GB", {
-                day: "numeric",
-                month: "short",
-                year: "numeric",
-              }).format(date));
+              const time = makeElement(
+                "time",
+                "",
+                new Intl.DateTimeFormat("en-GB", {
+                  day: "numeric",
+                  month: "short",
+                  year: "numeric",
+                }).format(date),
+              );
               time.dateTime = article.publishedAt;
               meta.append(time);
             }
             if (article.author) {
-              if (meta.childNodes.length) meta.append(document.createTextNode(" · "));
+              if (meta.childNodes.length)
+                meta.append(document.createTextNode(" · "));
               meta.append(document.createTextNode(article.author));
             }
 
@@ -2350,8 +2414,16 @@
             const title = makeElement("a", "", article.title);
             title.href = href;
             heading.append(title);
-            const summary = makeElement("p", "home-article-summary", article.summary || "");
-            const readMore = makeElement("a", "home-article-link", "Read article →");
+            const summary = makeElement(
+              "p",
+              "home-article-summary",
+              article.summary || "",
+            );
+            const readMore = makeElement(
+              "a",
+              "home-article-link",
+              "Read article →",
+            );
             readMore.href = href;
             content.append(meta, heading, summary, readMore);
             card.append(content);
@@ -2359,7 +2431,9 @@
           });
         } catch (error) {
           grid.replaceChildren();
-          showMessage("Articles couldn't be loaded right now. Please try again later.");
+          showMessage(
+            "Articles couldn't be loaded right now. Please try again later.",
+          );
           console.error("Could not load homepage articles:", error);
         } finally {
           grid.setAttribute("aria-busy", "false");
@@ -2370,7 +2444,7 @@
 
       const heroSlides = document.querySelectorAll(".hero-slide");
       const reducedMotion = window.matchMedia(
-        "(prefers-reduced-motion: reduce)"
+        "(prefers-reduced-motion: reduce)",
       );
 
       if (heroSlides.length > 1 && !reducedMotion.matches) {

@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="theme-color" content="#263b78">
+    <title>Administrator sign in | DIRA Foundation</title>
+    <style>
+      :root {
+        color-scheme: light;
+        font-family: Arial, Helvetica, sans-serif;
+        color: #252b3b;
+        background: #f4f6fb;
+      }
+      * { box-sizing: border-box; }
+      body {
+        min-height: 100vh;
+        margin: 0;
+        display: grid;
+        place-items: center;
+        padding: 24px;
+        background: radial-gradient(ellipse at top left, #e8ebfa, transparent 48%), #f4f6fb;
+      }
+      main {
+        width: min(100%, 440px);
+        padding: 38px;
+        border: 1px solid #e1e5ef;
+        border-radius: 16px;
+        background: #fff;
+        box-shadow: 0 18px 48px rgba(27, 38, 77, .1);
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 30px;
+        color: #263b78;
+        font-size: 1rem;
+        font-weight: 700;
+        text-decoration: none;
+      }
+      .brand img { width: 46px; height: 46px; border-radius: 50%; object-fit: cover; }
+      h1 { margin: 0 0 8px; font-size: 1.65rem; }
+      .intro { margin: 0 0 24px; color: #606779; line-height: 1.55; }
+      .field { margin-bottom: 18px; }
+      label { display: block; margin-bottom: 7px; font-weight: 600; }
+      input {
+        width: 100%;
+        min-height: 46px;
+        padding: 10px 12px;
+        border: 1px solid #cbd1df;
+        border-radius: 7px;
+        font: inherit;
+      }
+      input:focus { outline: 3px solid #dce1f6; border-color: #445ca8; }
+      button {
+        width: 100%;
+        min-height: 46px;
+        border: 0;
+        border-radius: 7px;
+        color: #fff;
+        background: #263b78;
+        font: inherit;
+        font-weight: 700;
+        cursor: pointer;
+      }
+      button:hover { background: #1d2f66; }
+      button:disabled { opacity: .65; cursor: wait; }
+      .message { margin: 0 0 16px; color: #8d2929; line-height: 1.5; }
+      .message[hidden] { display: none; }
+      .back { display: inline-block; margin-top: 22px; color: #344b8d; }
+      @media (max-width: 480px) { main { padding: 28px 22px; } }
+    </style>
+  </head>
+  <body>
+    <main>
+      <a class="brand" href="index.html">
+        <img src="assets/logo.jpg" alt="">
+        <span>DIRA Foundation</span>
+      </a>
+      <h1>Administrator sign in</h1>
+      <p class="intro">Sign in to manage volunteer applications and form questions.</p>
+      <p id="message" class="message" role="alert" hidden></p>
+      <form id="loginForm" autocomplete="on">
+        <div class="field">
+          <label for="email">Email address</label>
+          <input id="email" name="email" type="email" autocomplete="username" required>
+        </div>
+        <div class="field">
+          <label for="password">Password</label>
+          <input id="password" name="password" type="password" autocomplete="current-password" required>
+        </div>
+        <button id="submit" type="submit">Sign in</button>
+      </form>
+      <a class="back" href="volunteer.html">Back to volunteer application</a>
+    </main>
+    <script>
+      (() => {
+        const form = document.getElementById("loginForm");
+        const message = document.getElementById("message");
+        const submit = document.getElementById("submit");
+        const params = new URLSearchParams(location.search);
+        const next = params.get("next") === "/volunteer-admin.html" ? params.get("next") : "/volunteer-admin.html";
+
+        function showMessage(text) {
+          message.textContent = text;
+          message.hidden = !text;
+        }
+
+        async function checkSession() {
+          const response = await fetch("/api/admin/session", { credentials: "same-origin" });
+          const result = await response.json();
+          if (!response.ok) throw new Error(result.error || "Could not check the administrator session.");
+          if (!result.configured) {
+            form.hidden = true;
+            showMessage("Admin login is not configured. Set ADMIN_EMAIL and ADMIN_PASSWORD in the server environment, then restart or redeploy.");
+            return;
+          }
+          if (result.authenticated) location.replace(next);
+        }
+
+        const notice = params.get("message");
+        if (notice) showMessage(notice);
+        checkSession().catch((error) => showMessage("Could not reach the server. " + error.message));
+
+        form.addEventListener("submit", async (event) => {
+          event.preventDefault();
+          submit.disabled = true;
+          showMessage("");
+          try {
+            const response = await fetch("/api/admin/login", {
+              method: "POST",
+              credentials: "same-origin",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                email: document.getElementById("email").value,
+                password: document.getElementById("password").value
+              })
+            });
+            const result = await response.json();
+            if (!response.ok) throw new Error(result.error || "Sign in failed.");
+            document.getElementById("password").value = "";
+            location.replace(next);
+          } catch (error) {
+            showMessage(error.message);
+          } finally {
+            submit.disabled = false;
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>

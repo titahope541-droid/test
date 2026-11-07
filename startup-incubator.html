@@ -749,6 +749,7 @@
         }
       }
     </script>
+    <link rel="stylesheet" href="/site-chrome.css" />
   </head>
 
   <body>
@@ -759,50 +760,35 @@
     <!-- Header -->
     <header>
       <div class="container header-container">
-        <div class="logo">
-          <img
-            src="./assets/logo.jpg"
-            style="width: 3em; height: 3em; border-radius: 50%"
-            alt="DIRA Foundation logo"
-            width="48"
-            height="48"
-          />
-          <div class="logo-text" style="line-height: 20px">
-            DIRA<br /><span>Foundation</span>
-          </div>
-        </div>
-        <nav>
+        <a class="logo" href="index.html" aria-label="DIRA Foundation home">
+          <img src="assets/logo.jpg" alt="DIRA Foundation logo" width="48" height="48" />
+          <span class="logo-text">DIRA<br /><span>Foundation</span></span>
+        </a>
+        <nav aria-label="Main navigation">
           <ul>
             <li><a href="index.html">Home</a></li>
             <li><a href="about.html">About Us</a></li>
-            <li>
-              <a href="work.html" class="active" aria-current="page"
-                >Our Work</a
-              >
-            </li>
+            <li><a href="work.html" class="active" aria-current="page">Our Work</a></li>
             <li><a href="articles.html">Articles</a></li>
             <li><a href="partner.html">Partners</a></li>
             <li><a href="involve.html">Get Involved</a></li>
             <li><a href="contact.html" class="nav-cta">Contact</a></li>
           </ul>
         </nav>
-        <button class="mobile-menu-btn" id="mobileMenuBtn">
-          <i class="fas fa-bars"></i>
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open mobile menu">
+          <i class="fas fa-bars" aria-hidden="true"></i>
         </button>
       </div>
     </header>
 
-    <!-- Mobile Menu -->
-    <div class="mobile-menu" id="mobileMenu">
-      <button class="mobile-menu-close" id="mobileMenuClose">
-        <i class="fas fa-times"></i>
+    <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+      <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close mobile menu">
+        <i class="fas fa-times" aria-hidden="true"></i>
       </button>
       <ul>
         <li><a href="index.html">Home</a></li>
         <li><a href="about.html">About Us</a></li>
-        <li>
-          <a href="work.html" class="active" aria-current="page">Our Work</a>
-        </li>
+        <li><a href="work.html" class="active" aria-current="page">Our Work</a></li>
         <li><a href="articles.html">Articles</a></li>
         <li><a href="partner.html">Partners</a></li>
         <li><a href="involve.html">Get Involved</a></li>
@@ -1170,7 +1156,7 @@
           <div class="ds-record">
             <img
               class="reveal"
-              src="illust_1.jpg"
+              src="./images/dira-tech-2.jpeg"
               width="905"
               height="1280"
               loading="lazy"
@@ -1479,6 +1465,22 @@
         </div>
       </section>
 
+      <section class="ds-section alt" id="concept-note">
+        <div class="container">
+          <h2 class="section-title">Concept note</h2>
+          <p class="ds-intro">
+            The concept note outlines the 2027 programme, its training tracks,
+            expected results and budget.
+          </p>
+          <div class="cta-buttons-centered">
+            <a href="/data/DSIP-Concept-Note-2027.docx" class="btn btn-light" download>
+              <i class="fas fa-download" aria-hidden="true"></i>
+              Download the concept note
+            </a>
+          </div>
+        </div>
+      </section>
+
       <section class="cta-section">
         <div class="container">
           <h2 class="cta-title">Be Part of DSIP in 2027</h2>
@@ -1517,28 +1519,28 @@
             <div class="social-links">
               <a
                 href="https://www.linkedin.com/company/dira-digital-era/"
-                aria-label="DIRA on LinkedIn"
+                aria-label="DIRA Foundation on LinkedIn"
                 target="_blank"
                 rel="noopener noreferrer"
                 ><i class="fab fa-linkedin-in" aria-hidden="true"></i
               ></a>
               <a
                 href="https://x.com/diradigitalera/"
-                aria-label="DIRA on X"
+                aria-label="DIRA Foundation on X"
                 target="_blank"
                 rel="noopener noreferrer"
                 ><i class="fab fa-twitter" aria-hidden="true"></i
               ></a>
               <a
                 href="https://www.instagram.com/digital_era_dira/"
-                aria-label="DIRA on Instagram"
+                aria-label="DIRA Foundation on Instagram"
                 target="_blank"
                 rel="noopener noreferrer"
                 ><i class="fab fa-instagram" aria-hidden="true"></i
               ></a>
               <a
                 href="https://www.tiktok.com/@digital.era.dira"
-                aria-label="DIRA on TikTok"
+                aria-label="DIRA Foundation on TikTok"
                 target="_blank"
                 rel="noopener noreferrer"
                 ><i class="fab fa-tiktok" aria-hidden="true"></i
@@ -1570,7 +1572,6 @@
               <li>
                 <a href="involve.html#donation">Support the foundation</a>
               </li>
-              <li><a href="about.html#governance">Governance</a></li>
             </ul>
           </div>
 
@@ -1596,7 +1597,8 @@
         </div>
 
         <div class="copyright">
-          &copy; 2026 DIRA Foundation. All rights reserved.
+          &copy; 2026 DIRA Foundation. All rights reserved.<br />Built by DIRA
+          SAS
         </div>
       </div>
     </footer>
