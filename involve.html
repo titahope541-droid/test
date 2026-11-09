@@ -1240,6 +1240,7 @@
       }
     </style>
     <link rel="stylesheet" href="/site-chrome.css" />
+    <script src="/site-chrome.js" defer></script>
   </head>
 
   <body>
@@ -2083,6 +2084,16 @@
       const donationCheck = document.getElementById("fapshiCheck");
       const donationSessionKey = "dira_fapshi_payment";
 
+      async function requestPaymentApi(path, options) {
+        const response = await fetch(path, options);
+        const contentType = response.headers.get("content-type") || "";
+        if (response.status !== 404 && contentType.toLowerCase().includes("application/json")) {
+          return response;
+        }
+        const functionUrl = "/.netlify/functions/server?__route=" + encodeURIComponent(path);
+        return fetch(functionUrl, options);
+      }
+
       async function readPaymentResponse(response) {
         const body = await response.text();
         let result;
@@ -2121,7 +2132,7 @@
         donationCheck.disabled = true;
         donationStatus.textContent = "Checking payment status...";
         try {
-          const response = await fetch("/api/payments/status", {
+          const response = await requestPaymentApi("/api/payments/status", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(donation),
@@ -2160,7 +2171,7 @@
         donationSubmit.disabled = true;
         donationSubmit.textContent = "Connecting to Fapshi...";
         try {
-          const response = await fetch("/api/payments/initiate", {
+          const response = await requestPaymentApi("/api/payments/initiate", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({

@@ -1360,6 +1360,10 @@ const server = http.createServer(async (req, res) => {
   try {
     const url = new URL(req.url, 'http://localhost');
     let p = url.pathname;
+    if (!IS_NETLIFY && p === '/.netlify/functions/server' && url.searchParams.has('__route')) {
+      p = url.searchParams.get('__route');
+      url.searchParams.delete('__route');
+    }
     if (p.startsWith('/api/')) {
       if (!['GET', 'POST', 'PUT', 'DELETE'].includes(req.method)) return json(res, 405, { error: 'Method not allowed.' });
       return await handleApi(req, res, url);
