@@ -76,7 +76,7 @@ Back up the MongoDB database and Cloudinary assets. On standalone server startup
 
 ### Deploying to Netlify
 
-The repository includes `netlify.toml` and a Netlify Function adapter. Netlify serves the static pages and runs the existing article API and dynamic article routes as a function. Do not use `node server.js` as the Netlify start command.
+The repository includes `netlify.toml`, a publish-root `_redirects` file and a Netlify Function adapter. Netlify serves the static pages and rewrites the articles, API, sitemap and robots routes to the existing function. Keep `_redirects` in the published directory (the repository root by default). Do not use `node server.js` as the Netlify start command.
 
 1. Push this repository to GitHub/GitLab/Bitbucket and import it as a new Netlify site. Set the base directory to the repository root and leave the publish directory and functions directory to the values in `netlify.toml`.
 2. In **Site configuration → Environment variables**, add `MONGODB_URI`, `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`, `ADMIN_EMAIL`, `ADMIN_PASSWORD`, `SESSION_SECRET`, `RESEND_API_KEY` and `RESEND_FROM_EMAIL`. Set `SITE_URL` to the final HTTPS site URL (for example `https://example.netlify.app`). For online donations, also set `FAPSHI_API_USER`, `FAPSHI_API_KEY`, and `FAPSHI_ENVIRONMENT` to `sandbox` or `live` as appropriate. Do not upload `.env` or put secrets in `netlify.toml`.

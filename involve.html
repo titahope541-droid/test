@@ -2083,6 +2083,23 @@
       const donationCheck = document.getElementById("fapshiCheck");
       const donationSessionKey = "dira_fapshi_payment";
 
+      async function readPaymentResponse(response) {
+        const body = await response.text();
+        let result;
+        try {
+          result = JSON.parse(body);
+        } catch (error) {
+          if (response.status === 404) {
+            throw new Error("The payment API route was not found. Redeploy the site with the Netlify redirect rules enabled.");
+          }
+          throw new Error("The payment service returned an unexpected response (HTTP " + response.status + "). Please try again later.");
+        }
+        if (!result || typeof result !== "object" || Array.isArray(result)) {
+          throw new Error("The payment service returned an invalid response. Please try again.");
+        }
+        return result;
+      }
+
       function savedDonation() {
         try {
           const donation = JSON.parse(sessionStorage.getItem(donationSessionKey) || "null");
@@ -2110,7 +2127,7 @@
             body: JSON.stringify(donation),
             cache: "no-store"
           });
-          const result = await response.json();
+          const result = await readPaymentResponse(response);
           if (!response.ok) throw new Error(result.error || "Unable to check the payment status.");
           if (result.status === "SUCCESSFUL") {
             donationStatus.textContent = "Donation received. Thank you for supporting DIRA Foundation.";
@@ -2151,7 +2168,7 @@
               email: document.getElementById("donationEmail").value.trim()
             })
           });
-          const result = await response.json();
+          const result = await readPaymentResponse(response);
           if (!response.ok) throw new Error(result.error || "Unable to start the payment.");
           try {
             sessionStorage.setItem(donationSessionKey, JSON.stringify({
